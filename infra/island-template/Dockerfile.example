@@ -1,0 +1,84 @@
+# syntax=docker/dockerfile:1.7
+# ===========================================================================
+# Per-Island sandbox Dockerfile — TEMPLATE for Powder Monkey.
+#
+# Powder Monkey: copy this file into your challenge folder
+#   challenges/<category>/<difficulty>/<slug>/Dockerfile
+# and adapt the marked sections for your specific Island.
+#
+# Hard rules (non-negotiable, enforced by the sandbox controller):
+#   1. Run as a non-root user. NEVER `USER root` at the end.
+#   2. NO --privileged, NO --cap-add. Defense in depth.
+#   3. The flag is injected at runtime via the CHALLENGE_FLAG env var.
+#      It is loaded from a K8s Secret per-Island. NEVER hardcode the flag.
+#   4. Expose exactly ONE port. Multi-port Islands are rejected by the
+#      sandbox controller (talk to Shipwright first).
+#   5. Resource ceiling: cpu=0.5, mem=512Mi by default (see island.yaml).
+#      Cursed Depths Islands may request more in island.yaml.resources.
+#   6. NO egress to the public internet at runtime — enforced by
+#      infra/k8s/network-policies/island-sandbox-allow.yaml.
+#      If your challenge needs an outbound connection, it must be to a
+#      sibling sandbox container in the same namespace, not the open net.
+#   7. Pin your base image by digest in production. Floating tags break
+#      reproducibility and pass through Trivy scans inconsistently.
+# ===========================================================================
+
+# ---- 1. (optional) build stage --------------------------------------------
+# Use a build stage if your Island compiles something. Delete this stage
+# entirely if your challenge is interpreted (Python, Node, PHP, etc.).
+FROM golang:1.23-alpine@sha256:9dd2625a1ff2859b8d8b01d8f7822c0f528942fe56cfe7a1e7c38d3b8d72d679 AS build
+WORKDIR /src
+# COPY go.mod go.sum ./
+# RUN go mod download
+# COPY . .
+# RUN CGO_ENABLED=0 go build -o /out/island ./cmd/island
+
+
+# ---- 2. runtime stage ------------------------------------------------------
+# Pick a minimal base. Distroless / alpine / scratch — whatever fits.
+FROM alpine:3.20@sha256:beefdbd8a1da6d2915566fde36db9db0b524443c8f8f4f00ed0bff7d3b2d5e0e AS runtime
+
+# Create a dedicated unprivileged user. Do not reuse system uids.
+RUN addgroup -S sailor -g 10001 \
+    && adduser  -S sailor -G sailor -u 10001 -h /home/sailor
+
+WORKDIR /app
+
+# Install only what you need. Keep the image small — Trivy scans every layer.
+RUN apk add --no-cache ca-certificates tini
+
+# COPY --from=build /out/island /app/island
+# OR for an interpreted challenge:
+#   COPY --chown=sailor:sailor app/ /app/
+
+# ===========================================================================
+# Flag handling — DO NOT change this contract.
+#
+# CHALLENGE_FLAG is injected by the sandbox controller from a K8s Secret
+# at pod start. Your application reads it at boot. NEVER:
+#   - bake a flag into the image
+#   - log the flag
+#   - expose the flag via /env, /debug, /metrics, etc.
+#
+# At pod start the controller will set:
+#   CHALLENGE_FLAG=progctf{example_only_real_flag_from_secret}
+# ===========================================================================
+ENV CHALLENGE_FLAG="progctf{REPLACE_AT_RUNTIME_FROM_SECRET}" \
+    CHALLENGE_PORT=8080
+
+# Drop privileges. Everything below this line runs as 'sailor' (uid 10001).
+USER sailor:sailor
+
+EXPOSE 8080
+
+# Healthcheck — must return 200 within 5s. The sandbox controller uses this
+# to decide whether the Island is "adrift" (the IslandSandboxAdrift alert).
+HEALTHCHECK --interval=15s --timeout=5s --start-period=10s --retries=3 \
+    CMD wget --quiet --spider http://127.0.0.1:${CHALLENGE_PORT}/ || exit 1
+
+# tini handles signals so the container shuts down cleanly when the
+# sandbox controller scales the deployment to zero on TTL idle.
+ENTRYPOINT ["/sbin/tini", "--"]
+
+# ---- Replace this with your actual entrypoint -----------------------------
+CMD ["/app/island"]

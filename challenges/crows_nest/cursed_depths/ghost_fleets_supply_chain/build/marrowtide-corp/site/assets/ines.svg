@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160" role="img" aria-label="Profile silhouette of Ines Tidemark">
+  <defs>
+    <linearGradient id="bgI" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#a04a2c"/>
+      <stop offset="100%" stop-color="#0c2230"/>
+    </linearGradient>
+  </defs>
+  <rect width="160" height="160" fill="url(#bgI)"/>
+  <circle cx="80" cy="64" r="26" fill="#f5f1e8"/>
+  <path d="M32,160 C32,118 52,102 80,102 C108,102 128,118 128,160 Z" fill="#f5f1e8"/>
+</svg>

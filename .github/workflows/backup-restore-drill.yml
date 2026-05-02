@@ -1,0 +1,110 @@
+name: backup-restore-drill
+
+# Weekly drill: pull the most recent Postgres backup from object storage,
+# restore into an ephemeral DB in the staging cluster, run a smoke query,
+# alert on failure. Catches silent backup corruption before The Voyage day.
+
+on:
+  schedule:
+    - cron: '0 5 * * 0'   # Sunday 05:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  K8S_NAMESPACE: progctf-fleet
+  BACKUP_BUCKET: progctf-backups
+  EPHEMERAL_DB: progctf_restore_drill
+
+jobs:
+
+  drill:
+    name: restore latest backup into ephemeral DB
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/setup-kubectl@v4
+        with:
+          version: v1.30.5
+
+      - name: load staging kubeconfig
+        env:
+          KUBECONFIG_DATA: ${{ secrets.STAGING_KUBECONFIG }}
+        run: |
+          mkdir -p ~/.kube
+          echo "$KUBECONFIG_DATA" | base64 -d > ~/.kube/config
+          chmod 600 ~/.kube/config
+
+      - name: ensure mc available
+        run: |
+          curl -sSLo /usr/local/bin/mc https://dl.min.io/client/mc/release/linux-amd64/mc
+          chmod +x /usr/local/bin/mc
+          mc alias set s3 \
+            "${{ secrets.OBJECT_STORE_ENDPOINT }}" \
+            "${{ secrets.OBJECT_STORE_ACCESS_KEY }}" \
+            "${{ secrets.OBJECT_STORE_SECRET_KEY }}"
+
+      - name: pick the most recent backup
+        id: pick
+        run: |
+          set -euo pipefail
+          LATEST=$(mc ls --json "s3/${{ env.BACKUP_BUCKET }}/postgres/" \
+            | jq -r 'select(.type=="file") | .key' \
+            | sort | tail -1)
+          if [ -z "$LATEST" ]; then
+            echo "::error::No Postgres backup found in s3/${{ env.BACKUP_BUCKET }}/postgres/"
+            exit 1
+          fi
+          echo "latest=$LATEST" >> "$GITHUB_OUTPUT"
+          echo "Selected: $LATEST"
+
+      - name: download backup
+        run: |
+          mc cp "s3/${{ env.BACKUP_BUCKET }}/postgres/${{ steps.pick.outputs.latest }}" ./backup.sql.gz
+          gunzip backup.sql.gz
+          wc -l backup.sql
+
+      - name: copy backup into postgres pod
+        run: |
+          set -euo pipefail
+          POD=$(kubectl -n ${{ env.K8S_NAMESPACE }} get pod -l app.kubernetes.io/name=postgres -o jsonpath='{.items[0].metadata.name}')
+          kubectl -n ${{ env.K8S_NAMESPACE }} cp ./backup.sql "$POD":/tmp/backup.sql
+          echo "POD=$POD" >> "$GITHUB_ENV"
+
+      - name: restore into ephemeral DB
+        run: |
+          set -euo pipefail
+          kubectl -n ${{ env.K8S_NAMESPACE }} exec "$POD" -- \
+            psql -U progctf -d postgres -c "DROP DATABASE IF EXISTS ${{ env.EPHEMERAL_DB }};"
+          kubectl -n ${{ env.K8S_NAMESPACE }} exec "$POD" -- \
+            psql -U progctf -d postgres -c "CREATE DATABASE ${{ env.EPHEMERAL_DB }};"
+          kubectl -n ${{ env.K8S_NAMESPACE }} exec "$POD" -- \
+            psql -U progctf -d "${{ env.EPHEMERAL_DB }}" -v ON_ERROR_STOP=1 -f /tmp/backup.sql
+
+      - name: smoke — schema + row counts present
+        run: |
+          set -euo pipefail
+          for tbl in pirates crews islands whispers submissions whisper_reveals voyage_state audit_log; do
+            COUNT=$(kubectl -n ${{ env.K8S_NAMESPACE }} exec "$POD" -- \
+              psql -U progctf -d "${{ env.EPHEMERAL_DB }}" -tA -c "SELECT count(*) FROM $tbl;")
+            echo "OK $tbl rows=$COUNT"
+          done
+
+      - name: cleanup ephemeral DB
+        if: always()
+        run: |
+          kubectl -n ${{ env.K8S_NAMESPACE }} exec "$POD" -- \
+            psql -U progctf -d postgres -c "DROP DATABASE IF EXISTS ${{ env.EPHEMERAL_DB }};" || true
+          kubectl -n ${{ env.K8S_NAMESPACE }} exec "$POD" -- rm -f /tmp/backup.sql || true
+
+      - name: post failure alert (Discord)
+        if: failure()
+        run: |
+          if [ -n "${{ secrets.DISCORD_WEBHOOK }}" ]; then
+            curl -fsS -H 'content-type: application/json' \
+              -d "{\"content\":\"🚨 progctf backup-restore drill FAILED on $(date -u +%Y-%m-%d). Backup tested: ${{ steps.pick.outputs.latest }}. See run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}" \
+              "${{ secrets.DISCORD_WEBHOOK }}"
+          fi

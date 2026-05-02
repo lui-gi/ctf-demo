@@ -1,0 +1,76 @@
+/* Crescent Tide Authority -- weather archive stylesheet (self-contained) */
+:root {
+  --ink: #112024;
+  --paper: #f3ede0;
+  --rust: #a04a2c;
+  --sea: #1c4a5e;
+  --muted: #5d6f74;
+  --rule: #c9bfa6;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.55;
+}
+header.site {
+  background: var(--sea);
+  color: var(--paper);
+  padding: 0.9rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 4px solid var(--rust);
+}
+header.site .brand { font-weight: bold; font-size: 1.2rem; letter-spacing: 0.04em; }
+header.site .brand small { font-weight: normal; opacity: 0.85; font-size: 0.85rem; display: block; }
+header.site nav a { color: var(--paper); text-decoration: none; margin-left: 1.25rem; font-size: 0.95rem; }
+header.site nav a:hover { text-decoration: underline; }
+main { max-width: 980px; margin: 0 auto; padding: 1.6rem 1.4rem 4rem; }
+h1 { font-size: 1.7rem; border-bottom: 2px solid var(--rust); padding-bottom: 0.4rem; }
+.lede { color: var(--muted); font-size: 1rem; max-width: 60ch; }
+table.harbour-list {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+  background: white;
+  font-size: 0.95rem;
+}
+table.harbour-list th,
+table.harbour-list td {
+  border: 1px solid var(--rule);
+  padding: 0.55rem 0.7rem;
+  text-align: left;
+  vertical-align: top;
+}
+table.harbour-list th {
+  background: #ece4cf;
+  font-weight: bold;
+  font-size: 0.88rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+table.harbour-list td.thumb { width: 96px; text-align: center; padding: 0.3rem; background: #fbf6e8; }
+table.harbour-list td.thumb img,
+table.harbour-list td.thumb svg { width: 60px; height: 80px; display: block; margin: 0 auto; }
+table.harbour-list td.thumb .nolh { color: var(--muted); font-size: 0.78rem; font-style: italic; padding-top: 32px; }
+table.harbour-list a { color: var(--sea); text-decoration: none; }
+table.harbour-list a:hover { text-decoration: underline; }
+code { background: #ece4cf; padding: 0.1rem 0.35rem; border-radius: 2px; font-size: 0.9em; }
+footer.site {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 1.2rem 1.5rem;
+  font-size: 0.85rem;
+  text-align: center;
+}
+footer.site a { color: var(--paper); }
+.callout {
+  background: #ece4cf;
+  border-left: 4px solid var(--rust);
+  padding: 0.7rem 1rem;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+}

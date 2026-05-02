@@ -1,0 +1,80 @@
+.pc-voyage {
+  border-radius: var(--radius-lg);
+  padding: var(--space-6) var(--space-5);
+  border: 1px solid var(--color-parchment-edge);
+  position: relative;
+  overflow: hidden;
+}
+
+.pc-voyage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 80% at 12% 18%, rgba(122, 31, 31, 0.06), transparent 70%),
+    radial-gradient(ellipse 50% 60% at 88% 22%, rgba(8, 19, 31, 0.05), transparent 75%),
+    radial-gradient(ellipse 40% 50% at 50% 95%, rgba(201, 162, 74, 0.08), transparent 70%);
+}
+
+.pc-voyage__header { position: relative; text-align: center; margin-bottom: var(--space-6); }
+.pc-voyage__header h1 { color: var(--color-deep-sea); margin-bottom: 0.25rem; }
+.pc-voyage__subtitle { color: var(--color-faded-ink-soft); margin: 0; }
+.pc-voyage__err {
+  background: rgba(122, 31, 31, 0.12);
+  color: var(--color-blood-red);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  text-align: center;
+}
+
+.pc-voyage__grid {
+  position: relative;
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.pc-island-cluster {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-5) var(--space-3);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, rgba(255, 248, 231, 0.7), rgba(231, 214, 177, 0.4));
+  border: 1px solid var(--color-parchment-edge);
+  text-decoration: none;
+  color: var(--color-faded-ink);
+  transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
+}
+.pc-island-cluster:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-brass);
+  box-shadow: var(--shadow-md);
+  border-bottom: 1px solid var(--color-brass);
+}
+
+.pc-island-cluster__shape {
+  width: 96px;
+  height: 56px;
+  margin-bottom: var(--space-3);
+  background: radial-gradient(ellipse at 50% 50%, var(--color-brass-dim) 0%, var(--color-faded-ink) 60%, transparent 70%);
+  border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+  opacity: 0.85;
+  box-shadow: 0 6px 18px rgba(43, 43, 43, 0.18);
+}
+
+.pc-island-cluster__label h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  margin: 0 0 0.25rem;
+  color: var(--color-deep-sea);
+}
+
+.pc-island-cluster__label p {
+  margin: 0 0 0.5rem;
+  font-size: var(--fs-sm);
+  color: var(--color-faded-ink-soft);
+}

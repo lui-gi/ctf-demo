@@ -1,0 +1,20 @@
+slug: ecdsa_two_signatures
+title: "Two Signatures, One Mistake"
+category: cipher_cove
+difficulty: cursed_depths
+tier_points: cursed_depths
+hosting:
+  needed: false
+  type: none
+  isolation: shared
+  hint_for_powder_monkey: ""
+artifacts:
+  needed: true
+  hint_for_powder_monkey: "Four artifacts. Use the python `ecdsa` library or hand-rolled secp256k1. (1) pubkey.pem: standard PEM-encoded secp256k1 public key. Generate a fresh private key d (random 256-bit < n). (2) signatures.json: JSON array of 80 entries [{msg_hex, r_hex, s_hex}, ...]. For each: msg = os.urandom(16); h = SHA-256(msg); k = random integer in [1, 2^248) (i.e. top 8 bits are ALWAYS zero); r = (k*G).x mod n; s = (h + r*d) * k^-1 mod n. msg_hex = msg.hex(), r_hex = '%064x' % r, s_hex = '%064x' % s. (3) target_message.txt: literal UTF-8 'boarding_request_for_treasury' (no trailing newline). (4) verifier.py: a Python script (uses python `ecdsa` lib) that reads one ECDSA signature (DER or {r,s} hex) from argv or stdin, verifies it against pubkey.pem on SHA-256(target_message). On valid: prints exactly 'progctf{the_top_eight_bits_were_silent}'. On invalid: prints 'INVALID' and exits 1. PRE-SHIP VALIDATION REQUIRED: Powder Monkey must run a sample fpylll/Sage HNP attack against the generated signatures and confirm the private key d is recoverable. If recovery fails, regenerate (insufficient signatures or unlucky distribution)."
+unintended_solve_traps:
+  - "Do NOT include the private key d in any artifact."
+  - "Do not include intermediate k values."
+  - "verifier.py must NOT have any backdoor that prints the flag for unsigned input."
+  - "verifier.py must NOT contain the flag string for grep — derive it via decryption / lookup, OR encrypt it with a key derivable only from a valid signature. Simplest: hard-code the literal flag string but require a valid signature to print it (acceptable since the verifier is a 'service' artifact)."
+  - "Use distinct random messages per signature (do not sign the same message twice — that would be a different attack)."
+  - "Validate end-to-end: run a sample HNP attack with fpylll on the generated signatures BEFORE shipping; ensure d is recoverable in <10 minutes on a laptop."

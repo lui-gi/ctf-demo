@@ -1,0 +1,10 @@
+Two Signatures, One Mistake — player-served files
+===================================================
+pubkey.pem          — daemon's secp256k1 public key (PEM)
+signatures.json     — 80 ECDSA signatures: [{msg_hex,r_hex,s_hex}, ...]
+                      All signed under the same private key with the same
+                      RNG bias. SHA-256 is the message hash function.
+target_message.txt  — the message you must sign once you have recovered the key
+verifier.py         — service script: feed it your signature on the target
+                      message; on valid signature it prints the Treasure.
+                      Usage: python verifier.py <r_hex> <s_hex>

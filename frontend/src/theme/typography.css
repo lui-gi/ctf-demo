@@ -1,0 +1,76 @@
+/*
+  Typography lock — committed to:
+   - Body: Inter (system fallback chain so we don't ship a webfont CSP hole)
+   - Display / headings: "IM Fell English" — slightly archaic, still legible,
+     not a costume. Loaded as a self-hosted font in production; in dev we fall
+     back to a serif stack so the UI still reads as "tasteful pirate" without
+     the network round trip.
+*/
+
+:root {
+  --font-body:
+    'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
+  --font-display:
+    'IM Fell English', 'IM Fell English SC', 'Cormorant Garamond',
+    'EB Garamond', Georgia, 'Times New Roman', serif;
+  --font-mono:
+    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Type scale — modular, restrained. */
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.875rem;
+  --fs-base: 1rem;
+  --fs-md: 1.125rem;
+  --fs-lg: 1.375rem;
+  --fs-xl: 1.75rem;
+  --fs-2xl: 2.25rem;
+  --fs-3xl: 3rem;
+
+  --lh-tight: 1.15;
+  --lh-snug: 1.3;
+  --lh-normal: 1.55;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  line-height: var(--lh-normal);
+}
+
+h1,
+h2,
+h3,
+.display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: var(--lh-tight);
+  letter-spacing: 0.01em;
+}
+
+h1 {
+  font-size: var(--fs-3xl);
+  margin: 0 0 0.6em;
+}
+h2 {
+  font-size: var(--fs-2xl);
+  margin: 0 0 0.5em;
+}
+h3 {
+  font-size: var(--fs-xl);
+  margin: 0 0 0.4em;
+}
+h4 {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--fs-lg);
+  line-height: var(--lh-snug);
+  margin: 0 0 0.4em;
+}
+
+code,
+pre,
+kbd {
+  font-family: var(--font-mono);
+  font-size: 0.95em;
+}

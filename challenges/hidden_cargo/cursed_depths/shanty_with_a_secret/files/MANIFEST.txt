@@ -1,0 +1,11 @@
+Shanty With a Secret — player-served files
+==============================================
+lyrics.pdf  — two-column broadside of "The Lay of Marrowtide Bay".
+              README hints at a microtypography acrostic; spec says
+              every 7th non-article word's first letter, articles
+              are {a, an, the, and, or, of, to, in, on, it, is}.
+shanty.mp3  — ~3 minutes of the lyrics being sung. Carries a stego
+              payload addressable by mp3stego (Petitcolas) decode
+              with the right passphrase.
+Each half alone is incomplete. The PDF gives the key; the MP3 holds
+the box. Submit the MP3's payload as the flag.

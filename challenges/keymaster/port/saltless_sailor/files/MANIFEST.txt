@@ -1,0 +1,6 @@
+pirates.txt	size=6752	sha256=7776ec29ee88bb4fe4f64cfcd4caa98b4c597af608029216fae90a889c288f92
+shadow.txt	size=71	sha256=42b48c2b0b7d0b727965e36df7ed0c72c775803a89d72b9f289cd0cedf4b876f
+
+# How to solve:
+#   hashcat -m 100 shadow.txt pirates.txt --username
+#   ... OR for f in $(cat pirates.txt); do echo -n "$f" | sha1sum; done | grep <hash>

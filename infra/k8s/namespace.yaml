@@ -1,0 +1,27 @@
+---
+# The whole platform lives in one namespace. Per-Crew Island sandboxes spawn
+# in `progctf-sandboxes` (separate namespace, see sandbox-controller README)
+# so the default-deny network policy in `progctf-fleet` cannot accidentally
+# allow Crew traffic to talk to platform internals.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: progctf-fleet
+  labels:
+    name: progctf-fleet
+    app.kubernetes.io/part-of: the-voyage
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: progctf-sandboxes
+  labels:
+    name: progctf-sandboxes
+    app.kubernetes.io/part-of: the-voyage
+    # Same PSA level — even Cursed Depths Islands run restricted.
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted

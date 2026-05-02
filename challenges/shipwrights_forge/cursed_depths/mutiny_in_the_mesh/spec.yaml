@@ -1,0 +1,21 @@
+slug: mutiny_in_the_mesh
+title: "Mutiny in the Mesh"
+category: shipwrights_forge
+difficulty: cursed_depths
+tier_points: cursed_depths
+hosting:
+  needed: false
+  type: none
+  isolation: shared
+  hint_for_powder_monkey: ""
+artifacts:
+  needed: true
+  hint_for_powder_monkey: "Five artifacts. (1) buoy.elf: ARM Cortex-M4 stripped ELF firmware (~80-200 KB). Built from C source implementing: serialize_packet(payload, seq, seed) → 4-byte header [len_lo, len_hi, seq_lo, seq_hi] little-endian, then payload XORed with rotating key K_i = (SEED + seq * 0x9E3779B1) & 0xFFFFFFFF (key bytes little-endian, repeated to payload length). The binary MUST contain a lookup table of 4 SEEDs (one per buoy) clearly identifiable in .rodata, e.g. const uint32_t BUOY_SEEDS[4] = {0xCAFEBABE, 0xDEADBEEF, 0xFACEFEED, 0xBADC0FFE} preceded by string identifiers 'BUOY_A','BUOY_B','BUOY_C','BUOY_D'. Strip with arm-none-eabi-strip. (2-5) buoy_a.pcap..buoy_d.pcap: each ~200 UDP packets on port 8421, srcIP unique per buoy, dstIP=harbormaster (10.42.0.1). Mundane payloads: little JSON-like sensor reports (temp, tide, heading) — all encoded with the protocol described above using the matching buoy SEED, seq 0..199. ROGUE BUOY = buoy_c (or whichever is alphabetically third — pick one, document it). Rogue's pcap contains those 200 mundane packets PLUS 60 extra packets with seq in range 1000..1059, payloads encoding ASCII fragments that — concatenated in seq order, with CRC8 trailers stripped — form the literal message 'EXEC progctf{the_rogue_buoy_spoke_in_xor}\\n' plus a few padding chars. Each rogue packet payload: [data_bytes..., crc8_byte] (CRC8 over data bytes, polynomial 0x07, init 0x00). Randomly DROP ~6 of the 60 extra packets (pick which to drop, but ensure the flag is still readable across the gaps — flag-bearing packets MUST not be dropped). SHUFFLE the extra packets in pcap timeline order so seq-sort is required for correct reassembly."
+unintended_solve_traps:
+  - "Strip the firmware (arm-none-eabi-strip --strip-all) — do NOT leave function symbols or DWARF debug info."
+  - "Do not put the flag string in the firmware binary itself."
+  - "Do not use a Wireshark-recognized port (8421 is fine — non-standard, no auto-dissector)."
+  - "Verify with simulated solve: extract SEEDs from ELF, decode all 4 pcaps, identify rogue buoy by extra-range traffic, reassemble, recover flag."
+  - "CRC8 trailer must verify on every flag-bearing packet so players know they decoded correctly."
+  - "Do not include the protocol description in any auxiliary file — the firmware is the spec."
+  - "Padding/decoy packets in the extra range must NOT contain partial flag bytes."

@@ -1,0 +1,58 @@
+# island.yaml -- Captain Jolly's Last Voyage
+#
+# Sandbox controller manifest. The Shipwright reads this to provision
+# the three static-site containers behind the auth gateway. All three
+# services are read-only nginx; flag is NOT injected at runtime into any
+# served file (the harbour-name slug is baked into the weather-archive
+# static site at build time -- documented in build/build-notes.md).
+
+slug: crows_nest_open_sea_captain_jollys_voyage
+
+category: crows_nest
+
+difficulty: open_sea
+
+# Static, read-only content. One shared fleet-wide instance is correct
+# here -- no per-Crew state. Saves capacity vs per_crew.
+isolation: shared
+
+# Three small nginx containers; no compute load.
+resources:
+  cpu: "0.25"
+  memory: "256Mi"
+
+# This island serves three logical surfaces (travel-blog, tide-journal,
+# weather-archive). In production Shipwright fronts all three under one
+# hostname via path-routing in the edge gateway:
+#
+#   /blog/jolly-wexler/        -> travel-blog
+#   /blog/jolly-wexler/tide.rss -> tide-journal
+#   /charts/tides/             -> weather-archive
+#
+# For local dev each binds to its own port (8090 / 8091 / 8092 -- see
+# build/docker-compose.yml). The K8s manifest declares a single ingress
+# port that fronts all three behind the path map.
+ports: [8080]
+
+# Static site -- no per-Crew state to garbage-collect. We still set a
+# sensible TTL so idle namespaces release capacity.
+ttl_idle_minutes: 120
+
+image: ghcr.io/deadwake/progctf/crows_nest_open_sea_captain_jollys_voyage:0.1.0
+
+# CHALLENGE_FLAG injection.
+#
+# This island is the rare case where the Treasure (a slugified harbour
+# name) is baked into the static site at BUILD time -- the weather
+# archive's catalogue lists the slug as one of 12 candidates and only
+# silvercove_anchorage's CSV contains the matching tide row.
+#
+# We still pass CHALLENGE_FLAG into the weather-archive container so
+# that its entrypoint can sanity-check that a CSV named after the slug
+# exists (build/weather-archive/entrypoint.sh). The flag literal is
+# never written into any served file at runtime.
+env:
+  CHALLENGE_FLAG: "secret://island-flags/crows_nest_open_sea_captain_jollys_voyage"
+
+# Default network policy: no public egress, ingress from edge only.
+# networkPolicy: island-sandbox-allow

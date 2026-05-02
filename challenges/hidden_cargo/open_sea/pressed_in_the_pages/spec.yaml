@@ -1,0 +1,20 @@
+slug: pressed_in_the_pages
+title: "Pressed in the Pages"
+category: hidden_cargo
+difficulty: open_sea
+tier_points: open_sea
+hosting:
+  needed: false
+  type: none
+  isolation: shared
+  hint_for_powder_monkey: ""
+artifacts:
+  needed: true
+  hint_for_powder_monkey: "Generate almanac.pdf: a 6-page PDF resembling an 18th-century almanac (tide tables, saint's days, weather lore, navigation tips). Use TWO embedded fonts that look visually identical. Approach: take an open italic face (e.g. EB Garamond Italic or Caslon equivalent). Embed once as 'Caslon-Italic' (the body font). Fork the font with fontTools — rename internal name to 'Caslon-Italic-Quill', change advance-width of any one glyph by a 1/1000-em (imperceptible). Embed the fork as 'Caslon-Italic-Quill'. Generate the almanac body text in Caslon-Italic. Sprinkle individual character glyphs in Caslon-Italic-Quill throughout the body such that — concatenated in document order — those glyphs spell the literal flag 'progctf{quill_pressed_a_secret_into_metric}' (43 chars). Use reportlab or weasyprint or LaTeX with explicit \\font switches per character. Verify: pdffonts shows BOTH fonts embedded; pdftotext shows clean almanac body (NO mention of progctf); pymupdf script that filters spans by font name 'Quill' and concatenates returns the literal flag."
+unintended_solve_traps:
+  - "Do NOT include the flag in any text that pdftotext extracts as visible content."
+  - "Do not put the flag in PDF metadata (Title, Author, Keywords, etc)."
+  - "Visible body text should be 100% English almanac content — no hex strings, no unusual capitalization patterns that would cue the player."
+  - "The two fonts must be VISUALLY indistinguishable in any standard PDF reader."
+  - "Verify: the flag must be reconstructable ONLY by walking the content stream and filtering by font name."
+  - "Distribute the hidden glyphs across at least 4 of the 6 pages so a single-page extract isn't enough."

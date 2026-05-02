@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" width="800" height="360" role="img" aria-label="Night sky over open water">
+  <defs>
+    <linearGradient id="night" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0a0d22"/>
+      <stop offset="1" stop-color="#1c2438"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="280" fill="url(#night)"/>
+  <rect y="280" width="800" height="80" fill="#0a0d22"/>
+  <!-- stars -->
+  <g fill="#f3ede0">
+    <circle cx="60" cy="40" r="1.2"/>
+    <circle cx="120" cy="80" r="1"/>
+    <circle cx="180" cy="60" r="1.5"/>
+    <circle cx="240" cy="30" r="1"/>
+    <circle cx="320" cy="100" r="1.4"/>
+    <circle cx="380" cy="50" r="1"/>
+    <circle cx="450" cy="70" r="1.6"/>
+    <circle cx="520" cy="40" r="1"/>
+    <circle cx="600" cy="90" r="1.2"/>
+    <circle cx="680" cy="60" r="1.4"/>
+    <circle cx="740" cy="100" r="1"/>
+    <circle cx="700" cy="160" r="1.2"/>
+    <circle cx="200" cy="200" r="1"/>
+    <circle cx="500" cy="180" r="1.4"/>
+    <circle cx="80" cy="160" r="1"/>
+    <circle cx="380" cy="220" r="1"/>
+    <circle cx="620" cy="220" r="1.2"/>
+  </g>
+  <!-- horizon line glow -->
+  <rect x="0" y="278" width="800" height="2" fill="#3a2638" opacity="0.6"/>
+</svg>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Cargo Manifest Validator v2 is now in production — Marrowtide Logistics</title>
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="brand">Marrowtide Logistics</div>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/blog/">Blog</a>
+  </nav>
+</header>
+<main>
+  <h1>Cargo Manifest Validator v2 is now in production</h1>
+  <p><time>2026-04-12</time> &middot; by Ines Tidemark</p>
+  <p>Today we shipped v2 of <code>marrowtide-internal/manifests-cli</code>, our internal tool for validating cargo manifests against our underwriting policy.</p>
+  <p>The package is published to our internal registry at <a href="http://npm.marrowtide.example:8081/">npm.marrowtide.example</a>. If you have a Marrowtide engineering token (we do not currently issue tokens to anyone outside the company) you can <code>npm install</code> it directly.</p>
+  <p>The headline change is that v2 validates the entire manifest in a single pass; v1 needed three. Most of our manifests are now under 80 ms end-to-end.</p>
+  <h2>Where the source lives</h2>
+  <p>The repository sits at <a href="http://git.marrowtide.example:8082/manifests-cli">git.marrowtide.example/manifests-cli</a>. The repo itself is private &mdash; the public landing page tells you what is in it but the source requires auth.</p>
+  <h2>Comments</h2>
+  <p><em>Comments on the engineering blog are off this season; please email <a href="mailto:engineering@marrowtide.example">engineering@marrowtide.example</a> instead.</em></p>
+</main>
+</body>
+</html>

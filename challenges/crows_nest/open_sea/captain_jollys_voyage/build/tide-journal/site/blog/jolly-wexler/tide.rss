@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jolly Wexler's tide journal</title>
+    <link>/blog/jolly-wexler/</link>
+    <atom:link href="/blog/jolly-wexler/tide.rss" rel="self" type="application/rss+xml"/>
+    <description>Daily tide observations taken by Captain Jolly Wexler at his current anchorage. Readings are taken at the top of the hour (UTC) and cross-checked against the regional weather archive at /charts/tides/ . If a reading here disagrees with the archive, the archive is probably right.</description>
+    <language>en</language>
+    <lastBuildDate>Tue, 28 Apr 2026 19:05:00 GMT</lastBuildDate>
+    <ttl>1440</ttl>
+
+    <item>
+      <title>Tide reading 2026-04-28 19:00 UTC</title>
+      <link>/blog/jolly-wexler/sunset-on-a-forgotten-quay.html</link>
+      <guid isPermaLink="false">jolly-wexler-tide-2026-04-28T19:00Z</guid>
+      <pubDate>Tue, 28 Apr 2026 19:00:00 GMT</pubDate>
+      <description>tide: 3.42m, rising. Calm anchorage, single lighthouse visible to the south-east. Cross-reference the regional archive at /charts/tides/ to identify the harbour.</description>
+    </item>
+
+    <item>
+      <title>Tide reading 2026-04-27 19:00 UTC</title>
+      <link>/blog/jolly-wexler/</link>
+      <guid isPermaLink="false">jolly-wexler-tide-2026-04-27T19:00Z</guid>
+      <pubDate>Mon, 27 Apr 2026 19:00:00 GMT</pubDate>
+      <description>tide: 3.18m, slack. Good wind from the west, moving slowly toward the next anchorage.</description>
+    </item>
+
+    <item>
+      <title>Tide reading 2026-04-26 19:00 UTC</title>
+      <link>/blog/jolly-wexler/</link>
+      <guid isPermaLink="false">jolly-wexler-tide-2026-04-26T19:00Z</guid>
+      <pubDate>Sun, 26 Apr 2026 19:00:00 GMT</pubDate>
+      <description>tide: 3.05m, rising. Light breeze, easy reaching.</description>
+    </item>
+
+    <item>
+      <title>Tide reading 2026-04-25 19:00 UTC</title>
+      <link>/blog/jolly-wexler/</link>
+      <guid isPermaLink="false">jolly-wexler-tide-2026-04-25T19:00Z</guid>
+      <pubDate>Sat, 25 Apr 2026 19:00:00 GMT</pubDate>
+      <description>tide: 2.85m, rising. Underway, dead reckoning only.</description>
+    </item>
+
+    <item>
+      <title>Tide reading 2026-04-24 19:00 UTC</title>
+      <link>/blog/jolly-wexler/</link>
+      <guid isPermaLink="false">jolly-wexler-tide-2026-04-24T19:00Z</guid>
+      <pubDate>Fri, 24 Apr 2026 19:00:00 GMT</pubDate>
+      <description>tide: 2.45m, falling. Anchored briefly off a small headland, no name worth recording.</description>
+    </item>
+
+    <item>
+      <title>Tide reading 2026-04-23 19:00 UTC</title>
+      <link>/blog/jolly-wexler/</link>
+      <guid isPermaLink="false">jolly-wexler-tide-2026-04-23T19:00Z</guid>
+      <pubDate>Thu, 23 Apr 2026 19:00:00 GMT</pubDate>
+      <description>tide: 2.10m, slack. Quiet day. Salt cod stew for the third evening running.</description>
+    </item>
+
+    <item>
+      <title>Tide reading 2026-04-22 19:00 UTC</title>
+      <link>/blog/jolly-wexler/the-galley-finally-stops-listing.html</link>
+      <guid isPermaLink="false">jolly-wexler-tide-2026-04-22T19:00Z</guid>
+      <pubDate>Wed, 22 Apr 2026 19:00:00 GMT</pubDate>
+      <description>tide: 1.85m, rising. Galley finally fixed; first warm meal in a fortnight.</description>
+    </item>
+  </channel>
+</rss>

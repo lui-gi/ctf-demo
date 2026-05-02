@@ -1,0 +1,27 @@
+# Local-dev launcher for drowned_admin.
+#
+# In production the sandbox controller runs the image with CHALLENGE_FLAG
+# pulled from a K8s Secret. For local QA / First Mate cold-solving, run via
+# `build/build.sh`, which reads ../flag.txt and exports CHALLENGE_FLAG before
+# `docker compose up`.
+
+name: drowned-admin
+
+services:
+  drowned-admin:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: progctf/cursed_ports_port_drowned_admin:dev
+    container_name: drowned-admin
+    ports:
+      - "8080:8080"
+    environment:
+      CHALLENGE_FLAG: "${CHALLENGE_FLAG:?CHALLENGE_FLAG is required (run via build/build.sh)}"
+    restart: "no"
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true

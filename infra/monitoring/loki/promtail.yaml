@@ -1,0 +1,87 @@
+# promtail config — ships container logs from progctf-fleet +
+# progctf-sandboxes namespaces to Loki. Deploy as a DaemonSet using
+# grafana/promtail Helm chart and feed it this values file.
+
+server:
+  http_listen_port: 3101
+  grpc_listen_port: 0
+
+clients:
+  - url: http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push
+    backoff_config:
+      min_period: 500ms
+      max_period: 5m
+      max_retries: 10
+
+positions:
+  filename: /var/lib/promtail/positions.yaml
+
+scrape_configs:
+
+  # -----------------------------------------------------------------------
+  # Platform pods — backend, frontend, edge, sandbox-controller, redis,
+  # minio, postgres. Tag stream with voyage_role for easy filtering.
+  # -----------------------------------------------------------------------
+  - job_name: progctf-fleet
+    pipeline_stages:
+      - cri: {}
+      - labels:
+          stream:
+      # Drop noisy access-log lines for healthchecks (kubelet probes).
+      - match:
+          selector: '{voyage_role="edge"} |~ "GET /healthz"'
+          action: drop
+
+    kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names: [progctf-fleet]
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: namespace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: pod
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_name]
+        target_label: app
+      - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+        target_label: voyage_role
+      - source_labels: [__meta_kubernetes_pod_uid, __meta_kubernetes_pod_container_name]
+        target_label: __path__
+        separator: /
+        replacement: /var/log/pods/*$1/*.log
+
+  # -----------------------------------------------------------------------
+  # Island sandboxes — kept on a separate stream so a Crew exfil attempt
+  # (logs full of weird payloads) can't drown out platform logs.
+  # -----------------------------------------------------------------------
+  - job_name: progctf-sandboxes
+    pipeline_stages:
+      - cri: {}
+      # Strip ANSI color codes — challenges often emit them.
+      - replace:
+          expression: '\x1b\[[0-9;]*m'
+          replace: ''
+      # Hard cap line length to 4KiB — defense against log-bomb attacks.
+      - limit:
+          rate: 1000
+          burst: 5000
+
+    kubernetes_sd_configs:
+      - role: pod
+        namespaces:
+          names: [progctf-sandboxes]
+    relabel_configs:
+      - source_labels: [__meta_kubernetes_namespace]
+        target_label: namespace
+      - source_labels: [__meta_kubernetes_pod_name]
+        target_label: pod
+      - source_labels: [__meta_kubernetes_pod_label_progctf_deadwake_island_slug]
+        target_label: island_slug
+      - source_labels: [__meta_kubernetes_pod_label_progctf_deadwake_crew_id]
+        target_label: crew_id
+      - target_label: voyage_role
+        replacement: sandbox
+      - source_labels: [__meta_kubernetes_pod_uid, __meta_kubernetes_pod_container_name]
+        target_label: __path__
+        separator: /
+        replacement: /var/log/pods/*$1/*.log

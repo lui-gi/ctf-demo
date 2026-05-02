@@ -1,0 +1,21 @@
+slug: kraken_in_the_manifest
+title: "Kraken in the Manifest"
+category: cursed_ports
+difficulty: cursed_depths
+tier_points: cursed_depths
+hosting:
+  needed: true
+  type: web
+  isolation: per_crew
+  hint_for_powder_monkey: "Express + EJS Node.js app. In-memory quote store. POST /api/quotes creates a quote. PATCH /api/quotes/:id accepts JSON body and recursively deep-merges into the stored quote (vulnerable: NO __proto__ / prototype filter, NO key allowlist). Use a hand-written merge function — do NOT use lodash.merge (lodash patched this). GET /api/quotes/:id/bill renders an EJS template using ejs.render(templateString, quote) where the template contains an <%= someField %>. The intended exploit: pollute Object.prototype.escapeFunction (or outputFunctionName) via PATCH, then trigger render via GET — EJS reads the polluted option through prototype lookup, evaluates the polluted function-source, and that function reads /treasure. Place /treasure file at filesystem root containing exactly 'progctf{the_kraken_polluted_my_prototype}\\n'. Run as non-root user that has read access to /treasure but cannot write or list other sensitive paths. Pin EJS to a version where the prototype-pollution gadget still works (ejs <= 3.1.9 known vulnerable; specify ejs@3.1.6 explicitly). Per-crew container so prototype pollution doesn't bleed between teams."
+artifacts:
+  needed: false
+  hint_for_powder_monkey: ""
+unintended_solve_traps:
+  - "Do not include the flag in any source file, env var, or accessible path other than /treasure."
+  - "Disable directory listing, /proc access (constrain via container), and any LFI surfaces in template."
+  - "Per-crew isolation REQUIRED — pollution persists in the Node.js process; teams must not see each other's pollution."
+  - "Auto-restart container every 30 minutes (or after any 500 error) so a wedged crew can recover."
+  - "Do not use lodash.merge (which has the __proto__ guard); use a hand-rolled vulnerable merge."
+  - "EJS version pin is critical — ejs@3.1.6 confirmed vulnerable to escapeFunction gadget."
+  - "Health check must NOT itself trigger render of polluted state (use a separate fixed endpoint)."

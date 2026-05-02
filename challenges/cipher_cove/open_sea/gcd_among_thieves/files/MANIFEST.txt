@@ -1,0 +1,7 @@
+GCD Among Thieves — player-served files
+=========================================
+n1.txt          — Hodges's RSA modulus (2048 bits, decimal integer)
+n2.txt          — Maeve's RSA modulus  (2048 bits, decimal integer)
+e1.txt          — Hodges's public exponent (decimal integer)
+e2.txt          — Maeve's public exponent  (decimal integer)
+ciphertext.txt  — Treasure encrypted under Hodges's key (raw RSA, no padding)

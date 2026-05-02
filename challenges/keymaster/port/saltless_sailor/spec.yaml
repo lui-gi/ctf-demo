@@ -1,0 +1,18 @@
+slug: saltless_sailor
+title: "The Saltless Sailor"
+category: keymaster
+difficulty: port
+tier_points: port
+hosting:
+  needed: false
+  type: none
+  isolation: shared
+  hint_for_powder_monkey: ""
+artifacts:
+  needed: true
+  hint_for_powder_monkey: "Generate two files: (1) 'shadow.txt' containing exactly the line 'bluebeard:<SHA1HEX>:19365:0:99999:7:::' where <SHA1HEX> is the SHA-1 hex digest of the literal UTF-8 string 'progctf{never_trust_an_unsalted_man}' (no trailing newline in the hashed input). Verify with `python3 -c \"import hashlib; print(hashlib.sha1(b'progctf{never_trust_an_unsalted_man}').hexdigest())\"`. (2) 'pirates.txt' — a wordlist of ~200 themed pirate phrases, ONE LINE OF WHICH is exactly 'progctf{never_trust_an_unsalted_man}'. Other lines are decoys (other plausible progctf{...}-style phrases that do NOT match this challenge's flag and do NOT collide with any other Island's flag)."
+unintended_solve_traps:
+  - "Do not include the plaintext flag anywhere outside pirates.txt."
+  - "Verify the SHA-1 digest before shipping."
+  - "Decoys in pirates.txt must not match other Islands' flags — cross-reference against all 30 flag.txt files."
+  - "Pick a plaintext NOT in rockyou — we want this challenge to require the bundled wordlist, not just rockyou alone."

@@ -1,0 +1,18 @@
+{
+  "name": "kraken-bill-of-lading",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Marrowtide bill-of-lading service for outgoing cargo quotes",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "4.19.2",
+    "body-parser": "1.20.2",
+    "ejs": "3.1.6"
+  },
+  "engines": {
+    "node": ">=20.11.1"
+  }
+}

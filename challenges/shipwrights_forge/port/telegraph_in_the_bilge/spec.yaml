@@ -1,0 +1,17 @@
+slug: telegraph_in_the_bilge
+title: "Telegraph in the Bilge"
+category: shipwrights_forge
+difficulty: port
+tier_points: port
+hosting:
+  needed: false
+  type: none
+  isolation: shared
+  hint_for_powder_monkey: ""
+artifacts:
+  needed: true
+  hint_for_powder_monkey: "Generate 'bilge.pcap'. Use scapy or a recorded session. Two hosts on RFC1918 IPs (e.g. 10.13.37.5 client, 10.13.37.10 server) doing a TELNET (TCP/23) session. Server sends banner 'HMS Long Dread Boarding Console\\nLogin: '. Client types 'bilge_qm\\n' then 'Password: ' prompt then types the literal flag string 'progctf{bilge_to_long_dread_clear_text}\\n' character-by-character (one byte per packet, with telnet echo). Server replies 'Boarding granted. Welcome, bilge_qm.\\n' then connection closes. Pcap should be <30 KB, < 200 packets."
+unintended_solve_traps:
+  - "Do not include any other strings starting with 'progctf{' in the pcap."
+  - "Do not add HTTP, DNS, or other protocol noise that might mislead — keep it ONE TCP stream plus the SYN/SYN-ACK handshake."
+  - "Echo each typed character (telnet server normally echoes); do not require players to merge two unidirectional streams manually."

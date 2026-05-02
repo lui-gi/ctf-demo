@@ -1,0 +1,32 @@
+.pc-island { display: flex; flex-direction: column; gap: var(--space-5); }
+
+.pc-island__head { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-3); flex-wrap: wrap; }
+.pc-island__head h1 { color: var(--color-brass); margin-bottom: var(--space-2); }
+.pc-island__meta { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+
+.pc-island__files { padding-left: 1.25rem; }
+.pc-island__files li { margin-bottom: 0.25rem; }
+
+.pc-island__whispers { list-style: decimal; padding-left: 1.5rem; display: flex; flex-direction: column; gap: var(--space-3); }
+
+.pc-island__submit { display: flex; flex-direction: column; gap: var(--space-2); align-items: stretch; max-width: 560px; }
+
+.visually-hidden-section-heading {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Markdown sandbox styles */
+.pc-md p { line-height: 1.55; }
+.pc-md code { background: rgba(8, 19, 31, 0.08); padding: 1px 4px; border-radius: 3px; }
+.pc-md pre { background: var(--color-deep-sea-deep); color: var(--color-ink-on-dark); padding: 0.75rem; border-radius: var(--radius-sm); overflow-x: auto; }
+.pc-md pre code { background: transparent; padding: 0; }
+.pc-md a { color: var(--color-blood-red); }
+.pc-md table { width: 100%; border-collapse: collapse; }
+.pc-md th, .pc-md td { padding: 0.4rem 0.6rem; border: 1px solid var(--color-parchment-edge); }
+.pc-md img { max-width: 100%; height: auto; }

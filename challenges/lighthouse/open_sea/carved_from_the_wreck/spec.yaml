@@ -1,0 +1,19 @@
+slug: carved_from_the_wreck
+title: "Carved From the Wreck"
+category: lighthouse
+difficulty: open_sea
+tier_points: open_sea
+hosting:
+  needed: false
+  type: none
+  isolation: shared
+  hint_for_powder_monkey: ""
+artifacts:
+  needed: true
+  hint_for_powder_monkey: "Generate disk.img: 32 MB raw FAT32 disk image. Procedure: dd if=/dev/zero of=disk.img bs=1M count=32; mkfs.vfat -F 32 disk.img; mount -o loop. Populate with 5 mundane plaintext files (grog_recipe.txt, crew_roster.txt, tax_return.txt, novel_chapter1.txt, todo.md — short, ~1-2KB each). Then add treasure.zip created with: `python3 -c \"import zipfile; z=zipfile.ZipFile('treasure.zip','w',zipfile.ZIP_DEFLATED); z.comment=b'progctf{deleted_means_marked_not_gone}'; z.writestr('decoy1.txt', b'nothing here mate'); z.writestr('decoy2.txt', b'or here'); z.close()\"`. Copy treasure.zip to the mounted image, sync, unmount, then re-mount and `rm treasure.zip` so the directory entry is marked deleted (0xE5) but cluster data remains intact. Do NOT run any defrag/wipe. Verify carving: `binwalk -e disk.img` should recover treasure.zip; `zipinfo -v` should show the archive comment containing the flag."
+unintended_solve_traps:
+  - "Do not put the flag in any allocated file."
+  - "Do not put the flag in the contained ZIP entries — only in the archive comment."
+  - "Do not include any backup/swap files in the image that contain the flag string."
+  - "Verify the deletion didn't overwrite the ZIP's clusters before shipping."
+  - "Use FAT32 specifically (not exFAT, not ext4) — directory-entry carving is the intended technique."

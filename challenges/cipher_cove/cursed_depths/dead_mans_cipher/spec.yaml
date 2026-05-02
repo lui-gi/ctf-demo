@@ -1,0 +1,21 @@
+slug: dead_mans_cipher
+title: "Dead Man's Cipher"
+category: cipher_cove
+difficulty: cursed_depths
+tier_points: cursed_depths
+hosting:
+  needed: false
+  type: none
+  isolation: shared
+  hint_for_powder_monkey: ""
+artifacts:
+  needed: true
+  hint_for_powder_monkey: "Three artifacts implementing a custom Feistel cipher vulnerable to a SLIDE ATTACK. (1) cipher.py: clean readable Python implementation. Spec: 64-bit block, balanced Feistel (32-bit halves), 16 rounds. Round function F(R, K) = SBox(R XOR K) <<< 11, where SBox applies a fixed 4-bit S-box (use Serpent's S0 or AES's S-box restricted to nibbles) to each nibble of the 32-bit half. Key schedule is DELIBERATELY weak: K_i = K for ALL i (this is the slide-attack vulnerability — make sure this is obvious from the source code). Master key K = 32 bits. Provide encrypt() and decrypt() functions. (2) pairs.txt: 64 known (plaintext, ciphertext) pairs encrypted under a randomly-chosen master key K. Format: each line 'plaintext_hex,ciphertext_hex' (16 hex chars each). MUST verify before shipping that at least one slid pair exists in the set (scan over candidate K values — for each K, check if F_K maps any P_a to any P_b such that F_K also maps C_a to C_b). If 64 pairs has no slid pair under the chosen K, regenerate plaintexts (or use 128 pairs). (3) flag.enc: encryption of the literal flag string 'progctf{slide_attack_on_a_lazy_schedule}' padded with PKCS#7 to a multiple of 8 bytes, encrypted in ECB mode with the cipher under the same master key K. Output as raw bytes."
+unintended_solve_traps:
+  - "Do NOT include the master key K anywhere in the bundle."
+  - "Do not include any helper script that does the attack."
+  - "Verify a slid pair exists in pairs.txt — if not, regenerate."
+  - "Use ECB mode for flag.enc (block-by-block) so a single block decrypt under K reveals the start of the flag immediately — players can fail-fast verify."
+  - "The S-box must NOT be linear (SBox(x XOR y) != SBox(x) XOR SBox(y)). Use a real cryptographic S-box."
+  - "Do not weaken the key beyond 32 bits — we want the attack to be the intended path, not exhaustive brute force (2^32 is borderline; the slide attack exploits structure to do better)."
+  - "cipher.py source must be self-contained Python 3 stdlib — no external deps."

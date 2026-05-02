@@ -1,0 +1,101 @@
+/* Marrowtide Logistics — corporate site stylesheet (self-contained, no external CDN) */
+:root {
+  --ink: #0c2230;
+  --paper: #f5f1e8;
+  --rust: #a04a2c;
+  --sea: #1c4a5e;
+  --muted: #6b7a82;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.55;
+}
+header.site {
+  background: var(--sea);
+  color: var(--paper);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 4px solid var(--rust);
+}
+header.site .brand {
+  font-weight: bold;
+  font-size: 1.4rem;
+  letter-spacing: 0.02em;
+}
+header.site nav a {
+  color: var(--paper);
+  text-decoration: none;
+  margin-left: 1.25rem;
+  font-size: 0.95rem;
+}
+header.site nav a:hover { text-decoration: underline; }
+main {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+h1, h2, h3 { font-family: "Helvetica Neue", Arial, sans-serif; color: var(--ink); }
+h1 { font-size: 2rem; border-bottom: 2px solid var(--rust); padding-bottom: 0.4rem; }
+.hero {
+  background: linear-gradient(180deg, #e9e2cf 0%, #f5f1e8 100%);
+  padding: 3rem 2rem;
+  margin: -2rem -1.5rem 2rem -1.5rem;
+  border-bottom: 1px solid #d8cfb6;
+}
+.hero h1 { border: none; font-size: 2.4rem; max-width: 30ch; }
+.hero p { font-size: 1.1rem; color: var(--muted); max-width: 50ch; }
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+.team-card {
+  background: white;
+  border: 1px solid #d8cfb6;
+  padding: 1rem;
+  border-radius: 4px;
+}
+.team-card img {
+  width: 100%;
+  max-width: 160px;
+  height: auto;
+  display: block;
+  margin: 0 auto 0.8rem;
+  background: #e9e2cf;
+  border-radius: 50%;
+}
+.team-card h3 { margin: 0.3rem 0; font-size: 1.1rem; }
+.team-card .role { color: var(--rust); font-size: 0.9rem; font-weight: bold; }
+.team-card p { font-size: 0.92rem; color: #2a3942; }
+.team-card a { color: var(--sea); }
+footer.site {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 2rem;
+  margin-top: 4rem;
+  font-size: 0.9rem;
+}
+footer.site a { color: #c8d6dd; }
+footer.site .cols {
+  max-width: 880px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+.callout {
+  background: #fff8e6;
+  border-left: 4px solid var(--rust);
+  padding: 0.8rem 1rem;
+  margin: 1.5rem 0;
+}
+ul.posts { list-style: none; padding: 0; }
+ul.posts li { padding: 0.6rem 0; border-bottom: 1px dashed #d8cfb6; }
+ul.posts li time { color: var(--muted); font-size: 0.85rem; }

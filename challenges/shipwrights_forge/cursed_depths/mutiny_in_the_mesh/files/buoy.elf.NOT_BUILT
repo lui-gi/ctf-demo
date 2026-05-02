@@ -1,0 +1,10 @@
+BUILD-DEFERRED: arm-none-eabi-gcc not available on the Quartermaster's Windows
+host. The buoy firmware C source lives at build/firmware.c. To produce the
+shipped artifact files/buoy.elf, run:
+
+  arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -nostdlib -ffreestanding -Os \
+                    -fno-toplevel-reorder -o files/buoy.elf build/firmware.c
+  arm-none-eabi-strip --strip-all files/buoy.elf
+
+Quartermaster: this stub MUST be removed and replaced by the real ELF before
+the bundle ships. See the Quartermaster follow-up note in solution.md.

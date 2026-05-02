@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0c1c2e" />
+    <meta name="description" content="progctf — a pirate-themed Capture the Flag voyage hosted by Deadwake." />
+    <!--
+      Strict CSP: no inline JS, only same-origin scripts and styles.
+      'unsafe-inline' on style-src is required for xterm.js and many UI
+      libraries that inject style tags; we sanitize all user-supplied
+      markdown via DOMPurify so that this does not become a vector.
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self' ws: wss:; img-src 'self' data: blob:; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';"
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>progctf · The Voyage</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,65 @@
+---
+# Default-deny for ALL ingress + egress in progctf-fleet. Anything that
+# needs to talk to anything else MUST be allow-listed by a sibling policy
+# in this directory. This is the floor; do not relax it.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny
+  namespace: progctf-fleet
+spec:
+  podSelector: {}
+  policyTypes: [Ingress, Egress]
+---
+# Same for the sandbox namespace — Islands start with zero connectivity
+# and earn it via island-sandbox-allow.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny
+  namespace: progctf-sandboxes
+spec:
+  podSelector: {}
+  policyTypes: [Ingress, Egress]
+---
+# Cluster-wide DNS allow — every pod needs to resolve names. Restricted
+# to UDP/TCP 53 against the kube-dns Service in kube-system.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns
+  namespace: progctf-fleet
+spec:
+  podSelector: {}
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: kube-system }
+          podSelector:
+            matchLabels: { k8s-app: kube-dns }
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns
+  namespace: progctf-sandboxes
+spec:
+  podSelector: {}
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: kube-system }
+          podSelector:
+            matchLabels: { k8s-app: kube-dns }
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53

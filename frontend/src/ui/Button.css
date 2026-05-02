@@ -1,0 +1,86 @@
+.pc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease,
+    transform 80ms ease;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.pc-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.pc-btn--full {
+  width: 100%;
+}
+
+.pc-btn--sm {
+  padding: 0.35rem 0.75rem;
+  font-size: var(--fs-sm);
+}
+.pc-btn--md {
+  padding: 0.55rem 1.1rem;
+  font-size: var(--fs-base);
+}
+.pc-btn--lg {
+  padding: 0.75rem 1.5rem;
+  font-size: var(--fs-md);
+}
+
+.pc-btn--primary {
+  background: var(--color-brass);
+  color: var(--color-deep-sea-deep);
+  border-color: var(--color-brass-dim);
+}
+.pc-btn--primary:hover:not(:disabled) {
+  background: var(--color-brass-dim);
+  color: var(--color-parchment);
+}
+
+.pc-btn--secondary {
+  background: var(--color-deep-sea-soft);
+  color: var(--color-ink-on-dark);
+  border-color: var(--color-brass-dim);
+}
+.pc-btn--secondary:hover:not(:disabled) {
+  border-color: var(--color-brass);
+}
+
+.pc-btn--ghost {
+  background: transparent;
+  color: var(--color-ink-on-dark);
+  border-color: transparent;
+}
+.pc-btn--ghost:hover:not(:disabled) {
+  background: rgba(232, 224, 207, 0.08);
+}
+
+.pc-btn--danger {
+  background: var(--color-blood-red);
+  color: var(--color-parchment);
+  border-color: var(--color-blood-red-dim);
+}
+.pc-btn--danger:hover:not(:disabled) {
+  background: var(--color-blood-red-dim);
+}
+
+.pc-btn--loading .pc-btn__label {
+  opacity: 0.75;
+}
+
+.pc-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}

@@ -1,0 +1,21 @@
+slug: davy_jones_locker
+title: "Davy Jones's Locker"
+category: lighthouse
+difficulty: cursed_depths
+tier_points: cursed_depths
+hosting:
+  needed: false
+  type: none
+  isolation: shared
+  hint_for_powder_monkey: ""
+artifacts:
+  needed: true
+  hint_for_powder_monkey: "Single artifact: tidekeeper.lime (1 GB Linux LiME memory dump). Setup: Linux VM (Ubuntu 22.04 or kernel 6.1.x), 1.5 GB RAM. Procedure: (1) Install sqlcipher and gpg. (2) Pick a fixed 32-byte raw key, e.g. KEY=$(openssl rand -hex 32). (3) Run a Python script that opens SQLCipher DB '/var/lib/tidekeeper/logbook.db' with PRAGMA key=\"x'$KEY'\", creates table logbook(id, officer, date, notes), inserts ~50 mundane rows of officer logs (random text), and inserts ONE row whose `notes` column = 'progctf{the_locker_held_two_secrets}'. Close DB. (4) Cache the same key in gpg-agent's memory: easiest is to write a small C program that calls libgcrypt's gcry_cipher_setkey or use gpg-preset-passphrase to register a cached symmetric passphrase whose value is the hex key string. Keep this process alive. (5) `unlink /var/lib/tidekeeper/logbook.db` (directory entry removed, page cache pages still resident — confirm via `cat /proc/meminfo | grep Cached`). (6) Trigger LiME memory capture: `insmod lime.ko path=/tmp/tidekeeper.lime format=lime`. (7) Validate: `vol3 -f tidekeeper.lime banners.banners` shows the kernel; `strings tidekeeper.lime | grep -c 'SQLite format 3'` returns >0; the heap of the gpg-agent process contains the 32-byte key recoverable via cache-item-list walk; reconstructing the cached pages and decrypting with the recovered key recovers the flag row. RUN A FULL DRY-SOLVE BEFORE SHIPPING."
+unintended_solve_traps:
+  - "Do NOT include the plaintext flag in the dump as raw bytes outside the encrypted SQLCipher pages."
+  - "Do not include the key in any process's argv, environment, or files on disk."
+  - "Verify `strings tidekeeper.lime | grep -F 'progctf{'` returns NOTHING."
+  - "Verify the deleted DB's pages are NOT overwritten before capture (no other heavy IO between unlink and dump)."
+  - "Confirm gpg-agent process is still RUNNING in the dump (check pslist) — if it died, the heap-key path is broken."
+  - "The gpg-agent cache-item magic depends on the libgcrypt build — document the actual magic byte sequence in a internal doc for First Mate to validate the solve."
+  - "Reduce kernel ASLR / KASLR to a known offset OR ensure the recovery doesn't depend on KASLR (Quartermaster removed the KASLR step explicitly)."

@@ -1,0 +1,49 @@
+.pc-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.pc-badge--neutral {
+  background: rgba(168, 159, 140, 0.18);
+  color: var(--color-ink-on-dark-dim);
+  border-color: rgba(168, 159, 140, 0.4);
+}
+
+.pc-badge--brass {
+  background: rgba(201, 162, 74, 0.18);
+  color: var(--color-brass);
+  border-color: rgba(201, 162, 74, 0.6);
+}
+
+.pc-badge--success {
+  background: rgba(80, 160, 110, 0.18);
+  color: #9ee0b3;
+  border-color: rgba(80, 160, 110, 0.5);
+}
+
+.pc-badge--warning {
+  background: rgba(192, 137, 56, 0.2);
+  color: #f0c188;
+  border-color: rgba(192, 137, 56, 0.6);
+}
+
+.pc-badge--danger {
+  background: rgba(122, 31, 31, 0.3);
+  color: #f0a3a3;
+  border-color: rgba(122, 31, 31, 0.7);
+}
+
+.pc-badge--depth {
+  background: linear-gradient(120deg, rgba(122, 31, 31, 0.35), rgba(8, 19, 31, 0.6));
+  color: #f0a3a3;
+  border-color: var(--color-blood-red);
+}

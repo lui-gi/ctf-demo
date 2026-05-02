@@ -1,0 +1,35 @@
+---
+# Edge nginx accepts ingress from the cluster ingress-controller (the
+# cloud LB sits in front of it). Egress to backend + frontend only.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: edge-allow
+  namespace: progctf-fleet
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: edge
+  policyTypes: [Ingress, Egress]
+  ingress:
+    # Public traffic comes via the ingress-nginx controller in its own ns.
+    - from:
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: ingress-nginx }
+      ports:
+        - protocol: TCP
+          port: 80
+    # Health probes from kubelet show up as the host network — allow
+    # the named ingress port from any source on the cluster network if
+    # you need broader probing; tighten in environments that pin probes.
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: backend
+      ports: [{ protocol: TCP, port: 4000 }]
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: frontend
+      ports: [{ protocol: TCP, port: 8080 }]

@@ -1,0 +1,55 @@
+---
+# One-shot Job that applies the 14-day lifecycle rule to the
+# progctf-backups bucket. Re-run manually if the rule needs updating.
+# (MinIO doesn't ship a CRD for ILM; we apply via mc.)
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: minio-lifecycle-bootstrap
+  namespace: progctf-fleet
+  labels:
+    app.kubernetes.io/name: minio-lifecycle
+    app.kubernetes.io/component: backup
+spec:
+  backoffLimit: 3
+  ttlSecondsAfterFinished: 86400
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: minio-lifecycle
+    spec:
+      restartPolicy: OnFailure
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: mc
+          image: minio/mc:RELEASE.2024-10-08T09-37-26Z@sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: S3_ENDPOINT
+              value: http://minio.progctf-fleet.svc.cluster.local:9000
+            - name: S3_ACCESS_KEY
+              valueFrom: { secretKeyRef: { name: minio-credentials, key: rootUser } }
+            - name: S3_SECRET_KEY
+              valueFrom: { secretKeyRef: { name: minio-credentials, key: rootPassword } }
+          command: ["/bin/sh", "-euxc"]
+          args:
+            - |
+              mc alias set s3 "$S3_ENDPOINT" "$S3_ACCESS_KEY" "$S3_SECRET_KEY"
+              mc mb --ignore-existing s3/progctf-backups
+              mc mb --ignore-existing s3/progctf-files
+              mc anonymous set none s3/progctf-backups
+              mc anonymous set none s3/progctf-files
+              # 14-day expiry on backups.
+              mc ilm rule add s3/progctf-backups --expire-days 14 --prefix postgres/ || true
+              mc ilm rule list s3/progctf-backups
+          resources:
+            requests: { cpu: "50m", memory: "64Mi" }
+            limits:   { cpu: "200m", memory: "128Mi" }
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities: { drop: [ALL] }

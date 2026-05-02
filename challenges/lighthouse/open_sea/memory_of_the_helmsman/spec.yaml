@@ -1,0 +1,19 @@
+slug: memory_of_the_helmsman
+title: "Memory of the Helmsman"
+category: lighthouse
+difficulty: open_sea
+tier_points: open_sea
+hosting:
+  needed: false
+  type: none
+  isolation: shared
+  hint_for_powder_monkey: ""
+artifacts:
+  needed: true
+  hint_for_powder_monkey: "Two artifacts. (1) sealed.gpg: AES256-symmetric-encrypted GPG file, passphrase 'pale_cassandra_drift_19', plaintext = exactly 'progctf{the_helmsman_left_his_swap_open}\\n'. Generate with: `echo 'progctf{the_helmsman_left_his_swap_open}' | gpg -c --cipher-algo AES256 --batch --passphrase 'pale_cassandra_drift_19' --output sealed.gpg`. (2) dump.lime: 256 MB Linux LiME-format memory dump captured from a real Linux VM (kernel 5.15.x, e.g. Ubuntu 22.04). Procedure: boot VM with 512MB RAM, install lime kernel module. As user 'helmsman', run: `vim /tmp/note` → in vim type 'pale_cassandra_drift_19' as the buffer content → :w → :q → vim has now created /tmp/.note.swp. Then run `gpg --batch --passphrase 'pale_cassandra_drift_19' --decrypt sealed.gpg > /tmp/decrypted.txt`. While the bash session and gpg-agent are still alive, in another terminal capture LiME dump to dump.lime. Verify: vol3 -f dump.lime banners.banners shows Linux kernel; linux.bash shows the vim and gpg commands; linux.find_file --find /tmp/.note.swp dumps a file whose `strings` output contains 'pale_cassandra_drift_19'. Add 2-3 decoy /tmp/*.swp files containing unrelated content."
+unintended_solve_traps:
+  - "Do not leave the plaintext flag anywhere in the dump as raw bytes — only inside the gpg-encrypted blob and inside the (intended-recovery) swap workflow."
+  - "Do not put the passphrase in bash history directly (we want the swap-file recovery to be necessary)."
+  - "Verify with `strings dump.lime | grep -F 'progctf{'` returns NOTHING."
+  - "Verify with `strings dump.lime | grep -F 'pale_cassandra_drift_19'` may return matches — that's expected (it's in the swap file pages); ensure the player must extract the swap file to read it cleanly."
+  - "Use LiME format (volatility-3 supports it natively) — do NOT use a hibernation file or proprietary format."

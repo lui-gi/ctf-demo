@@ -1,0 +1,1 @@
+wreck.img    16 MiB FAT32 disk image. Mount read-only or carve.

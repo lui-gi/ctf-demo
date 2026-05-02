@@ -1,0 +1,5 @@
+Song of the Siren — player-served files
+==========================================
+siren.wav   — 10-second shanty. Look at it, but also LISTEN to its picture.
+chart.png   — 1024x768 nautical chart. Marrowtide Admiralty.
+Two halves; one points at the other.

@@ -1,0 +1,19 @@
+slug: gcd_among_thieves
+title: "GCD Among Thieves"
+category: cipher_cove
+difficulty: open_sea
+tier_points: open_sea
+hosting:
+  needed: false
+  type: none
+  isolation: shared
+  hint_for_powder_monkey: ""
+artifacts:
+  needed: true
+  hint_for_powder_monkey: "Generate 5 text files. Procedure (use pycryptodome): p = getPrime(1024); q1 = getPrime(1024); q2 = getPrime(1024); n1=p*q1; n2=p*q2; e=65537; m=bytes_to_long(b'progctf{shared_primes_make_thieves_of_us_all}'); c=pow(m,e,n1). Files: n1.txt = str(n1), n2.txt = str(n2), e1.txt = '65537', e2.txt = '65537', ciphertext.txt = str(c). Each file: decimal integer on a single line, no leading zeros, trailing newline OK. Verify: gcd(n1,n2) == p AND p != 1 AND p != n1 AND p != n2."
+unintended_solve_traps:
+  - "Do not include the private key, p, q1, or any factor file."
+  - "Do not include a README hint that names the technique."
+  - "Use freshly-generated primes; do not reuse Powder Monkey's test primes from other challenges."
+  - "Verify the plaintext fits in the modulus (it does; flag is < 256 bytes)."
+  - "Use raw RSA (no padding); do NOT use OAEP — the challenge is GCD recovery, not padding oracle."

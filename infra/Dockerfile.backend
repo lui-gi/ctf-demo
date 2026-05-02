@@ -1,0 +1,61 @@
+# syntax=docker/dockerfile:1.7
+# ---------------------------------------------------------------------------
+# Bosun's backend — Fastify API + WebSocket + scoring engine + flag validator
+# Multi-stage Node 20 build. Non-root user. No secrets baked in.
+# ---------------------------------------------------------------------------
+
+# ---- 1. deps stage: install full dependencies (including dev) for build ----
+FROM node:20.18-bookworm-slim@sha256:a5e0ed56f2c20b9689e0f7dd498cac7e08d2a3a283e92d9304e7b9b83e3c6ff3 AS deps
+WORKDIR /app
+
+# Build deps for argon2 native module
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends python3 make g++ ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY backend/package.json backend/package-lock.json* ./
+# Use npm ci when a lockfile is present, else fall back to install. Both produce
+# the dev dependencies needed for the TypeScript build in the next stage.
+RUN if [ -f package-lock.json ]; then npm ci; else npm install --no-audit --no-fund; fi
+
+
+# ---- 2. build stage: compile TypeScript -----------------------------------
+FROM deps AS build
+WORKDIR /app
+COPY backend/ ./
+RUN npm run build \
+    && npm prune --omit=dev
+
+
+# ---- 3. runtime stage: minimal image, non-root ----------------------------
+FROM node:20.18-bookworm-slim@sha256:a5e0ed56f2c20b9689e0f7dd498cac7e08d2a3a283e92d9304e7b9b83e3c6ff3 AS runtime
+WORKDIR /app
+
+# Run as the existing 'node' user (uid 1000) — we never run as root in prod.
+ENV NODE_ENV=production \
+    PORT=4000 \
+    HOST=0.0.0.0
+
+# tini for proper PID-1 signal handling (graceful WebSocket shutdowns).
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends tini ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy compiled artifacts + production dependencies from build stage.
+COPY --from=build --chown=node:node /app/node_modules ./node_modules
+COPY --from=build --chown=node:node /app/dist ./dist
+COPY --from=build --chown=node:node /app/package.json ./package.json
+
+USER node
+
+EXPOSE 4000
+
+# IMPORTANT: secrets (DB_URL, JWT_SECRET, ARGON2_PEPPER, etc.) are injected
+# at runtime via Kubernetes Secrets / docker-compose env files — never baked
+# into the image. See infra/k8s/backend/secret.yaml for the contract.
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+    CMD node -e "fetch('http://127.0.0.1:'+(process.env.PORT||4000)+'/healthz').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
+
+ENTRYPOINT ["/usr/bin/tini", "--"]
+CMD ["node", "dist/server.js"]

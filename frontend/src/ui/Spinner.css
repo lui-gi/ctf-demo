@@ -1,0 +1,11 @@
+.pc-spinner {
+  display: inline-block;
+  border: 2px solid rgba(201, 162, 74, 0.25);
+  border-top-color: var(--color-brass);
+  border-radius: 50%;
+  animation: pc-spin 700ms linear infinite;
+}
+
+@keyframes pc-spin {
+  to { transform: rotate(360deg); }
+}

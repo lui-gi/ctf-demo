@@ -1,0 +1,6 @@
+fruits.txt	size=540	sha256=1f4e8cdef0ae25db129c89b8c5c5dcf48e04210e2dea74ced36054159721e1e7
+hash.txt	size=34	sha256=59a4600c58ab9cf0ffb1e2dfe00cdd916bcb0b146381fd8c1bb044dafe709862
+
+# How to solve (player-facing reminder):
+#   hashcat -m 0 hash.txt -a 0 fruits.txt --rules-name=base64
+#   ... OR construct progctf{<fruit>_for_the_bosun} candidates from fruits.txt and MD5-check.

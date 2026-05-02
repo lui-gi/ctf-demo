@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160" role="img" aria-label="Profile silhouette of Kaspar Threnody">
+  <defs>
+    <linearGradient id="bgK" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0c2230"/>
+      <stop offset="100%" stop-color="#1c4a5e"/>
+    </linearGradient>
+  </defs>
+  <rect width="160" height="160" fill="url(#bgK)"/>
+  <circle cx="80" cy="60" r="30" fill="#e9e2cf"/>
+  <path d="M28,160 C28,112 50,98 80,98 C110,98 132,112 132,160 Z" fill="#e9e2cf"/>
+</svg>

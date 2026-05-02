@@ -1,0 +1,1 @@
+progctf{seafoam_keeps_no_secrets}

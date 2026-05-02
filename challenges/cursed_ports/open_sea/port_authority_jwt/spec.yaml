@@ -1,0 +1,20 @@
+slug: port_authority_jwt
+title: "Port Authority Pass"
+category: cursed_ports
+difficulty: open_sea
+tier_points: open_sea
+hosting:
+  needed: true
+  type: web
+  isolation: per_crew
+  hint_for_powder_monkey: "Express app served from a directory containing a real .git/ subdirectory (NOT just static dump — must be a full git repo). Two commits: (1) initial commit with `const JWT_SECRET = 'salt_marks_secret_2017';` literally in app.js plus the rest of the working app; (2) commit titled 'remove debug constant — read from env' that replaces the constant with `const JWT_SECRET = process.env.JWT_SECRET;`. Container runs commit 2 with env JWT_SECRET=salt_marks_secret_2017. Routes: POST /api/auth/login (returns HS256 JWT with payload {sub, is_harbormaster:false, exp}); GET /api/dashboard (clerk OK, returns mundane dock info); GET /admin/logbook (requires is_harbormaster:true; returns HTML page with banner '<h1>Harbormaster Logbook</h1><p class=banner>progctf{never_commit_thy_secrets}</p>'). Serve .git/ as static via express.static at deployment root. Allow registration as 'clerk' role only."
+artifacts:
+  needed: false
+  hint_for_powder_monkey: ""
+unintended_solve_traps:
+  - "Do not put the JWT secret in any environment-info endpoint, debug page, or error trace."
+  - "Do not allow registration as harbormaster directly."
+  - "Do not expose /api/admin/* via simple parameter manipulation — the JWT is the only path."
+  - "The .git/ must be a REAL git repo with the two commits, not a dump. Players will use git-dumper."
+  - "Disable .git/ HTTP listing prettifier — serve raw bytes only."
+  - "The flag must be in the /admin/logbook response only, not in any source file in any commit."

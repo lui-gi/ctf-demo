@@ -1,0 +1,6 @@
+Contact: mailto:security@marrowtide.example
+Encryption: https://vault.marrowtide.example/keys/admin.asc
+Acknowledgements: https://vault.marrowtide.example/known-issues/cgo7w3.html
+Preferred-Languages: en
+Policy: https://marrowtide.example/blog/transparency-pledge.html
+Expires: 2027-01-01T00:00:00Z

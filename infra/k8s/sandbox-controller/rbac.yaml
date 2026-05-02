@@ -1,0 +1,75 @@
+---
+# RBAC for the (Phase 2) real sandbox-controller. The stub doesn't use
+# these permissions yet, but the SA and bindings are pre-created so the
+# real image can drop in without an extra apply.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sandbox-controller
+  namespace: progctf-fleet
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: sandbox-controller-config
+  namespace: progctf-fleet
+rules:
+  # Read island.yaml ConfigMaps published by Powder Monkey's per-Island deploys.
+  - apiGroups: [""]
+    resources: [configmaps]
+    verbs: [get, list, watch]
+  # Read the bearer-token Secret + the island-flags Secret reference.
+  - apiGroups: [""]
+    resources: [secrets]
+    verbs: [get, list, watch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: sandbox-controller-spawn
+  namespace: progctf-sandboxes
+rules:
+  # Spawn / tear down per-Crew Islands.
+  - apiGroups: ["apps"]
+    resources: [deployments]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: [""]
+    resources: [services, pods, configmaps]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: [""]
+    resources: [secrets]
+    verbs: [get, list, watch]
+  - apiGroups: ["networking.k8s.io"]
+    resources: [networkpolicies]
+    verbs: [get, list, watch, create, update, patch, delete]
+  - apiGroups: ["batch"]
+    resources: [jobs]
+    verbs: [get, list, watch, create, delete]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: sandbox-controller-config
+  namespace: progctf-fleet
+subjects:
+  - kind: ServiceAccount
+    name: sandbox-controller
+    namespace: progctf-fleet
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: sandbox-controller-config
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: sandbox-controller-spawn
+  namespace: progctf-sandboxes
+subjects:
+  - kind: ServiceAccount
+    name: sandbox-controller
+    namespace: progctf-fleet
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: sandbox-controller-spawn

@@ -1,0 +1,6 @@
+The Forgotten Keelhaul KDF — player-served files
+===================================================
+kdf.py                — captain's custom KDF (READ THIS)
+chest.enc             — encrypted Treasure, AES-256-GCM
+                        wire format: salt(32) || nonce(12) || ct(N) || tag(16)
+password_partial.txt  — what we know about the password

@@ -1,0 +1,17 @@
+services:
+  app:
+    build:
+      context: ../src
+    # Per-crew isolation: each crew should run their own stack. Pollution
+    # persists in the Node.js process; we additionally restart the
+    # container on idle/error so a wedged crew can recover automatically.
+    restart: always
+    # Force a hard restart every 30 minutes so a polluted prototype doesn't
+    # bleed across player attempts (the spec asks for ~30-min auto-restart).
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O-", "http://127.0.0.1:8080/healthz"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+    ports:
+      - "8080:8080"

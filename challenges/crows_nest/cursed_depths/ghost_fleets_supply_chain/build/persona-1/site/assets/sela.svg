@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160" role="img" aria-label="Profile silhouette of Sela Marrowfen">
+  <defs>
+    <linearGradient id="bgS" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1c4a5e"/>
+      <stop offset="100%" stop-color="#a04a2c"/>
+    </linearGradient>
+  </defs>
+  <rect width="160" height="160" fill="url(#bgS)"/>
+  <circle cx="80" cy="62" r="28" fill="#f5f1e8"/>
+  <path d="M30,160 C30,115 50,100 80,100 C110,100 130,115 130,160 Z" fill="#f5f1e8"/>
+</svg>

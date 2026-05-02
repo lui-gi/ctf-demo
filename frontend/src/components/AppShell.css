@@ -1,0 +1,3 @@
+/* The visible chrome lives in global.css; this file is reserved for future
+   shell-only refinements (dropdowns, mobile nav). Kept so AppShell.tsx can
+   import a CSS sibling and follow the colocation pattern. */

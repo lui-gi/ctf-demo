@@ -1,0 +1,21 @@
+slug: forgotten_keelhaul_kdf
+title: "The Forgotten Keelhaul KDF"
+category: keymaster
+difficulty: cursed_depths
+tier_points: cursed_depths
+hosting:
+  needed: false
+  type: none
+  isolation: shared
+  hint_for_powder_monkey: ""
+artifacts:
+  needed: true
+  hint_for_powder_monkey: "Three artifacts. (1) kdf.py: clean Python source implementing the custom KDF exactly as: `def keelhaul_kdf(password: bytes, salt: bytes, iterations: int = 200000) -> bytes: prefix = b'KEELHAUL::'; import hmac, hashlib; state = hmac.new(salt, prefix + password, hashlib.sha256).digest(); for i in range(iterations): state = hmac.new(state, (i ^ 0xFFFFFFFF).to_bytes(4, 'big'), hashlib.sha256).digest(); return state[:32]`. Include a docstring describing the captain's intent ('XOR-counter-mixing for added entropy'). (2) chest.enc: AES-256-GCM-encrypted payload, layout: salt(32 random bytes) || nonce(12 random bytes) || ciphertext(N bytes) || tag(16 bytes). Plaintext = 'progctf{the_keelhauls_xor_was_a_red_herring}\\n'. Use a randomly-chosen 14-byte password where positions 0-7 are exactly 'KEELHAUL' (ASCII) and positions 8-13 are 6 random characters from charset [a-z0-9] (e.g. '5x9pr2' or whatever you generate). Derive key via keelhaul_kdf(password, salt, 200000). Encrypt with AESGCM(key).encrypt(nonce, plaintext, None). (3) password_partial.txt: explicit text: 'Password is 14 ASCII characters. Positions 0-7 (zero-indexed) are exactly: KEELHAUL. Positions 8-13 are unknown, drawn from charset [a-z0-9].' VALIDATION REQUIREMENT: Run a sample CPU brute-force across the 36^6 keyspace BEFORE shipping; confirm the password is recovered AND that the AES-GCM decryption yields the literal flag. Estimated time: ~4 hrs on 8-core CPU."
+unintended_solve_traps:
+  - "Do NOT include the password anywhere outside the cracking workflow."
+  - "Do NOT include intermediate state values, the salt outside chest.enc, or the key."
+  - "kdf.py must be exactly as specified — players must read it to design the cracker."
+  - "Verify the actual derived key produces a working AES-GCM decrypt (tag matches) — common bug: deriving 32 bytes but then truncating wrong."
+  - "Pick the 6 unknown chars to NOT spell anything intentional (truly random) — we want brute force, not guessing."
+  - "Do not use Argon2 or scrypt — the educational point is 'custom KDF you must build a cracker for'."
+  - "Document the wire format of chest.enc clearly so players don't waste time reverse-engineering trivia."

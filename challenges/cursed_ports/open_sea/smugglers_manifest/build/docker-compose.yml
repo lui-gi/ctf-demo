@@ -1,0 +1,48 @@
+services:
+  mongo:
+    image: mongo:7.0.14
+    restart: unless-stopped
+    # IMPORTANT: $where (server-side JS evaluation) must remain enabled for
+    # this challenge — that's the intended attack surface. Mongo 6+ disables
+    # it by default; --setParameter re-enables.
+    command:
+      - "mongod"
+      - "--bind_ip_all"
+      - "--setParameter"
+      - "javascriptEnabled=true"
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.runCommand({ping:1}).ok"]
+      interval: 10s
+      retries: 6
+    networks: [internal]
+
+  seed:
+    build:
+      context: ../src
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      MONGO_URL: "mongodb://mongo:27017/marrowtide"
+      FLAG: "progctf{calderwoods_dollar_sign_problem}"
+    entrypoint: ["/sbin/tini", "--", "node", "/app/seed.js"]
+    restart: "no"
+    networks: [internal]
+
+  app:
+    build:
+      context: ../src
+    depends_on:
+      seed:
+        condition: service_completed_successfully
+    environment:
+      MONGO_URL: "mongodb://mongo:27017/marrowtide"
+      PORT: "8080"
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    networks: [internal]
+
+networks:
+  internal:
+    driver: bridge

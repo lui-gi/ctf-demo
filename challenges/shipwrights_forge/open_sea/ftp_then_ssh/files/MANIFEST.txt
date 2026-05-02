@@ -1,0 +1,8 @@
+Two Pcaps, One Boarding — player-served files
+================================================
+ftp.pcap   — cleartext FTP session (port 21 control + 20 data)
+             Captain logs in and downloads shell_history.txt.enc.
+             The encrypted blob format is OpenSSL `enc -aes-256-cbc`
+             with the standard `Salted__` + 8-byte salt + ct layout.
+usb.pcap   — USB-HID keyboard capture (USBPCAP link-type 249).
+             Decode with Wireshark + en-US HID keymap or tshark fields.

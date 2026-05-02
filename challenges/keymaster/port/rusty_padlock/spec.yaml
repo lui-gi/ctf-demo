@@ -1,0 +1,17 @@
+slug: rusty_padlock
+title: "The Rusty Padlock"
+category: keymaster
+difficulty: port
+tier_points: port
+hosting:
+  needed: false
+  type: none
+  isolation: shared
+  hint_for_powder_monkey: ""
+artifacts:
+  needed: true
+  hint_for_powder_monkey: "Generate 'hash.txt' containing exactly one line: the MD5 hex digest of the literal UTF-8 byte string 'progctf{passionfruit_for_the_bosun}' (no trailing newline in the input that's hashed). Compute this freshly — do NOT trust the placeholder hash in solution.md. Verify by reproducing with `python3 -c \"import hashlib; print(hashlib.md5(b'progctf{passionfruit_for_the_bosun}').hexdigest())\"`. Also produce a small 'fruits.txt' wordlist (~50 words) shipped alongside as a hint, containing common fruits including 'passionfruit' but NOT the full flag — players still need to construct the progctf{...} wrapper themselves."
+unintended_solve_traps:
+  - "Do not ship the plaintext anywhere in the bundle."
+  - "Verify the hash before shipping — a typo here makes the challenge unsolvable."
+  - "Use lowercase hex digest only; hashcat is case-insensitive but consistency matters."

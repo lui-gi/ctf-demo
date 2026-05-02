@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" width="200" height="60" role="img" aria-label="Marrowtide Logistics logo">
+  <rect width="200" height="60" fill="none"/>
+  <path d="M10 40 Q25 20 40 40 T70 40" stroke="#a04a2c" stroke-width="3" fill="none"/>
+  <text x="78" y="38" font-family="Georgia, serif" font-size="20" fill="#f5f1e8" font-weight="bold">Marrowtide</text>
+</svg>

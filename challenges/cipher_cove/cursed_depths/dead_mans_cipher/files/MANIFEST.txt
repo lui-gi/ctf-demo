@@ -1,0 +1,7 @@
+Dead Man's Cipher — player-served files
+=========================================
+cipher.py   — reference implementation of the cipher (READ THIS)
+pairs.txt   — 64 known (plaintext, ciphertext) pairs, one per line
+              format: plaintext_hex,ciphertext_hex (16 hex chars each)
+              encrypted under an unknown 32-bit master key K
+flag.enc    — the encrypted Treasure, ECB mode, same key K, PKCS#7 padded

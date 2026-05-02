@@ -1,0 +1,13 @@
+{
+  "name": "marrowtide-npm-registry-mock",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mock npm-style registry for the Ghost Fleet's Supply Chain CTF island. Inert.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "express": "4.19.2"
+  }
+}

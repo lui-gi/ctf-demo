@@ -1,0 +1,12 @@
+---
+# Keep at least one Bosun replica during cluster maintenance / node drain.
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: backend
+  namespace: progctf-fleet
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: backend

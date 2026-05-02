@@ -1,0 +1,9 @@
+body { font-family: Georgia, serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; color: #0c2230; background: #f5f1e8; }
+header { border-bottom: 3px solid #a04a2c; padding-bottom: 1rem; margin-bottom: 1.5rem; }
+header h1 { margin: 0; font-size: 2.2rem; }
+.tagline { color: #6b7a82; font-style: italic; }
+img { float: right; margin: 0 0 1rem 1rem; border-radius: 50%; }
+section { margin-bottom: 2rem; }
+section h2 { color: #1c4a5e; border-bottom: 1px solid #d8cfb6; padding-bottom: 0.3rem; }
+footer { font-size: 0.8rem; color: #6b7a82; border-top: 1px solid #d8cfb6; padding-top: 1rem; margin-top: 3rem; }
+a { color: #1c4a5e; }
