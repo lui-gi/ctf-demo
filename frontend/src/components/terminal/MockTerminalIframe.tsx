@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { strings } from '@/theme/strings';
+import './MockTerminalIframe.css';
 
 /**
  * Mock terminal panel.
@@ -35,26 +36,21 @@ export function MockTerminalIframe({ islandSlug }: MockTerminalIframeProps): JSX
 
   return (
     <div
-      style={{
-        background: 'var(--color-deep-sea-deep)',
-        borderRadius: 'var(--radius-md)',
-        padding: 'var(--space-2)',
-        border: '1px solid var(--color-brass-dim)',
-      }}
+      className="pc-term-frame"
       aria-label={`${strings.terminal.heading} (${islandSlug})`}
     >
+      <div className="pc-term-frame__bar" aria-hidden>
+        <span className="pc-term-frame__rivet" />
+        <span className="pc-term-frame__rivet" />
+        <span className="pc-term-frame__rivet" />
+        <span className="pc-term-frame__slug">{islandSlug}</span>
+      </div>
       <iframe
         ref={ref}
         title={`${strings.terminal.heading} ${islandSlug}`}
         sandbox="allow-scripts"
         srcDoc={srcDoc}
-        style={{
-          width: '100%',
-          height: '480px',
-          border: 0,
-          background: '#000',
-          borderRadius: 4,
-        }}
+        className="pc-term-frame__iframe"
       />
     </div>
   );

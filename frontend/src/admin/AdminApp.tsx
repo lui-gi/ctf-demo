@@ -8,12 +8,13 @@ import './admin.css';
 
 export default function AdminApp(): JSX.Element {
   return (
-    <section className="pc-admin" aria-labelledby="admin-heading">
-      <header style={{ marginBottom: '1.5rem' }}>
-        <h1 id="admin-heading" className="display">
+    <section className="pc-admin pc-page" aria-labelledby="admin-heading">
+      <header className="pc-page__header pc-page__header--copper">
+        <p className="pc-page__eyebrow">{strings.nav.admin}</p>
+        <h1 id="admin-heading" className="display pc-page__title">
           {strings.admin.heading}
         </h1>
-        <p style={{ color: 'var(--color-ink-on-dark-dim)' }}>{strings.admin.subtitle}</p>
+        <p className="pc-page__subtitle">{strings.admin.subtitle}</p>
       </header>
 
       <nav className="pc-admin__tabs" aria-label={strings.aria.adminTabs}>

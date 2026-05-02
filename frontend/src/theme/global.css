@@ -19,6 +19,26 @@
   --color-ink-on-dark: #e8e0cf;
   --color-ink-on-dark-dim: #a89f8c;
 
+  /* Pirate accent palette — extends the navy/parchment bones with the
+     colors a real captain's bridge would catch in lantern-light:
+       verdigris  — the green patina on weathered brass / spyglass barrels
+       copper     — molten lantern glow, hotter than brass
+       indigo     — the midnight wash beneath the deep-sea navy
+       seafoam    — phosphorescent break of a wave at night
+       rust       — barnacle-eaten iron, used for tertiary chrome
+     These are added (not replacing) so we don't break the locked
+     palette in colors.ts. Use sparingly as accents, not as fills. */
+  --color-verdigris: #2f7a6a;
+  --color-verdigris-soft: #4ba295;
+  --color-verdigris-dim: #1c4a40;
+  --color-copper: #d97a3c;
+  --color-copper-dim: #a35525;
+  --color-copper-soft: #e9986a;
+  --color-indigo-deep: #0a1326;
+  --color-indigo-rim: #1d2950;
+  --color-seafoam: #7fcfb6;
+  --color-rust: #8a4a2a;
+
   /* Difficulty pill colors — added 2026-05-02 vocabulary pivot. Always shown
      alongside themed tier names (The Port / Open Sea / Cursed Depths). */
   --color-diff-easy: #4ea344;
@@ -55,8 +75,38 @@ body,
   margin: 0;
   padding: 0;
   min-height: 100%;
-  background: var(--color-deep-sea);
   color: var(--color-ink-on-dark);
+}
+
+/* App-wide atmospheric background — replaces flat navy with a layered
+   midnight wash: deep indigo at top, navy in the middle, oxblood-tinged
+   horizon at bottom, plus a faint verdigris glow off-center to suggest
+   a lantern just out of frame. The grain noise is a single SVG turbulence
+   filter applied at low opacity for that "weathered map" texture. */
+body {
+  background-color: var(--color-deep-sea);
+  background-image:
+    radial-gradient(ellipse 1200px 800px at 12% -10%, rgba(29, 41, 80, 0.55), transparent 60%),
+    radial-gradient(ellipse 900px 700px at 110% 30%, rgba(47, 122, 106, 0.16), transparent 60%),
+    radial-gradient(ellipse 1100px 700px at 50% 110%, rgba(122, 31, 31, 0.18), transparent 65%),
+    linear-gradient(180deg, var(--color-indigo-deep) 0%, var(--color-deep-sea) 45%, var(--color-deep-sea-deep) 100%);
+  background-attachment: fixed;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 0.95  0 0 0 0 0.85  0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+#root {
+  position: relative;
+  z-index: 1;
 }
 
 a {
@@ -207,6 +257,74 @@ main#main-content.main--full-bleed {
   color: var(--color-ink-on-dark-dim);
   font-size: var(--fs-xs);
   border-top: 1px solid var(--color-deep-sea-soft);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   Shared page header — used by Charts / Terminal / Admin so every
+   secondary screen reads with the same visual hierarchy as Voyage:
+   themed eyebrow → plain heading → muted subtitle, with a thin
+   accent rule beneath. Each page picks its own accent variant.
+   ───────────────────────────────────────────────────────────────── */
+.pc-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.pc-page__header {
+  --header-accent: var(--color-brass);
+  position: relative;
+  padding: var(--space-4) 0 var(--space-4);
+  border-bottom: 1px solid rgba(201, 162, 74, 0.18);
+}
+
+.pc-page__header::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 88px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--header-accent) 0%,
+    transparent 100%
+  );
+}
+
+.pc-page__header--brass     { --header-accent: var(--color-brass); }
+.pc-page__header--verdigris { --header-accent: var(--color-verdigris-soft); }
+.pc-page__header--copper    { --header-accent: var(--color-copper); }
+.pc-page__header--blood     { --header-accent: var(--color-blood-red); }
+
+.pc-page__eyebrow {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--fs-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--header-accent);
+  margin: 0 0 0.3rem;
+  opacity: 0.95;
+}
+
+.pc-page__title {
+  margin: 0 0 0.4rem;
+  color: var(--color-ink-on-dark);
+  background: linear-gradient(
+    180deg,
+    var(--color-ink-on-dark) 0%,
+    var(--header-accent) 130%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.pc-page__subtitle {
+  margin: 0;
+  color: var(--color-ink-on-dark-dim);
+  max-width: 60ch;
 }
 
 /* Reduced motion — respect users who ask for it */

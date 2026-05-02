@@ -7,22 +7,13 @@ import './ClosingCeremony.css';
 export function Charts(): JSX.Element {
   const voyage = useVoyageState();
   return (
-    <section aria-labelledby="charts-heading">
-      <header style={{ marginBottom: '1.5rem' }}>
-        <h1 id="charts-heading" className="display">
+    <section className="pc-page" aria-labelledby="charts-heading">
+      <header className="pc-page__header pc-page__header--brass">
+        <p className="pc-page__eyebrow">{strings.charts.headingThemed}</p>
+        <h1 id="charts-heading" className="display pc-page__title">
           {strings.charts.heading}
         </h1>
-        <p
-          style={{
-            fontFamily: '"IM Fell English", Georgia, serif',
-            fontStyle: 'italic',
-            opacity: 0.75,
-            margin: '0 0 0.25rem',
-          }}
-        >
-          {strings.charts.headingThemed}
-        </p>
-        <p style={{ color: 'var(--color-ink-on-dark-dim)' }}>{strings.charts.subtitle}</p>
+        <p className="pc-page__subtitle">{strings.charts.subtitle}</p>
       </header>
       {voyage.frozen ? (
         <div className="pc-charts-closing-banner" role="status">

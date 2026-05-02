@@ -30,6 +30,9 @@ export function LiveCharts(): JSX.Element {
   }, []);
 
   const snapshot = live.snapshot ?? seed;
+  // Bosun's WS push may arrive without a `rows` array on cold-start; coerce
+  // to [] so we render the empty state instead of crashing.
+  const rows: ChartsRow[] = Array.isArray(snapshot?.rows) ? snapshot.rows : [];
 
   return (
     <div className="pc-charts">
@@ -43,10 +46,10 @@ export function LiveCharts(): JSX.Element {
       {seedErr && !snapshot ? <p role="alert">{seedErr}</p> : null}
       {!snapshot ? (
         <ChartsSkeleton />
-      ) : snapshot.rows.length === 0 ? (
+      ) : rows.length === 0 ? (
         <p className="pc-charts__empty">{strings.charts.empty}</p>
       ) : (
-        <ChartsTable rows={snapshot.rows} />
+        <ChartsTable rows={rows} />
       )}
     </div>
   );
@@ -109,40 +112,74 @@ function ChartsSkeleton(): JSX.Element {
 function ChartsTable({ rows }: { rows: ChartsRow[] }): JSX.Element {
   // Sort defensively — server should send sorted, but be safe.
   const sorted = [...rows].sort((a, b) => a.rank - b.rank);
+  const podium = sorted.filter((r) => r.rank <= 3);
+  // Order podium visually as 2 · 1 · 3 so the king sits centered + raised.
+  const podiumOrdered = [
+    podium.find((r) => r.rank === 2),
+    podium.find((r) => r.rank === 1),
+    podium.find((r) => r.rank === 3),
+  ].filter((r): r is ChartsRow => Boolean(r));
+  const tail = sorted.filter((r) => r.rank > 3);
+
   return (
-    <div role="table" aria-label={strings.charts.heading} className="pc-charts__table">
-      <div role="row" className="pc-charts__row pc-charts__row--head">
-        <span role="columnheader">{strings.charts.rank}</span>
-        <span role="columnheader">{strings.charts.crew}</span>
-        <span role="columnheader">{strings.charts.score}</span>
-        <span role="columnheader">{strings.charts.lastSolve}</span>
-      </div>
-      {sorted.map((r) => (
-        <div
-          role="row"
-          key={r.crew_id}
-          className={`pc-charts__row pc-charts__row--data pc-charts__row--rank-${r.rank}`}
-          // Use crew_id as React key so row reorder triggers FLIP-style transitions
-          // via CSS; layout transitions on transform avoid layout thrash.
-          style={{ order: r.rank }}
-        >
-          <span role="cell" className="pc-charts__rank">
-            {strings.charts.placements[r.rank]
-              ? `${r.rank} · ${strings.charts.placements[r.rank]}`
-              : `${r.rank}`}
-          </span>
-          <span role="cell" className="pc-charts__crew">
-            {r.flag_emoji ? <span aria-hidden>{r.flag_emoji} </span> : null}
-            {r.crew_name}
-          </span>
-          <span role="cell" className="pc-charts__score">
-            {strings.island.pointsValue(r.score)}
-          </span>
-          <span role="cell" className="pc-charts__last">
-            {r.last_solve_at ? new Date(r.last_solve_at).toLocaleTimeString() : '—'}
-          </span>
+    <>
+      {podiumOrdered.length > 0 ? (
+        <div className="pc-charts__podium" aria-label={strings.charts.heading}>
+          {podiumOrdered.map((r) => (
+            <article
+              key={r.crew_id}
+              className={`pc-charts__podium-card pc-charts__podium-card--rank-${r.rank}`}
+            >
+              <div className="pc-charts__podium-rank">{r.rank}</div>
+              <div className="pc-charts__podium-title">
+                {strings.charts.placements[r.rank] ?? ''}
+              </div>
+              <div className="pc-charts__podium-crew">
+                {r.flag_emoji ? <span aria-hidden>{r.flag_emoji} </span> : null}
+                {r.crew_name}
+              </div>
+              <div className="pc-charts__podium-score">
+                {strings.island.pointsValue(r.score)}
+              </div>
+            </article>
+          ))}
         </div>
-      ))}
-    </div>
+      ) : null}
+
+      <div role="table" aria-label={strings.charts.heading} className="pc-charts__table">
+        <div role="row" className="pc-charts__row pc-charts__row--head">
+          <span role="columnheader">{strings.charts.rank}</span>
+          <span role="columnheader">{strings.charts.crew}</span>
+          <span role="columnheader">{strings.charts.score}</span>
+          <span role="columnheader">{strings.charts.lastSolve}</span>
+        </div>
+        {(tail.length > 0 ? tail : sorted).map((r) => (
+          <div
+            role="row"
+            key={r.crew_id}
+            className={`pc-charts__row pc-charts__row--data pc-charts__row--rank-${r.rank}`}
+            // Use crew_id as React key so row reorder triggers FLIP-style transitions
+            // via CSS; layout transitions on transform avoid layout thrash.
+            style={{ order: r.rank }}
+          >
+            <span role="cell" className="pc-charts__rank">
+              {strings.charts.placements[r.rank]
+                ? `${r.rank} · ${strings.charts.placements[r.rank]}`
+                : `${r.rank}`}
+            </span>
+            <span role="cell" className="pc-charts__crew">
+              {r.flag_emoji ? <span aria-hidden>{r.flag_emoji} </span> : null}
+              {r.crew_name}
+            </span>
+            <span role="cell" className="pc-charts__score">
+              {strings.island.pointsValue(r.score)}
+            </span>
+            <span role="cell" className="pc-charts__last">
+              {r.last_solve_at ? new Date(r.last_solve_at).toLocaleTimeString() : '—'}
+            </span>
+          </div>
+        ))}
+      </div>
+    </>
   );
 }

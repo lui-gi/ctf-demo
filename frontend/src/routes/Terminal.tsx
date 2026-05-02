@@ -9,12 +9,13 @@ export function Terminal(): JSX.Element {
   const [active, setActive] = useState<string | null>(null);
 
   return (
-    <section aria-labelledby="terminal-heading">
-      <header style={{ marginBottom: '1.5rem' }}>
-        <h1 id="terminal-heading" className="display">
+    <section className="pc-page" aria-labelledby="terminal-heading">
+      <header className="pc-page__header pc-page__header--verdigris">
+        <p className="pc-page__eyebrow">{strings.nav.terminal}</p>
+        <h1 id="terminal-heading" className="display pc-page__title">
           {strings.terminal.heading}
         </h1>
-        <p style={{ color: 'var(--color-ink-on-dark-dim)' }}>{strings.terminal.subtitle}</p>
+        <p className="pc-page__subtitle">{strings.terminal.subtitle}</p>
       </header>
 
       <form
@@ -22,7 +23,7 @@ export function Terminal(): JSX.Element {
           e.preventDefault();
           setActive(slug.trim() || null);
         }}
-        style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-end', marginBottom: '1rem' }}
+        style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-end' }}
       >
         <Input
           label={strings.terminal.slugLabel}

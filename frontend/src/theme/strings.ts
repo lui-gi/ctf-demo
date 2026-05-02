@@ -117,6 +117,18 @@ export const strings = {
       cursed_depths: 'Hard',
     } as Record<string, string>,
     backToVoyage: 'Back to Challenges',
+    // Segmented-browser tier-bar copy. Plain English so the stats read
+    // at a glance regardless of theme; matches difficultyPlainLabels above.
+    tierBarTotal: 'Total',
+    tierBarSolved: 'Solved',
+    tierBarEasy: 'Easy',
+    tierBarMedium: 'Medium',
+    tierBarHard: 'Hard',
+    jumpToLabel: 'Jump to',
+    overallProgress: 'Voyage progress',
+    sectionEmpty: 'No challenges in this cluster yet.',
+    sectionViewAll: 'Open cluster page',
+    overallPoints: (n: number): string => `${n} pts in the hold`,
   },
 
   // ── Island detail / submission ───────────────────────────────────
