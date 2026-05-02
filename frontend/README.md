@@ -1,6 +1,6 @@
 # progctf — Helmsman (frontend)
 
-The player-facing SPA for **progctf**, the Deadwake pirate-themed Capture the Flag voyage.
+The player-facing SPA for **progctf**, the progsu pirate-themed Capture the Flag event.
 Built with Vite + React 18 + TypeScript.
 
 ## Prerequisites

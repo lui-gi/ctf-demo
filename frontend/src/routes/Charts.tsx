@@ -12,12 +12,22 @@ export function Charts(): JSX.Element {
         <h1 id="charts-heading" className="display">
           {strings.charts.heading}
         </h1>
+        <p
+          style={{
+            fontFamily: '"IM Fell English", Georgia, serif',
+            fontStyle: 'italic',
+            opacity: 0.75,
+            margin: '0 0 0.25rem',
+          }}
+        >
+          {strings.charts.headingThemed}
+        </p>
         <p style={{ color: 'var(--color-ink-on-dark-dim)' }}>{strings.charts.subtitle}</p>
       </header>
       {voyage.frozen ? (
         <div className="pc-charts-closing-banner" role="status">
           <span>{strings.charts.frozenBanner}</span>
-          <Link to="/voyage/closing">{strings.closingCeremony.chartsBannerCta}</Link>
+          <Link to="/closing">{strings.closingCeremony.chartsBannerCta}</Link>
         </div>
       ) : null}
       <LiveCharts />

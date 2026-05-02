@@ -4,6 +4,7 @@ import type { IslandStatus, IslandSummary } from '@/api/types';
 import { strings } from '@/theme/strings';
 import { Button } from '@/ui/Button';
 import { Badge, statusTone } from '@/ui/Badge';
+import { DifficultyPill, type Tier } from '@/ui/DifficultyPill';
 import { Skeleton } from '@/ui/Skeleton';
 import { useToast } from '@/ui/Toast';
 import { ApiError } from '@/api/client';
@@ -103,7 +104,9 @@ export function IslandsTable(): JSX.Element {
               <tr key={r.id}>
                 <td>{r.title}</td>
                 <td>{strings.voyage.categoryNames[r.category] ?? r.category}</td>
-                <td>{strings.voyage.difficultyLabels[r.difficulty] ?? r.difficulty}</td>
+                <td>
+                  <DifficultyPill tier={r.difficulty as Tier} />
+                </td>
                 <td>{r.base_points}</td>
                 <td>
                   <label style={{ display: 'inline-flex', gap: 8, alignItems: 'center' }}>

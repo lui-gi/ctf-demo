@@ -59,9 +59,15 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
     void refresh();
   }, [refresh]);
 
+  // After register/login, the server's response body is the themed
+  // `{ ok, message, pirate: {...} }` envelope, NOT the raw AuthMe shape that
+  // the rest of the app reads (user.handle, user.crew, user.role). Once the
+  // auth cookie is set, fetch /me to get the canonical AuthMe shape (which
+  // also includes the joined Crew columns).
   const signArticles = useCallback(
     async (p: { email: string; handle: string; password: string }) => {
-      const me = await authApi.signArticles(p);
+      await authApi.signArticles(p);
+      const me = await authApi.me();
       setUser(me);
       return me;
     },
@@ -69,7 +75,8 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
   );
 
   const board = useCallback(async (p: { email: string; password: string }) => {
-    const me = await authApi.board(p);
+    await authApi.board(p);
+    const me = await authApi.me();
     setUser(me);
     return me;
   }, []);

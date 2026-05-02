@@ -96,11 +96,11 @@ export function Crew(): JSX.Element {
           <ul>
             {crew.solved.map((s) => (
               <li key={s.island_slug}>
-                {/* Crew profile API returns slug only; we link to /voyage and the
-                    Voyage route handles slug→category lookup at click-time.
+                {/* Crew profile API returns slug only; we link to /challenges and
+                    the Voyage route handles slug→category lookup at click-time.
                     Bosun: when the crew profile endpoint includes category, we
                     can deep-link directly. Tracked as a follow-up. */}
-                <Link to="/voyage">{s.island_title}</Link>{' '}
+                <Link to="/challenges">{s.island_title}</Link>{' '}
                 <Badge tone="brass">{strings.island.pointsValue(s.awarded_points)}</Badge>{' '}
                 <span style={{ color: 'var(--color-ink-on-dark-dim)' }}>
                   {new Date(s.solved_at).toLocaleString()}

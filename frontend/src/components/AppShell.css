@@ -1,3 +1,13 @@
 /* The visible chrome lives in global.css; this file is reserved for future
    shell-only refinements (dropdowns, mobile nav). Kept so AppShell.tsx can
    import a CSS sibling and follow the colocation pattern. */
+
+/* Logged-out CTA buttons in the top nav. The `.app-nav a` rule applies
+   uppercase + tight padding to its anchor links; we override here so the
+   button-styled Login / Sign Up read as native button shapes (their own
+   pc-btn--sm padding, no uppercase). */
+.app-nav a.app-nav-cta {
+  text-transform: none;
+  letter-spacing: 0.02em;
+  padding: 0.35rem 0.75rem;
+}

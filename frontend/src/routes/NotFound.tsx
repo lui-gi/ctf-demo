@@ -11,7 +11,7 @@ export function NotFound(): JSX.Element {
         {strings.common.notFound}
       </p>
       <p>
-        <Link to="/voyage" className="pc-btn pc-btn--secondary pc-btn--md">
+        <Link to="/challenges" className="pc-btn pc-btn--secondary pc-btn--md">
           {strings.common.notFoundCta}
         </Link>
       </p>

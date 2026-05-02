@@ -140,16 +140,21 @@ describe('strings coverage', () => {
     expect(offenders).toEqual([]);
   });
 
-  it('strings table contains the load-bearing themed copy', () => {
-    expect(strings.nav.logout).toBe('Walk the Plank');
-    expect(strings.auth.signArticlesSubmit).toBe('Sign the Articles');
-    expect(strings.auth.boardSubmit).toBe('Board the Ship');
-    expect(strings.island.submitButton).toBe('Claim the Treasure');
+  it('strings table contains the load-bearing copy after the vocabulary pivot', () => {
+    // Chrome verbs went plain (vocabulary pivot 2026-05-02).
+    expect(strings.nav.logout).toBe('Logout');
+    expect(strings.auth.signArticlesSubmit).toBe('Sign Up');
+    expect(strings.auth.boardSubmit).toBe('Login');
+    // User-locked: Submit Flag / Show Hint stay plain in chrome.
+    expect(strings.island.submitButton).toBe('Submit Flag');
+    // Narrative copy stays themed.
     expect(strings.island.wrong).toBe("That ain't no Treasure, sailor.");
     expect(strings.island.correct(50, 'Black Pearl')).toBe(
       'Aye! Treasure secured. +50 to Black Pearl.',
     );
     expect(strings.island.cooldown(7)).toBe('The cannons are reloading… 7s');
+    // Whisper button verb is "Show Hint" (locked); the mechanic stays Whispers.
+    expect(strings.island.revealWhisper(10)).toBe('Show Hint (-10 pts)');
     expect(strings.charts.empty).toBe('The Charts are blank. No Crew has set sail.');
     expect(strings.charts.frozenBanner).toBe(
       '⚓ The Voyage is frozen. No more Treasures may be claimed.',
@@ -159,5 +164,11 @@ describe('strings coverage', () => {
     );
     expect(strings.common.notFound).toBe("These waters aren't on any map.");
     expect(strings.common.loading).toBe('Charting course…');
+    // Difficulty mapping for DifficultyPill — themed + plain.
+    expect(strings.voyage.difficultyPlainLabels.port).toBe('Easy');
+    expect(strings.voyage.difficultyPlainLabels.open_sea).toBe('Medium');
+    expect(strings.voyage.difficultyPlainLabels.cursed_depths).toBe('Hard');
+    expect(strings.voyage.categoryPlainNames.cursed_ports).toBe('Web Exploitation');
+    expect(strings.voyage.categoryPlainNames.keymaster).toBe('Password Cracking');
   });
 });

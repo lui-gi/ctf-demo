@@ -22,12 +22,55 @@ export interface WSHandle {
 }
 
 export function startWebsocket(deps: Deps): WSHandle {
+  // @fastify/websocket installs a global `upgrade` listener that 404s any
+  // path that doesn't match a registered Fastify route. socket.io ALSO needs
+  // an upgrade listener for `/socket.io/...` handshakes. Both listeners fire
+  // for every upgrade event and the order they were registered determines
+  // who replies first — fastify-websocket was added at plugin-register time,
+  // so it would 404 socket.io's handshake before socket.io ever sees it.
+  //
+  // Strategy: snapshot the existing upgrade listeners, instantiate the
+  // IOServer (which appends ITS listener at the end), then re-order so
+  // socket.io fires FIRST for /socket.io paths and the original fastify
+  // listeners run only for non-socket.io upgrades. We do this by clearing
+  // the listener list and re-adding a wrapper that demuxes by URL.
+  const SOCKET_IO_PATH = '/socket.io';
+  const priorUpgradeListeners = deps.http.listeners('upgrade').slice();
+  deps.http.removeAllListeners('upgrade');
+
   const io = new IOServer(deps.http, {
     cors: {
       origin: deps.env.CORS_ORIGINS.split(',').map((s) => s.trim()),
       credentials: true,
     },
-    path: '/ws',
+    // Default path `/socket.io` — matches the SPA's socket.io-client and the
+    // Vite dev proxy. Phase-2's previous explicit `/ws` caused frontend 404s
+    // because socket.io-client defaults didn't match.
+  });
+
+  // socket.io-installed upgrade listener now sits at index 0 (it was the
+  // only one when IOServer attached). Re-append the prior fastify listeners
+  // wrapped in a guard that skips socket.io paths so fastify-websocket
+  // doesn't 404 socket.io upgrades.
+  const sioUpgrade = deps.http.listeners('upgrade')[0] as (
+    req: import('node:http').IncomingMessage,
+    socket: import('node:stream').Duplex,
+    head: Buffer,
+  ) => void;
+  deps.http.removeAllListeners('upgrade');
+  deps.http.on('upgrade', (req, socket, head) => {
+    const url = req.url ?? '';
+    if (url.startsWith(SOCKET_IO_PATH)) {
+      sioUpgrade(req, socket, head);
+      return;
+    }
+    for (const listener of priorUpgradeListeners) {
+      (listener as (
+        req: import('node:http').IncomingMessage,
+        socket: import('node:stream').Duplex,
+        head: Buffer,
+      ) => void)(req, socket, head);
+    }
   });
 
   // Handshake auth: accept JWT via socket.handshake.auth.token OR cookie.

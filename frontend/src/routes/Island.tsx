@@ -3,7 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 import { islandsApi } from '@/api/islands';
 import type { IslandDetail, Whisper } from '@/api/types';
 import { strings } from '@/theme/strings';
-import { Badge, difficultyTone } from '@/ui/Badge';
+import { Badge } from '@/ui/Badge';
+import { DifficultyPill, type Tier } from '@/ui/DifficultyPill';
 import { Button } from '@/ui/Button';
 import { Card } from '@/ui/Card';
 import { Input } from '@/ui/Input';
@@ -126,7 +127,7 @@ export function Island(): JSX.Element {
     return (
       <section>
         <p>
-          <Link to={`/voyage/${category ?? ''}`}>← {strings.voyage.backToVoyage}</Link>
+          <Link to={`/challenges/${category ?? ''}`}>← {strings.voyage.backToVoyage}</Link>
         </p>
         <p role="alert">{loadErr}</p>
       </section>
@@ -153,7 +154,7 @@ export function Island(): JSX.Element {
   return (
     <article aria-labelledby="island-heading" className="pc-island">
       <p>
-        <Link to={`/voyage/${data.category}`}>← {strings.voyage.backToVoyage}</Link>
+        <Link to={`/challenges/${data.category}`}>← {strings.voyage.backToVoyage}</Link>
       </p>
 
       <header className="pc-island__head">
@@ -162,9 +163,7 @@ export function Island(): JSX.Element {
             {data.title}
           </h1>
           <div className="pc-island__meta">
-            <Badge tone={difficultyTone(data.difficulty)}>
-              {strings.voyage.difficultyLabels[data.difficulty]}
-            </Badge>
+            <DifficultyPill tier={data.difficulty as Tier} />
             <Badge tone="brass">
               {strings.island.pointsLabel}: {strings.island.pointsValue(data.current_points)}
             </Badge>

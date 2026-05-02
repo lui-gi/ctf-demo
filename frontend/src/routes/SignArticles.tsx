@@ -24,7 +24,7 @@ export function SignArticles(): JSX.Element {
     setSubmitting(true);
     try {
       await signArticles({ email, handle, password });
-      navigate('/voyage');
+      navigate('/challenges');
     } catch (e2) {
       const msg = e2 instanceof ApiError ? e2.message : strings.common.error();
       setErr(msg);
@@ -74,7 +74,7 @@ export function SignArticles(): JSX.Element {
         </form>
         <p style={{ marginTop: '1rem', fontSize: '0.875rem' }}>
           {strings.auth.haveAccount}{' '}
-          <Link to="/board">{strings.nav.boardLink}</Link>
+          <Link to="/login">{strings.nav.boardLink}</Link>
         </p>
       </Card>
     </section>

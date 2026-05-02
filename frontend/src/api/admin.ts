@@ -41,80 +41,93 @@ function qs(params: Record<string, string | undefined>): string {
   return s ? `?${s}` : '';
 }
 
+// Bosun envelopes responses as `{ ok: true, <key>: T }` (or with a message).
+// Helmsman keeps her API surface flat — every call below unwraps to the bare
+// payload type. Admin endpoints are reached through `/api/admin/*` so the Vite
+// dev proxy forwards them; production edge maps both `/api/admin/*` and
+// `/admin/*` to the backend, so this is a harmless dev-friendly aliasing.
+
 export const adminApi = {
-  listIslands(): Promise<IslandSummary[]> {
-    return apiFetch<IslandSummary[]>('/api/islands?include_unpublished=1');
+  async listIslands(): Promise<IslandSummary[]> {
+    const res = await apiFetch<{ ok: boolean; islands: IslandSummary[] }>(
+      '/api/islands?include_unpublished=1',
+    );
+    return res?.islands ?? [];
   },
 
-  createIsland(p: IslandUpsertPayload): Promise<IslandDetail> {
-    return apiFetch<IslandDetail>('/admin/islands', {
-      method: 'POST',
-      json: p,
-    });
+  async createIsland(p: IslandUpsertPayload): Promise<IslandDetail> {
+    const res = await apiFetch<{ ok: boolean; island: IslandDetail }>(
+      '/api/admin/islands',
+      { method: 'POST', json: p },
+    );
+    return res.island;
   },
 
-  updateIsland(id: string, p: Partial<IslandUpsertPayload>): Promise<IslandDetail> {
-    return apiFetch<IslandDetail>(`/admin/islands/${id}`, {
-      method: 'PATCH',
-      json: p,
-    });
+  async updateIsland(id: string, p: Partial<IslandUpsertPayload>): Promise<IslandDetail> {
+    const res = await apiFetch<{ ok: boolean; island: IslandDetail }>(
+      `/api/admin/islands/${id}`,
+      { method: 'PATCH', json: p },
+    );
+    return res.island;
   },
 
   deleteIsland(id: string): Promise<void> {
-    return apiFetch<void>(`/admin/islands/${id}`, { method: 'DELETE' });
+    return apiFetch<void>(`/api/admin/islands/${id}`, { method: 'DELETE' });
   },
 
-  setStatus(id: string, status: IslandStatus): Promise<IslandDetail> {
-    return apiFetch<IslandDetail>(`/admin/islands/${id}/status`, {
-      method: 'PATCH',
-      json: { status },
-    });
+  async setStatus(id: string, status: IslandStatus): Promise<IslandDetail> {
+    const res = await apiFetch<{ ok: boolean; island: IslandDetail }>(
+      `/api/admin/islands/${id}/status`,
+      { method: 'PATCH', json: { status } },
+    );
+    return res.island;
   },
 
   uploadFiles(id: string, files: File[]): Promise<{ url: string; name: string }[]> {
     const fd = new FormData();
     files.forEach((f) => fd.append('files', f, f.name));
-    return apiFetch(`/admin/islands/${id}/files`, {
+    return apiFetch(`/api/admin/islands/${id}/files`, {
       method: 'POST',
       body: fd,
     });
   },
 
-  addWhisper(
+  async addWhisper(
     id: string,
     p: { ordinal: 1 | 2 | 3; body_md: string; cost_points: number },
   ): Promise<Whisper> {
-    return apiFetch<Whisper>(`/admin/islands/${id}/whispers`, {
-      method: 'POST',
-      json: p,
-    });
+    const res = await apiFetch<{ ok: boolean; whisper: Whisper }>(
+      `/api/admin/islands/${id}/whispers`,
+      { method: 'POST', json: p },
+    );
+    return res.whisper;
   },
 
   rebuildSandbox(id: string): Promise<void> {
-    return apiFetch<void>(`/admin/sandbox/${id}/rebuild`, { method: 'POST' });
+    return apiFetch<void>(`/api/admin/sandbox/${id}/rebuild`, { method: 'POST' });
   },
 
   recalcCharts(): Promise<void> {
-    return apiFetch<void>('/admin/charts/recalc', { method: 'POST' });
+    return apiFetch<void>('/api/admin/charts/recalc', { method: 'POST' });
   },
 
   banCrew(id: string): Promise<void> {
-    return apiFetch<void>(`/admin/crews/${id}/ban`, { method: 'POST' });
+    return apiFetch<void>(`/api/admin/crews/${id}/ban`, { method: 'POST' });
   },
 
   banPirate(id: string): Promise<void> {
-    return apiFetch<void>(`/admin/pirates/${id}/ban`, { method: 'POST' });
+    return apiFetch<void>(`/api/admin/pirates/${id}/ban`, { method: 'POST' });
   },
 
   freezeVoyage(): Promise<void> {
-    return apiFetch<void>('/admin/voyage/freeze', { method: 'POST' });
+    return apiFetch<void>('/api/admin/voyage/freeze', { method: 'POST' });
   },
 
   unfreezeVoyage(): Promise<void> {
-    return apiFetch<void>('/admin/voyage/unfreeze', { method: 'POST' });
+    return apiFetch<void>('/api/admin/voyage/unfreeze', { method: 'POST' });
   },
 
-  submissions(filter: SubmissionsFilter = {}): Promise<AdminSubmissionRow[]> {
+  async submissions(filter: SubmissionsFilter = {}): Promise<AdminSubmissionRow[]> {
     const q = qs({
       crew_id: filter.crew_id,
       island_id: filter.island_id,
@@ -123,6 +136,9 @@ export const adminApi = {
       from: filter.from,
       to: filter.to,
     });
-    return apiFetch<AdminSubmissionRow[]>(`/admin/submissions${q}`);
+    const res = await apiFetch<{ ok: boolean; submissions: AdminSubmissionRow[] }>(
+      `/api/admin/submissions${q}`,
+    );
+    return res?.submissions ?? [];
   },
 };

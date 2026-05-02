@@ -10,7 +10,7 @@ import { strings } from '@/theme/strings';
  *   render the themed cooldown countdown.
  *
  * The wrapper is provider-agnostic: it does NOT touch tokens directly.
- * If a request returns 401, the caller is expected to re-route to /board.
+ * If a request returns 401, the caller is expected to re-route to /login.
  */
 
 export interface ApiErrorBody {

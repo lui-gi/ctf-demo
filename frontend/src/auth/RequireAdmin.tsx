@@ -16,7 +16,7 @@ export function RequireAdmin({ children }: { children: ReactNode }): JSX.Element
   }
 
   if (!user) {
-    return <Navigate to="/board" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   if (user.role !== 'admin') {

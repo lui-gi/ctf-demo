@@ -18,7 +18,7 @@ export function RequireAuth({ children }: { children: ReactNode }): JSX.Element 
   }
 
   if (!user) {
-    return <Navigate to="/board" replace state={{ from: location }} />;
+    return <Navigate to="/login" replace state={{ from: location }} />;
   }
 
   return <>{children}</>;

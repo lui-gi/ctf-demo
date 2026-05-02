@@ -58,6 +58,7 @@ export function islandRoutes(deps: Deps): FastifyPluginAsync {
         });
       }
       const { rows } = await deps.pool.query<{
+        id: string;
         slug: string;
         title: string;
         category: string;
@@ -69,7 +70,7 @@ export function islandRoutes(deps: Deps): FastifyPluginAsync {
         solves: string;
         solved: boolean;
       }>(
-        `SELECT i.slug, i.title, i.category, i.difficulty, i.base_points, i.current_points,
+        `SELECT i.id, i.slug, i.title, i.category, i.difficulty, i.base_points, i.current_points,
                 i.first_blood_crew, i.status,
                 COALESCE((SELECT COUNT(*) FROM submissions s WHERE s.island_id = i.id AND s.is_correct = true), 0)::text AS solves,
                 CASE WHEN $1::uuid IS NOT NULL AND EXISTS (
@@ -81,9 +82,22 @@ export function islandRoutes(deps: Deps): FastifyPluginAsync {
           ORDER BY i.category, i.difficulty, i.base_points`,
         [r.user.crew_id, wantsAll],
       );
+      // Non-admin callers don't get the internal `id` — the public surface is
+      // keyed by slug and exposing UUIDs to players would let them probe
+      // admin-only endpoints. Admin (`?include_unpublished=1` accepted only
+      // for them above) needs `id` because the IslandsTable uses it for
+      // PATCH/DELETE.
       return {
         ok: true,
-        islands: rows.map((row) => ({ ...row, solves: Number(row.solves) })),
+        islands: rows.map((row) => {
+          const solves = Number(row.solves);
+          if (wantsAll) {
+            return { ...row, solves };
+          }
+          const { id: _omit, ...rest } = row;
+          void _omit;
+          return { ...rest, solves };
+        }),
       };
     });
 

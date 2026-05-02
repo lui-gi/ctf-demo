@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0c1c2e" />
-    <meta name="description" content="progctf — a pirate-themed Capture the Flag voyage hosted by Deadwake." />
+    <meta name="description" content="progctf — a pirate-themed Capture the Flag event hosted by progsu." />
     <!--
       Strict CSP: no inline JS, only same-origin scripts and styles.
       'unsafe-inline' on style-src is required for xterm.js and many UI
@@ -13,9 +13,25 @@
     -->
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self' ws: wss:; img-src 'self' data: blob:; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' ws: wss:; img-src 'self' data: blob:; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';"
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=Inter:wght@400;500;600;700&display=swap"
+    />
+    <!--
+      Bricolage Grotesque — distinctive sans-serif for the hero title only.
+      Contemporary editorial character with a slight quirk that pairs with
+      the spectral Dutchman atmosphere. Loaded variable axes so we can swing
+      from medium body to bold display weight on a single face.
+    -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap"
+    />
     <title>progctf · The Voyage</title>
   </head>
   <body>

@@ -63,6 +63,17 @@ export function Voyage(): JSX.Element {
         <h1 id="voyage-heading" className="display">
           {strings.voyage.heading}
         </h1>
+        <p
+          className="pc-voyage__themed"
+          style={{
+            fontFamily: 'var(--font-display, "IM Fell English", Georgia, serif)',
+            fontStyle: 'italic',
+            opacity: 0.75,
+            margin: '0 0 0.25rem',
+          }}
+        >
+          {strings.voyage.headingThemed}
+        </p>
         <p className="pc-voyage__subtitle">{strings.voyage.subtitle}</p>
       </header>
       {err ? (
@@ -75,18 +86,33 @@ export function Voyage(): JSX.Element {
           const meta = summaries.find((s) => s.key === key);
           const total = meta?.total ?? 0;
           const solved = meta?.solved ?? 0;
+          const themedName = strings.voyage.categoryNames[key];
+          const plainName = strings.voyage.categoryPlainNames[key];
           return (
             <Link
               role="listitem"
               key={key}
-              to={`/voyage/${key}`}
+              to={`/challenges/${key}`}
               className="pc-island-cluster"
-              aria-label={strings.voyage.categoryNames[key]}
+              aria-label={`${themedName} — ${plainName}`}
               style={{ gridArea: `cluster-${i + 1}` }}
             >
               <div className="pc-island-cluster__shape" aria-hidden />
               <div className="pc-island-cluster__label">
-                <h2>{strings.voyage.categoryNames[key]}</h2>
+                <h2>{themedName}</h2>
+                <p
+                  className="pc-island-cluster__plain"
+                  style={{
+                    fontSize: '0.82rem',
+                    fontWeight: 600,
+                    letterSpacing: '0.04em',
+                    textTransform: 'uppercase',
+                    opacity: 0.78,
+                    margin: '0.1rem 0 0.35rem',
+                  }}
+                >
+                  {plainName}
+                </p>
                 <p>{strings.voyage.categoryBlurbs[key]}</p>
                 {islands === null ? (
                   <Skeleton width={120} height={14} />

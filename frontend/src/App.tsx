@@ -26,7 +26,7 @@ const AdminApp = lazy(() => import('@/admin/AdminApp'));
 
 // Closing Ceremony is lazy-loaded too — most players never reach the freeze
 // reveal, so the locked-letter constant + parchment styles ride a separate
-// chunk that loads only when a Pirate visits /voyage/closing.
+// chunk that loads only when a player visits /closing.
 const ClosingCeremony = lazy(() =>
   import('@/routes/ClosingCeremony').then((m) => ({ default: m.ClosingCeremony })),
 );
@@ -51,11 +51,11 @@ export function App(): JSX.Element {
               <Routes>
                 <Route element={<AppShell />}>
                   <Route index element={<Landing />} />
-                  <Route path="/sign-articles" element={<SignArticles />} />
-                  <Route path="/board" element={<Board />} />
+                  <Route path="/signup" element={<SignArticles />} />
+                  <Route path="/login" element={<Board />} />
 
                   <Route
-                    path="/voyage"
+                    path="/challenges"
                     element={
                       <RequireAuth>
                         <Voyage />
@@ -63,7 +63,7 @@ export function App(): JSX.Element {
                     }
                   />
                   <Route
-                    path="/voyage/:category"
+                    path="/challenges/:category"
                     element={
                       <RequireAuth>
                         <Category />
@@ -71,7 +71,7 @@ export function App(): JSX.Element {
                     }
                   />
                   <Route
-                    path="/voyage/:category/:slug"
+                    path="/challenges/:category/:slug"
                     element={
                       <RequireAuth>
                         <Island />
@@ -79,7 +79,7 @@ export function App(): JSX.Element {
                     }
                   />
                   <Route
-                    path="/charts"
+                    path="/leaderboard"
                     element={
                       <RequireAuth>
                         <Charts />
@@ -87,7 +87,7 @@ export function App(): JSX.Element {
                     }
                   />
                   <Route
-                    path="/voyage/closing"
+                    path="/closing"
                     element={
                       <RequireAuth>
                         <Suspense
@@ -103,7 +103,7 @@ export function App(): JSX.Element {
                     }
                   />
                   <Route
-                    path="/crew/:name"
+                    path="/team/:name"
                     element={
                       <RequireAuth>
                         <Crew />

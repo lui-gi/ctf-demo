@@ -1,5 +1,8 @@
 @import './typography.css';
 
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --color-deep-sea: #0c1c2e;
   --color-deep-sea-soft: #13283f;
@@ -15,6 +18,13 @@
   --color-faded-ink-soft: #4a4a4a;
   --color-ink-on-dark: #e8e0cf;
   --color-ink-on-dark-dim: #a89f8c;
+
+  /* Difficulty pill colors — added 2026-05-02 vocabulary pivot. Always shown
+     alongside themed tier names (The Port / Open Sea / Cursed Depths). */
+  --color-diff-easy: #4ea344;
+  --color-diff-easy-dim: #355e30;
+  --color-diff-medium: #d4972e;
+  --color-diff-medium-dim: #8a611d;
 
   --radius-sm: 4px;
   --radius-md: 8px;
@@ -133,11 +143,31 @@ main#main-content {
   margin: 0 auto;
   padding: var(--space-6) var(--space-5);
 }
+/* Full-bleed override — applied by AppShell only on '/' so the cinematic
+   Landing hero spans the viewport edge-to-edge instead of being capped at
+   the 1200px column. Header + footer chrome retain their own widths.
+   Negative top margin pulls the hero up under the glassmorphic sticky
+   header so the sky fills the very top of the viewport and the header
+   floats on top of it (rather than sitting above as an opaque band). */
+main#main-content.main--full-bleed {
+  max-width: none;
+  padding: 0;
+  margin-top: calc(-1 * var(--app-header-height, 69px));
+}
 
 .app-header {
-  background: var(--color-deep-sea-deep);
-  border-bottom: 1px solid var(--color-brass-dim);
+  /* Glassmorphic — semi-transparent deep sea + backdrop blur so the
+     header floats over whatever is behind it (sky on '/', deep-sea-navy
+     on contained pages). */
+  background: rgba(8, 19, 31, 0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(201, 162, 74, 0.18);
   padding: var(--space-3) var(--space-5);
+  /* Float on top of the hero / page content as the user scrolls. */
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 .app-header-inner {
   max-width: 1200px;

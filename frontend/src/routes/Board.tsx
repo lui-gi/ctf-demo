@@ -28,7 +28,7 @@ export function Board(): JSX.Element {
     setSubmitting(true);
     try {
       await board({ email, password });
-      const dest = (location.state as LocationState | null)?.from?.pathname ?? '/voyage';
+      const dest = (location.state as LocationState | null)?.from?.pathname ?? '/challenges';
       navigate(dest);
     } catch (e2) {
       const msg = e2 instanceof ApiError ? e2.message : strings.common.error();
@@ -69,7 +69,7 @@ export function Board(): JSX.Element {
         </form>
         <p style={{ marginTop: '1rem', fontSize: '0.875rem' }}>
           {strings.auth.noAccount}{' '}
-          <Link to="/sign-articles">{strings.nav.signLink}</Link>
+          <Link to="/signup">{strings.nav.signLink}</Link>
         </p>
       </Card>
     </section>

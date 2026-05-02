@@ -14,6 +14,11 @@
   --font-display:
     'IM Fell English', 'IM Fell English SC', 'Cormorant Garamond',
     'EB Garamond', Georgia, 'Times New Roman', serif;
+  /* Distinctive sans-serif used ONLY for the Landing hero title (and its
+   * matching uppercase eyebrow). The rest of the app keeps IM Fell English
+   * for atmospheric continuity (categories, motto, etc.). */
+  --font-hero-sans:
+    'Bricolage Grotesque', 'Outfit', 'Archivo', 'Helvetica Neue', sans-serif;
   --font-mono:
     'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 

@@ -10,6 +10,7 @@ import { authRoutes } from './routes/auth.js';
 import { crewRoutes } from './routes/crews.js';
 import { islandRoutes } from './routes/islands.js';
 import { chartsRoutes } from './routes/charts.js';
+import { voyageRoutes } from './routes/voyage.js';
 import { adminRoutes } from './routes/admin/index.js';
 import { startWebsocket } from './ws/index.js';
 import { SandboxSessionRegistry } from './services/sandboxSessions.js';
@@ -56,6 +57,10 @@ export async function buildApp(): Promise<{ app: FastifyInstance; start: () => P
   await app.register(authRoutes({ pool, env }), { prefix: '/api/auth' });
   await app.register(crewRoutes({ pool, env }), { prefix: '/api/crews' });
   await app.register(chartsRoutes({ pool, redis, env }), { prefix: '/api/charts' });
+  // Public read-only voyage state (no auth — every player needs the freeze flag
+  // to gate submissions / show the closing ceremony screen). Admin freeze /
+  // unfreeze still lives behind /api/admin/voyage.
+  await app.register(voyageRoutes({ pool, redis, env }), { prefix: '/api/voyage' });
 
   // We register the WS bus AFTER fastify ready so islands/admin can wire broadcasts to it.
   // For simplicity we wire a no-op placeholder bus, then replace at start() time.
@@ -97,6 +102,22 @@ export async function buildApp(): Promise<{ app: FastifyInstance; start: () => P
       sandboxSessions,
     }),
     { prefix: '/admin' },
+  );
+  // Dev/SPA-friendly alias: the Vite dev server proxies only `/api/*` to the
+  // backend, but the canonical admin contract (per OpenAPI + OPERATOR_RUNBOOK)
+  // lives at `/admin/*`. Mount the same plugin again under `/api/admin` so the
+  // browser SPA can reach admin endpoints through the same `/api` proxy that
+  // every other request uses. Production edge proxies route both prefixes
+  // identically, so this is purely a cooperation between Helmsman (SPA) and
+  // Bosun in dev. Tests + curl-based runbook calls keep using `/admin/*`.
+  await app.register(
+    adminRoutes({
+      pool, redis, env,
+      broadcastIslandStatus: (ev) => wsRef.broadcastIslandStatus(ev),
+      broadcastVoyageState: (ev) => wsRef.broadcastVoyageState(ev),
+      sandboxSessions,
+    }),
+    { prefix: '/api/admin' },
   );
 
   let wsHandle: Awaited<ReturnType<typeof startWebsocket>> | null = null;

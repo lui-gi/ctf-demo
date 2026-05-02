@@ -3,7 +3,8 @@ import { Link, useParams } from 'react-router-dom';
 import { islandsApi } from '@/api/islands';
 import type { IslandCategory, IslandSummary } from '@/api/types';
 import { strings } from '@/theme/strings';
-import { Badge, difficultyTone } from '@/ui/Badge';
+import { Badge } from '@/ui/Badge';
+import { DifficultyPill, type Tier } from '@/ui/DifficultyPill';
 import { Card } from '@/ui/Card';
 import { Skeleton } from '@/ui/Skeleton';
 import { ApiError } from '@/api/client';
@@ -34,6 +35,7 @@ export function Category(): JSX.Element {
   }, [cat]);
 
   const heading = strings.voyage.categoryNames[cat] ?? cat;
+  const plain = strings.voyage.categoryPlainNames[cat] ?? '';
   const blurb = strings.voyage.categoryBlurbs[cat] ?? '';
 
   const grouped = useMemo(() => {
@@ -47,11 +49,25 @@ export function Category(): JSX.Element {
   return (
     <section aria-labelledby="cat-heading">
       <p>
-        <Link to="/voyage">← {strings.voyage.backToVoyage}</Link>
+        <Link to="/challenges">← {strings.voyage.backToVoyage}</Link>
       </p>
       <h1 id="cat-heading" className="display">
         {heading}
       </h1>
+      {plain ? (
+        <p
+          style={{
+            fontSize: '0.95rem',
+            fontWeight: 600,
+            letterSpacing: '0.04em',
+            textTransform: 'uppercase',
+            color: 'var(--color-brass)',
+            margin: '0.1rem 0 0.5rem',
+          }}
+        >
+          {plain}
+        </p>
+      ) : null}
       {blurb ? <p style={{ color: 'var(--color-ink-on-dark-dim)' }}>{blurb}</p> : null}
       {err ? <p role="alert">{err}</p> : null}
       {rows === null ? (
@@ -64,25 +80,27 @@ export function Category(): JSX.Element {
         grouped.map((g) =>
           g.items.length === 0 ? null : (
             <div key={g.difficulty} className="pc-category__tier">
-              <h2 className="pc-category__tier-heading">
-                {strings.voyage.difficultyLabels[g.difficulty]}
+              <h2
+                className="pc-category__tier-heading"
+                style={{ display: 'flex', alignItems: 'center', gap: 10 }}
+              >
+                <span>{strings.voyage.difficultyLabels[g.difficulty]}</span>
+                <DifficultyPill tier={g.difficulty as Tier} showThemed={false} />
               </h2>
               <div className="pc-category__grid">
                 {g.items.map((isl) => (
                   <Link
                     key={isl.id}
-                    to={`/voyage/${cat}/${isl.slug}`}
+                    to={`/challenges/${cat}/${isl.slug}`}
                     style={{ textDecoration: 'none', color: 'inherit', borderBottom: 0 }}
                   >
                     <Card
                       variant="deep"
                       interactive
                       header={
-                        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, alignItems: 'center' }}>
                           <span>{isl.title}</span>
-                          <Badge tone={difficultyTone(isl.difficulty)}>
-                            {strings.voyage.difficultyLabels[isl.difficulty]}
-                          </Badge>
+                          <DifficultyPill tier={isl.difficulty as Tier} />
                         </div>
                       }
                       footer={
