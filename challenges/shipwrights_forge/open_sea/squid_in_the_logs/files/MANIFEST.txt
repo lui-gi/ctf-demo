@@ -1,5 +1,0 @@
-Squid in the Logs — player-served files
-==========================================
-access.log    — Squid combined-format access log, 200000 lines, 42,402,158 bytes
-                 Most rows are noise traffic to common domains; one
-                 covert exfil channel is hidden in there.

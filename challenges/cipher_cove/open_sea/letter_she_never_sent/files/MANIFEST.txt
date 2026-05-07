@@ -1,8 +1,0 @@
-The Letter She Never Sent — player-served files
-==================================================
-letter.bin  — encrypted box. PBKDF2-HMAC-SHA256(salt=b"deadwake-tides", 100000, 32)
-              + AES-256-CBC. First 16 bytes are the IV.
-waves.wav   — 16-bit PCM mono 44.1 kHz surf. Carries an audio-LSB payload.
-shanty.pdf  — 6-page broadside of "The Tides Forget".
-Three artifacts; one passphrase chains them. The audio names the song,
-the song names the words, the words unlock the box.

@@ -1,9 +1,0 @@
-No downloadable files for this Island.
-
-The Ghost Fleet's Supply Chain is a hosted OSINT chain. Players are given
-the starting URL (marrowtide.example, provided at Voyage start) and must
-walk a five-stage breadcrumb chain across hosted infrastructure. There
-are no static artifacts to download.
-
-The deployable infrastructure that backs this challenge is built from
-../build/ via `./build.sh up`.

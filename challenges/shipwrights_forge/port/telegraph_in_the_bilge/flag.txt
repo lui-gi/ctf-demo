@@ -1,1 +1,0 @@
-progctf{bilge_to_long_dread_clear_text}

@@ -1,8 +1,0 @@
-The Bosun's Keyring — player-served files
-==========================================
-shipnames.txt  — 800 fictional 18th-century ship names, one per line.
-                  No duplicates. The bosun's chosen name is somewhere in the
-                  middle of the list (positions 51..750).
-treasure.7z    — header-encrypted 7-Zip archive containing one file.
-                  Password follows the leaked pattern <shipname><year><!|?|.>
-                  with year in the 1790-1810 range.

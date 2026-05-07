@@ -1,5 +1,0 @@
-parchment.txt	size=576	sha256=870a607750c9e47feb51baada1f32e735ab74016c7846a2f4593920c25caf38b
-
-# How to solve:
-#   tr 'A-Za-z' 'N-ZA-Mn-za-m' < parchment.txt
-#   ... OR python -c "import sys,codecs; print(codecs.decode(sys.stdin.read(),'rot_13'))" < parchment.txt

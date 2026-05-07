@@ -1,5 +1,0 @@
-wreck.jpg	size=5503	sha256=fe7c036efe3ec7b613bd460a3e4ac60b2445228d09fd6589db7e917ab8b38bd1
-
-# How to solve:
-#   exiftool wreck.jpg | grep -i comment
-#   ... OR python -c "from PIL import Image; print(Image.open('wreck.jpg').getexif())"

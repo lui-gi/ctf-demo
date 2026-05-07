@@ -1,3 +1,0 @@
-Contact: mailto:security@marrowtide.example
-Preferred-Languages: en
-Policy: https://marrowtide.example/blog/transparency-pledge.html

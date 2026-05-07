@@ -1,6 +1,0 @@
-tidekeeper.lime    NOT BUILT — see solution.md "Verification" block. Powder
-                   Monkey blocked: requires a Linux build VM with LiME and a
-                   live gpg-agent + unlinked-but-cached SQLCipher DB. No
-                   synthetic artifact has been shipped per the task brief's
-                   "no fake memory dump" rule. Quartermaster escalation
-                   pending.

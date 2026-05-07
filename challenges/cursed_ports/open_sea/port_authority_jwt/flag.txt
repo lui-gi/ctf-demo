@@ -1,1 +1,0 @@
-progctf{never_commit_thy_secrets}

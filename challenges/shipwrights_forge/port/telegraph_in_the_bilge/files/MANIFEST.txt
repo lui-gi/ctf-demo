@@ -1,5 +1,0 @@
-bilge.pcap	size=8267	sha256=6592addddc020cc496cfedcefaba19afd13c5878aabad80a1cf29f569199881f
-
-# How to solve:
-#   Wireshark: Analyze → Follow → TCP Stream — the password line IS the Treasure.
-#   ... OR tshark -r bilge.pcap -q -z follow,tcp,ascii,0

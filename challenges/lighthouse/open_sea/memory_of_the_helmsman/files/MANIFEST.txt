@@ -1,7 +1,0 @@
-sealed.gpg   AES256-symmetric GPG ciphertext (111 bytes). The plaintext is the
-             flag. Passphrase recoverable from the dump (specifically: from a
-             vim swap file living in /tmp).
-
-dump.lime    256 MiB Linux memory dump in LiME format (PENDING — must be built
-             on a Linux VM; see solution.md "Verification" block for the
-             unblocked-operator runbook).

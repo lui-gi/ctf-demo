@@ -1,1 +1,0 @@
-progctf{drowned_eli_forgot_to_escape}

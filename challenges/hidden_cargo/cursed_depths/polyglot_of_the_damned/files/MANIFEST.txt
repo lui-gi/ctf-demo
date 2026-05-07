@@ -1,4 +1,0 @@
-Polyglot of the Damned — player-served file
-===============================================
-polyglot.bin — a single file with three faces. file/binwalk it.
-Three fragments live in three formats; the fourth is forged from the rest.

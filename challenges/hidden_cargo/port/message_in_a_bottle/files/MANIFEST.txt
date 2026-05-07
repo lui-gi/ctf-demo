@@ -1,5 +1,0 @@
-bottle.png	size=1689	sha256=1893bedcc13cddcae0ef13c0b25c7bd2204a51402536e2608fbf33f4259d6cca
-
-# How to solve:
-#   strings bottle.png | grep progctf
-#   ... OR open in a hex editor; trailing ASCII appears after the IEND chunk's CRC.

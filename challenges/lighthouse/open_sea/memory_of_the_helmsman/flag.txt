@@ -1,1 +1,0 @@
-progctf{the_helmsman_left_his_swap_open}
