@@ -159,7 +159,7 @@ export default function LandingPage() {
                 ctf
               </span>
             </h1>
-            <p className="text-steel/70 text-xs tracking-[0.4em] uppercase">Encrypted Treasures</p>
+            <p className="text-white font-light text-xs tracking-[0.4em] uppercase">Encrypted Treasures</p>
           </div>
 
           {/* Ship */}
