@@ -19,7 +19,7 @@ export default function ChallengesPage() {
         <p>The seas are rough — couldn't load challenges.</p>
         <button
           onClick={() => { setError(false); api.get<Category[]>('/api/categories').then(setCategories).catch(() => setError(true)) }}
-          className="px-4 py-2 border border-navy-700 rounded text-sm hover:text-white transition-colors"
+          className="px-4 py-2 border border-steel/20 rounded-lg text-sm hover:border-teal/40 hover:text-white transition-all duration-300"
         >
           Try again
         </button>
@@ -28,10 +28,12 @@ export default function ChallengesPage() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto w-full px-6 py-10">
-      <h1 className="text-2xl font-bold text-white mb-2">Challenges</h1>
-      <p className="text-steel text-sm mb-8">Select a category to begin your hunt.</p>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="max-w-6xl mx-auto w-full px-6 py-10">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-teal bg-clip-text text-transparent mb-1">Challenges</h1>
+        <p className="text-steel text-sm">Select a category to begin your hunt.</p>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {categories.map(cat => (
           <CategoryCard key={cat.slug} category={cat} />
         ))}

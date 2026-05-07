@@ -67,43 +67,47 @@ export default function CrewPage() {
   if (view === 'no-crew') {
     return (
       <div className="max-w-md mx-auto w-full px-6 py-10 flex flex-col gap-8">
-        <h1 className="text-2xl font-bold text-white">Crew</h1>
-        <p className="text-steel text-sm -mt-6">You're sailing solo. Create or join a crew.</p>
+        <div>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-teal bg-clip-text text-transparent mb-1">Crew</h1>
+          <p className="text-steel text-sm">You're sailing solo. Create or join a crew.</p>
+        </div>
 
         {formError && <p className="text-danger text-xs">{formError}</p>}
 
-        <form onSubmit={handleCreate} className="flex flex-col gap-3">
-          <h2 className="text-white font-semibold">Create a Crew</h2>
-          <input
-            type="text"
-            required
-            value={crewName}
-            onChange={e => setCrewName(e.target.value)}
-            placeholder="Crew name"
-            className="bg-navy-950 border border-navy-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-steel"
-          />
-          <button
-            type="submit"
-            className="py-2 bg-amber text-navy-950 font-bold rounded hover:bg-amber/90 transition-colors"
-          >
-            Create Crew
-          </button>
-        </form>
+        <div className="bg-[#060f1e]/80 backdrop-blur-sm border border-steel/10 rounded-xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.4)]">
+          <form onSubmit={handleCreate} className="flex flex-col gap-3">
+            <h2 className="text-white font-semibold mb-1">Create a Crew</h2>
+            <input
+              type="text"
+              required
+              value={crewName}
+              onChange={e => setCrewName(e.target.value)}
+              placeholder="Crew name"
+              className="bg-[#040d1a] border border-steel/15 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-teal/50 transition-colors"
+            />
+            <button
+              type="submit"
+              className="py-2 bg-teal text-navy-950 font-bold rounded-lg hover:bg-teal/90 transition-colors shadow-[0_0_20px_rgba(62,207,190,0.25)]"
+            >
+              Create Crew
+            </button>
+          </form>
+        </div>
 
-        <div className="border-t border-navy-700 pt-6">
+        <div className="bg-[#060f1e]/80 backdrop-blur-sm border border-steel/10 rounded-xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.4)]">
           <form onSubmit={handleJoin} className="flex flex-col gap-3">
-            <h2 className="text-white font-semibold">Join a Crew</h2>
+            <h2 className="text-white font-semibold mb-1">Join a Crew</h2>
             <input
               type="text"
               required
               value={inviteCode}
               onChange={e => setInviteCode(e.target.value)}
               placeholder="Invite code"
-              className="bg-navy-950 border border-navy-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-steel font-mono"
+              className="bg-[#040d1a] border border-steel/15 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-teal/50 transition-colors font-mono"
             />
             <button
               type="submit"
-              className="py-2 border border-steel text-steel rounded hover:text-white hover:border-white transition-colors"
+              className="py-2 border border-teal/30 text-teal rounded-lg hover:bg-teal/10 hover:border-teal/60 transition-all duration-300"
             >
               Join Crew
             </button>
@@ -117,7 +121,9 @@ export default function CrewPage() {
     <div className="max-w-2xl mx-auto w-full px-6 py-10">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-white">{crew!.name}</h1>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-teal bg-clip-text text-transparent mb-1">
+            {crew!.name}
+          </h1>
           <p className="text-steel text-xs mt-1">
             Invite code:{' '}
             <span className="font-mono text-amber">{crew!.inviteCode}</span>
@@ -131,22 +137,24 @@ export default function CrewPage() {
         </button>
       </div>
 
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="text-steel text-xs uppercase tracking-wide border-b border-navy-700">
-            <th className="text-left pb-3">Member</th>
-            <th className="text-right pb-3">Points</th>
-          </tr>
-        </thead>
-        <tbody>
-          {crew!.members.map(m => (
-            <tr key={m.id} className="border-b border-navy-700/50">
-              <td className="py-3 text-white">{m.username}</td>
-              <td className="py-3 text-right text-amber font-mono">{m.points.toLocaleString()}</td>
+      <div className="bg-[#060f1e]/80 backdrop-blur-sm border border-steel/10 rounded-xl shadow-[0_4px_24px_rgba(0,0,0,0.4)] overflow-hidden">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="text-steel/70 text-xs uppercase tracking-widest border-b border-steel/10">
+              <th className="text-left px-5 py-4">Member</th>
+              <th className="text-right px-5 py-4">Points</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {crew!.members.map(m => (
+              <tr key={m.id} className="border-b border-steel/5 hover:bg-white/[0.02] transition-colors">
+                <td className="px-5 py-3 text-white">{m.username}</td>
+                <td className="px-5 py-3 text-right text-amber font-mono">{m.points.toLocaleString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
