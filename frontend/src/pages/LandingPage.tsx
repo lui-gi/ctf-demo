@@ -182,7 +182,8 @@ export default function LandingPage() {
           <button
             onClick={scrollToAbout}
             aria-label="Scroll to about section"
-            className="text-teal text-3xl hover:opacity-70 transition-opacity"
+            className="text-white text-4xl hover:opacity-70 transition-opacity"
+            style={{ textShadow: '0 0 12px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.4)' }}
           >
             <span aria-hidden="true">↓</span>
           </button>
