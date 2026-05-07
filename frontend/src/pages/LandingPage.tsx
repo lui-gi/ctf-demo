@@ -178,22 +178,14 @@ export default function LandingPage() {
             />
           </div>
 
-          {/* CTAs */}
-          <div className="flex gap-3 items-center">
-            <button
-              onClick={scrollToAbout}
-              className="px-8 py-3 bg-teal text-navy-950 font-bold rounded hover:opacity-90 transition-opacity text-sm"
-            >
-              Learn More
-            </button>
-            <button
-              onClick={scrollToAbout}
-              aria-label="Scroll to about section"
-              className="w-11 h-11 border border-navy-700/80 text-steel rounded hover:text-white hover:border-steel/60 transition-colors text-lg backdrop-blur-sm flex items-center justify-center"
-            >
-              <span aria-hidden="true">↓</span>
-            </button>
-          </div>
+          {/* CTA */}
+          <button
+            onClick={scrollToAbout}
+            aria-label="Scroll to about section"
+            className="text-teal text-3xl hover:opacity-70 transition-opacity"
+          >
+            <span aria-hidden="true">↓</span>
+          </button>
         </div>
 
         <style>{`
