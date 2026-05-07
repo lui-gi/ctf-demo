@@ -160,9 +160,10 @@ export default function LandingPage() {
             </button>
             <button
               onClick={scrollToAbout}
+              aria-label="Scroll to about section"
               className="w-11 h-11 border border-navy-700/80 text-steel rounded hover:text-white hover:border-steel/60 transition-colors text-lg backdrop-blur-sm flex items-center justify-center"
             >
-              ↓
+              <span aria-hidden="true">↓</span>
             </button>
           </div>
         </div>
