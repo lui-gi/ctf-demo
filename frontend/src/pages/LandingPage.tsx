@@ -8,6 +8,16 @@ const STARS: [number, number, number][] = [
   [17, 57, 2], [23, 67, 2], [6, 77, 3], [29, 5, 2],
 ]
 
+const CATEGORIES = [
+  { icon: '⚓', name: 'Cursed Ports',       subtitle: 'Web Exploitation',      flavor: 'Find the cracks in the hull and take the wheel.' },
+  { icon: '🔐', name: 'Cipher Cove',        subtitle: 'Cryptography',           flavor: 'Crack ancient codes and hidden messages of the deep.' },
+  { icon: '🔧', name: "Shipwright's Forge", subtitle: 'Network & Log Analysis', flavor: "Trace the ship's path through turbulent waters." },
+  { icon: '🔦', name: 'Lighthouse',         subtitle: 'Forensics',              flavor: 'Illuminate what others buried in the dark.' },
+  { icon: '🔭', name: "Crow's Nest",        subtitle: 'OSINT',                  flavor: 'Scout the horizon and find what no map will show you.' },
+  { icon: '📦', name: 'Hidden Cargo',       subtitle: 'Steganography',          flavor: 'Secrets hidden in plain sight within the cargo hold.' },
+  { icon: '🗝️', name: 'Keymaster',          subtitle: 'Password Cracking',      flavor: 'Every lock has a weakness if you know where to look.' },
+]
+
 function SectionDivider() {
   return (
     <div style={{ width: '100%', height: '1px', background: 'linear-gradient(90deg, transparent, rgba(62,207,190,0.25), transparent)' }} />
@@ -176,9 +186,76 @@ export default function LandingPage() {
         `}</style>
       </div>
 
-      {/* ── INFO SECTIONS (placeholder) ── */}
+      {/* ── INFO SECTIONS ── */}
       <div style={{ background: '#010310' }}>
+
         <SectionDivider />
+
+        {/* ABOUT */}
+        <section id="about" style={{ padding: '80px 24px' }}>
+          <div style={{ maxWidth: '960px', margin: '0 auto' }}>
+            <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#3ecfbe', marginBottom: '16px' }}>
+              What is progctf?
+            </p>
+            <h2 style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)', fontWeight: 900, color: '#fff', marginBottom: '20px', lineHeight: 1.15 }}>
+              Plunder the depths.<br />Claim your bounty.
+            </h2>
+            <p style={{ fontSize: '15px', lineHeight: 1.75, color: '#8ab4e8', maxWidth: '680px' }}>
+              progctf is a 48-hour pirate-themed jeopardy-style Capture the Flag competition. Navigate 7 challenge
+              categories spanning web exploitation, cryptography, forensics, and more. Form a crew, solve challenges,
+              earn points — and etch your name into the bounty board.
+            </p>
+            <div style={{ display: 'flex', gap: '40px', marginTop: '40px', flexWrap: 'wrap' }}>
+              {([['30', 'Challenges'], ['7', 'Categories'], ['48h', 'Duration'], ['3', 'Difficulty tiers']] as const).map(([val, label]) => (
+                <div key={label}>
+                  <div style={{ fontSize: '2.8rem', fontWeight: 900, color: '#fff', lineHeight: 1 }}>{val}</div>
+                  <div style={{ fontSize: '11px', color: '#8ab4e8', letterSpacing: '0.2em', textTransform: 'uppercase', marginTop: '4px' }}>{label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <SectionDivider />
+
+        {/* CATEGORIES */}
+        <section style={{ background: '#020820', padding: '80px 24px' }}>
+          <div style={{ maxWidth: '960px', margin: '0 auto' }}>
+            <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#3ecfbe', marginBottom: '16px' }}>
+              Challenge Categories
+            </p>
+            <h2 style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)', fontWeight: 900, color: '#fff', marginBottom: '16px', lineHeight: 1.15 }}>
+              Seven seas to conquer.
+            </h2>
+            <p style={{ fontSize: '15px', lineHeight: 1.75, color: '#8ab4e8', maxWidth: '680px', marginBottom: '40px' }}>
+              Each category hides treasures at three depths — easy, medium, and hard. No crew has ever claimed them all.
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '16px' }}>
+              {CATEGORIES.map(({ icon, name, subtitle, flavor }) => (
+                <div
+                  key={name}
+                  style={{
+                    background: '#071230',
+                    border: '1px solid rgba(26,58,106,0.7)',
+                    borderRadius: '6px',
+                    padding: '20px 18px',
+                    transition: 'border-color 0.2s',
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(62,207,190,0.4)')}
+                  onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(26,58,106,0.7)')}
+                >
+                  <div style={{ fontSize: '28px', marginBottom: '12px' }}>{icon}</div>
+                  <div style={{ fontSize: '14px', fontWeight: 700, color: '#fff', marginBottom: '4px' }}>{name}</div>
+                  <div style={{ fontSize: '11px', color: '#3ecfbe', marginBottom: '6px', letterSpacing: '0.05em' }}>{subtitle}</div>
+                  <div style={{ fontSize: '12px', color: '#8ab4e8', lineHeight: 1.5 }}>{flavor}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <SectionDivider />
+
       </div>
     </>
   )
