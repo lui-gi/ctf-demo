@@ -18,6 +18,24 @@ const CATEGORIES = [
   { icon: '🗝️', name: 'Keymaster',          subtitle: 'Password Cracking',      flavor: 'Every lock has a weakness if you know where to look.' },
 ]
 
+const SPONSORED = [
+  {
+    sponsor: 'CrowdStrike',
+    category: 'Cursed Ports',
+    flavor: 'Challenges built around real-world endpoint threats and adversary tradecraft. Think you can outmaneuver the falcon?',
+  },
+  {
+    sponsor: 'Sophos',
+    category: 'Lighthouse',
+    flavor: 'Forensics challenges inspired by real threat investigations. Dig through the artifacts — the evidence is all there.',
+  },
+  {
+    sponsor: 'Equifax',
+    category: 'Cipher Cove',
+    flavor: 'Cryptography challenges drawn from financial data security. Protect the vault — or crack it.',
+  },
+]
+
 function SectionDivider() {
   return (
     <div style={{ width: '100%', height: '1px', background: 'linear-gradient(90deg, transparent, rgba(62,207,190,0.25), transparent)' }} />
@@ -255,6 +273,103 @@ export default function LandingPage() {
         </section>
 
         <SectionDivider />
+
+        {/* SPONSORS */}
+        <section style={{ padding: '80px 24px' }}>
+          <div style={{ maxWidth: '960px', margin: '0 auto' }}>
+            <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#3ecfbe', marginBottom: '16px' }}>
+              Sponsors
+            </p>
+            <h2 style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)', fontWeight: 900, color: '#fff', marginBottom: '16px', lineHeight: 1.15 }}>
+              Made possible by.
+            </h2>
+            <p style={{ fontSize: '15px', lineHeight: 1.75, color: '#8ab4e8', maxWidth: '680px', marginBottom: '40px' }}>
+              progctf is supported by industry leaders who believe in growing the next generation of security professionals.
+            </p>
+            <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap' }}>
+              {['CrowdStrike', 'Sophos', 'Equifax'].map(name => (
+                <div
+                  key={name}
+                  style={{
+                    flex: '1 1 200px',
+                    border: '1px solid rgba(26,58,106,0.7)',
+                    borderRadius: '6px',
+                    padding: '40px 24px',
+                    background: '#071230',
+                    textAlign: 'center',
+                    color: '#8ab4e8',
+                    fontSize: '15px',
+                    fontWeight: 700,
+                    letterSpacing: '0.05em',
+                  }}
+                >
+                  {name}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <SectionDivider />
+
+        {/* SPONSORED CATEGORIES */}
+        <section style={{ background: '#020820', padding: '80px 24px' }}>
+          <div style={{ maxWidth: '960px', margin: '0 auto' }}>
+            <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.3em', textTransform: 'uppercase', color: '#3ecfbe', marginBottom: '16px' }}>
+              Sponsored Categories
+            </p>
+            <h2 style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.4rem)', fontWeight: 900, color: '#fff', marginBottom: '16px', lineHeight: 1.15 }}>
+              Hunt for bigger bounties.
+            </h2>
+            <p style={{ fontSize: '15px', lineHeight: 1.75, color: '#8ab4e8', maxWidth: '680px', marginBottom: '40px' }}>
+              Select categories are sponsored by industry partners. Challenges in these categories are crafted around
+              real tools, techniques, and scenarios from the sponsor's world — and the rewards reflect it. Solve a
+              sponsored challenge, earn a larger prize.
+            </p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '20px' }}>
+              {SPONSORED.map(({ sponsor, category, flavor }) => (
+                <div
+                  key={sponsor}
+                  style={{
+                    background: '#071230',
+                    border: '1px solid rgba(62,207,190,0.3)',
+                    borderRadius: '6px',
+                    padding: '24px',
+                    position: 'relative',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, #3ecfbe, rgba(62,207,190,0.2))' }} />
+                  <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.3em', color: '#3ecfbe', marginBottom: '10px', textTransform: 'uppercase' }}>
+                    Sponsor
+                  </p>
+                  <div style={{ fontSize: '18px', fontWeight: 700, color: '#fff', marginBottom: '6px' }}>{sponsor}</div>
+                  <div style={{ fontSize: '13px', color: '#8ab4e8', marginBottom: '16px' }}>
+                    Sponsoring: <span style={{ color: '#fff' }}>{category}</span>
+                  </div>
+                  <div style={{ fontSize: '12px', color: '#8ab4e8', lineHeight: 1.6 }}>{flavor}</div>
+                  <div style={{ marginTop: '16px', fontSize: '11px', color: '#3ecfbe', fontWeight: 700 }}>★ Bonus prizes</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <SectionDivider />
+
+        {/* FINAL CTA */}
+        <div style={{ textAlign: 'center', padding: '80px 24px 100px', background: 'linear-gradient(180deg, #020820 0%, #010310 100%)' }}>
+          <h2 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', fontWeight: 900, color: '#fff', marginBottom: '12px' }}>
+            Ready to set sail?
+          </h2>
+          <p style={{ color: '#8ab4e8', fontSize: '14px', marginBottom: '32px' }}>Registration is free. Your crew is waiting.</p>
+          <Link
+            to="/register"
+            className="px-10 py-3 bg-teal text-navy-950 font-bold rounded hover:opacity-90 transition-opacity text-sm inline-block"
+          >
+            Join the Hunt
+          </Link>
+        </div>
 
       </div>
     </>
