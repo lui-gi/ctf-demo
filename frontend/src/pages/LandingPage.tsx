@@ -46,10 +46,24 @@ export default function LandingPage() {
         }}
       />
 
+      {/* Clouds — behind everything */}
+      <img
+        src="/assets/clouds.png"
+        alt=""
+        className="absolute pointer-events-none select-none w-full"
+        style={{
+          zIndex: 2,
+          top: 0,
+          left: 0,
+          opacity: 0.22,
+          mixBlendMode: 'screen',
+        }}
+      />
+
       {/* Mid-ground layered hills */}
       <svg
         className="absolute pointer-events-none w-full"
-        style={{ zIndex: 4, bottom: '24%', left: 0 }}
+        style={{ zIndex: 3, bottom: '18%', left: 0 }}
         viewBox="0 0 1440 200"
         preserveAspectRatio="none"
         fill="none"
@@ -64,6 +78,34 @@ export default function LandingPage() {
         />
       </svg>
 
+      {/* Water surface */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          zIndex: 3,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: '22%',
+          background: 'linear-gradient(180deg, transparent 0%, #05102a 25%, #040d22 60%, #030918 100%)',
+        }}
+      />
+
+      {/* Moonlight streak on water */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          zIndex: 3,
+          bottom: '3%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '160px',
+          height: '140px',
+          background: 'radial-gradient(ellipse at 50% 10%, rgba(255,250,205,0.12) 0%, rgba(255,250,205,0.05) 50%, transparent 100%)',
+          filter: 'blur(14px)',
+        }}
+      />
+
       {/* Nav */}
       <nav className="relative flex items-center justify-end gap-4 px-10 py-4" style={{ zIndex: 10 }}>
         <Link to="/login" className="text-steel text-sm px-4 py-1.5 hover:text-white transition-colors">
@@ -77,101 +119,69 @@ export default function LandingPage() {
         </Link>
       </nav>
 
-      {/* Wordmark — top center */}
-      <div className="relative flex flex-col items-center text-center px-4 pt-0 pb-0" style={{ zIndex: 10 }}>
-        <h1
-          className="font-mono font-black italic tracking-wide leading-none mb-3"
-          style={{ fontSize: 'clamp(3rem, 7vw, 5.5rem)' }}
-        >
-          <span className="text-white">prog</span>
-          <span
-            className="text-teal"
-            style={{
-              textShadow:
-                '0 0 24px rgba(62,207,190,0.80), 0 0 55px rgba(62,207,190,0.45), 0 0 100px rgba(62,207,190,0.20)',
-            }}
+      {/* Content column — fills remaining height, spaces sections evenly */}
+      <div className="relative flex-1 flex flex-col items-center justify-between pb-16 px-4" style={{ zIndex: 10 }}>
+
+        {/* Wordmark */}
+        <div className="flex flex-col items-center text-center pt-2">
+          <h1
+            className="font-mono font-black italic tracking-wide leading-none mb-3"
+            style={{ fontSize: 'clamp(3rem, 7vw, 5.5rem)' }}
           >
-            ctf
-          </span>
-        </h1>
-        <p className="text-steel/70 text-xs tracking-[0.4em] uppercase">
-          Encrypted Treasures
-        </p>
-      </div>
+            <span className="text-white">prog</span>
+            <span
+              className="text-teal"
+              style={{
+                textShadow:
+                  '0 0 24px rgba(62,207,190,0.80), 0 0 55px rgba(62,207,190,0.45), 0 0 100px rgba(62,207,190,0.20)',
+              }}
+            >
+              ctf
+            </span>
+          </h1>
+          <p className="text-steel/70 text-xs tracking-[0.4em] uppercase">
+            Encrypted Treasures
+          </p>
+        </div>
 
-      {/* Ship — centered, dominant */}
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          zIndex: 6,
-          bottom: 'calc(20% + 5px)',
-          left: '50%',
-          transform: 'translateX(-50%) rotate(15deg)',
-          width: 'clamp(280px, 30vw, 460px)',
-          animation: 'shipFloat 7s ease-in-out infinite',
-        }}
-      >
-        <img
-          src="/assets/progctf-ship-removebg-preview.png"
-          alt=""
-          className="w-full h-auto"
+        {/* Ship — centered between wordmark and CTAs */}
+        <div
           style={{
+            width: 'clamp(280px, 30vw, 460px)',
+            animation: 'shipFloat 7s ease-in-out infinite',
             filter: 'drop-shadow(0 0 44px rgba(62,207,190,0.55)) drop-shadow(0 30px 40px rgba(0,0,0,0.75))',
+            transform: 'rotate(15deg)',
           }}
-        />
-      </div>
-
-      {/* Water surface */}
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          zIndex: 5,
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: '28%',
-          background: 'linear-gradient(180deg, transparent 0%, #05102a 25%, #040d22 60%, #030918 100%)',
-        }}
-      />
-
-      {/* Moonlight streak on water */}
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          zIndex: 5,
-          bottom: '4%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '160px',
-          height: '140px',
-          background: 'radial-gradient(ellipse at 50% 10%, rgba(255,250,205,0.12) 0%, rgba(255,250,205,0.05) 50%, transparent 100%)',
-          filter: 'blur(14px)',
-        }}
-      />
-
-      {/* CTAs — bottom center, above water line */}
-      <div
-        className="absolute flex gap-4 justify-center"
-        style={{ zIndex: 9, bottom: '13%', left: 0, right: 0 }}
-      >
-        <Link
-          to="/register"
-          className="px-8 py-3 bg-teal text-navy-950 font-bold rounded hover:opacity-90 transition-opacity text-sm"
         >
-          Join the Hunt
-        </Link>
-        <Link
-          to="/login"
-          className="px-8 py-3 border border-navy-700/80 text-steel rounded hover:text-white hover:border-steel/60 transition-colors text-sm backdrop-blur-sm"
-        >
-          Login
-        </Link>
+          <img
+            src="/assets/progctf-ship-removebg-preview.png"
+            alt=""
+            className="w-full h-auto pointer-events-none select-none"
+          />
+        </div>
+
+        {/* CTAs */}
+        <div className="flex gap-4">
+          <Link
+            to="/register"
+            className="px-8 py-3 bg-teal text-navy-950 font-bold rounded hover:opacity-90 transition-opacity text-sm"
+          >
+            Join the Hunt
+          </Link>
+          <Link
+            to="/login"
+            className="px-8 py-3 border border-navy-700/80 text-steel rounded hover:text-white hover:border-steel/60 transition-colors text-sm backdrop-blur-sm"
+          >
+            Login
+          </Link>
+        </div>
+
       </div>
 
       <style>{`
         @keyframes shipFloat {
-          0%, 100% { transform: translateX(-50%) rotate(15deg) translateY(0px); }
-          50%       { transform: translateX(-50%) rotate(15deg) translateY(-12px); }
+          0%, 100% { transform: rotate(15deg) translateY(0px); }
+          50%       { transform: rotate(15deg) translateY(-12px); }
         }
       `}</style>
     </div>
