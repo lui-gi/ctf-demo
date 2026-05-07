@@ -14,6 +14,7 @@ export default {
           600: '#2a4a8a',
         },
         amber: '#ffb347',
+        teal: '#3ecfbe',
         steel: '#8ab4e8',
         success: '#4dbb88',
         danger: '#cc4444',

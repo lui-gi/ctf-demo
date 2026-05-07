@@ -8,7 +8,7 @@ export default function AuthLayout() {
     >
       <Link to="/" className="font-mono font-black italic text-3xl tracking-wide mb-8">
         <span className="text-white">prog</span>
-        <span className="text-amber">ctf</span>
+        <span className="text-teal">ctf</span>
       </Link>
       <div className="w-full max-w-sm bg-navy-900/80 border border-navy-700 rounded-lg p-8">
         <Outlet />

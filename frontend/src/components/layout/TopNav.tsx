@@ -18,7 +18,7 @@ export default function TopNav() {
         className="font-mono font-black italic text-xl tracking-wide"
       >
         <span className="text-white">prog</span>
-        <span className="text-amber">ctf</span>
+        <span className="text-teal">ctf</span>
       </Link>
 
       <div className="flex items-center gap-6">
