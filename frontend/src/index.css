@@ -7,6 +7,6 @@
     height: 100%;
   }
   body {
-    @apply bg-navy-950 text-white;
+    @apply bg-navy-975 text-white;
   }
 }

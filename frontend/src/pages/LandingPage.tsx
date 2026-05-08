@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
 
 const STARS: [number, number, number][] = [
   [4, 8, 3], [7, 22, 2], [3, 38, 2], [6, 55, 3], [2, 70, 2], [9, 85, 3],
@@ -43,10 +44,20 @@ function SectionDivider() {
 }
 
 export default function LandingPage() {
+  const { login } = useAuth()
   const scrollToAbout = () => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
+  const devLogin = () => login('dev-token', { id: 0, username: 'dev', email: 'dev@example.com' })
 
   return (
     <>
+      {/* DEV ONLY — remove before launch */}
+      <button
+        onClick={devLogin}
+        style={{ position: 'fixed', top: 12, right: 12, zIndex: 9999, background: '#f59e0b', color: '#000', fontWeight: 700, fontSize: 12, padding: '6px 12px', borderRadius: 6, border: 'none', cursor: 'pointer', letterSpacing: '0.05em' }}
+      >
+        DEV LOGIN
+      </button>
+
       {/* ── HERO ── */}
       <div
         className="min-h-screen flex flex-col relative overflow-hidden"

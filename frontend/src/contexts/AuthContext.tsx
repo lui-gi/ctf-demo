@@ -11,6 +11,7 @@ interface AuthContextValue {
   isAuthenticated: boolean
   login: (token: string, user: User) => void
   logout: () => void
+  updateUser: (partial: Partial<User>) => void
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null)
@@ -39,6 +40,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setCrewRank(null)
   }, [])
 
+  const updateUser = useCallback((partial: Partial<User>) => {
+    setUser(prev => {
+      if (!prev) return prev
+      const next = { ...prev, ...partial }
+      localStorage.setItem('user', JSON.stringify(next))
+      return next
+    })
+  }, [])
+
   useEffect(() => {
     if (!user) return
     const fetchRank = () =>
@@ -49,7 +59,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [user])
 
   return (
-    <AuthContext.Provider value={{ user, crewRank, isAuthenticated: !!user, login, logout }}>
+    <AuthContext.Provider value={{ user, crewRank, isAuthenticated: !!user, login, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   )

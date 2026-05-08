@@ -13,6 +13,7 @@ export interface Category {
   slug: string
   name: string
   icon: string
+  typeName: string
   totalChallenges: number
   solvedChallenges: number
 }
@@ -68,11 +69,22 @@ export interface CrewMember {
   points: number
 }
 
+export interface CategoryProgress {
+  name: string
+  icon: string
+  slug: string
+  solvedQuestions: number
+  totalQuestions: number
+}
+
 export interface DashboardStats {
   totalPoints: number
   solvedChallenges: number
   totalChallenges: number
+  solvedQuestions: number
+  totalQuestions: number
   recentSolves: RecentSolve[]
+  categoryProgress: CategoryProgress[]
 }
 
 export interface RecentSolve {

@@ -3,6 +3,7 @@ import { useAuth } from '../../contexts/AuthContext'
 import CrewBadge from '../ui/CrewBadge'
 
 const links = [
+  { to: '/dashboard', label: 'Dashboard' },
   { to: '/challenges', label: 'Challenges' },
   { to: '/bounties', label: 'Bounties' },
   { to: '/crew', label: 'Crew' },
