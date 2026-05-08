@@ -29,8 +29,8 @@ export default function TopNav() {
             to={to}
             className={({ isActive }) =>
               isActive
-                ? 'text-white text-sm border-b border-amber pb-0.5'
-                : 'text-steel text-sm hover:text-white transition-colors'
+                ? 'text-white text-sm font-bold border-b border-amber pb-0.5'
+                : 'text-steel text-sm font-bold hover:text-white transition-colors'
             }
           >
             {label}
@@ -39,7 +39,7 @@ export default function TopNav() {
         <CrewBadge crewRank={crewRank} />
         <button
           onClick={logout}
-          className="text-steel text-sm hover:text-danger transition-colors"
+          className="text-steel text-sm font-bold hover:text-danger transition-colors"
         >
           Logout
         </button>

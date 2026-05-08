@@ -21,6 +21,7 @@ export default {
         danger: '#cc4444',
       },
       fontFamily: {
+        sans: ['"Inter"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', '"Fira Code"', 'ui-monospace', 'monospace'],
       },
       keyframes: {
