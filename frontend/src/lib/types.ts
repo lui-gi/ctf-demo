@@ -72,6 +72,12 @@ export interface CrewMember {
   points: number
 }
 
+export interface CrewPreview {
+  id: string
+  name: string
+  members: string[]
+}
+
 export interface CategoryProgress {
   name: string
   icon: string

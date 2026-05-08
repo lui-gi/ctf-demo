@@ -403,4 +403,24 @@ app.post('/api/crew/leave', requireAuth, (req, res) => {
 })
 
 // ---------------------------------------------------------------------------
+// All crews browse
+// ---------------------------------------------------------------------------
+app.get('/api/crews', requireAuth, (req, res) => {
+  const myMembership = db.prepare('SELECT crew_id FROM crew_members WHERE user_id=?').get(req.userId)
+  const rows = db.prepare(`
+    SELECT c.id, c.name, u.username
+    FROM crews c
+    JOIN crew_members cm ON cm.crew_id = c.id
+    JOIN users u ON u.id = cm.user_id
+    ORDER BY c.name ASC, u.username ASC
+  `).all()
+  const map = new Map()
+  for (const row of rows) {
+    if (!map.has(row.id)) map.set(row.id, { id: row.id, name: row.name, members: [] })
+    map.get(row.id).members.push(row.username)
+  }
+  res.json({ crews: [...map.values()], myCrewId: myMembership?.crew_id ?? null })
+})
+
+// ---------------------------------------------------------------------------
 app.listen(PORT, () => console.log(`ProgCTF backend listening on :${PORT}`))
