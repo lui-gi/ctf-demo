@@ -13,7 +13,7 @@ const links = [
 export default function TopNav() {
   const { logout, crewRank } = useAuth()
   return (
-    <nav className="sticky top-0 z-50 bg-navy-950/90 backdrop-blur border-b border-navy-700 px-6 py-3 flex items-center justify-between">
+    <nav className="sticky top-0 z-50 bg-navy-950/90 backdrop-blur border-b border-navy-950 px-6 py-3 flex items-center justify-between">
       <Link
         to="/dashboard"
         className="font-mono font-black italic text-xl tracking-wide"
