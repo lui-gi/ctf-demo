@@ -4,3 +4,5 @@ dist/
 *.log
 .secrets/
 .claude/
+*.db-shm
+*.db-wal
