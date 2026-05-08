@@ -15,11 +15,11 @@ function getInitials(name: string): string {
 
 const sizeConfig = {
   lg: {
-    poster: 'w-60',
-    wanted: 'text-4xl',
-    initials: { width: '7rem', height: '7rem' },
-    initialsText: 'text-4xl',
-    crewName: '1.1rem',
+    poster: 'w-[300px]',
+    wanted: 'text-[2.8125rem]',
+    initials: { width: '8.75rem', height: '8.75rem' },
+    initialsText: 'text-[2.8125rem]',
+    crewName: '1.375rem',
     rankLabel: '1ST',
   },
   md: {
@@ -31,11 +31,11 @@ const sizeConfig = {
     rankLabel: '2ND',
   },
   sm: {
-    poster: 'w-44',
-    wanted: 'text-2xl',
-    initials: { width: '5rem', height: '5rem' },
-    initialsText: 'text-2xl',
-    crewName: '0.9rem',
+    poster: 'w-52',
+    wanted: 'text-3xl',
+    initials: { width: '6rem', height: '6rem' },
+    initialsText: 'text-3xl',
+    crewName: '1rem',
     rankLabel: '3RD',
   },
 }
