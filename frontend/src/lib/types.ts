@@ -51,9 +51,12 @@ export interface SubmitResponse {
 
 export interface BountyEntry {
   rank: number
+  crewId: string
   crewName: string
   totalPoints: number
   solveCount: number
+  members: string[]
+  isCurrentCrew?: boolean
 }
 
 export interface Crew {

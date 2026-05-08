@@ -72,9 +72,24 @@ db.exec(`
 
 try { db.exec('ALTER TABLE categories ADD COLUMN type_name TEXT') } catch {}
 
+// Backfill type_name for rows seeded before this column existed
+const _typeNames = {
+  'cursed-ports':      'Web Exploitation',
+  'cipher-cove':       'Cryptography',
+  'shipwrights-forge': 'Network & Log Analysis',
+  'lighthouse':        'Forensics',
+  'crows-nest':        'OSINT',
+  'hidden-cargo':      'Steganography',
+  'keymaster':         'Password Cracking',
+}
+const _upd = db.prepare('UPDATE categories SET type_name=? WHERE slug=? AND type_name IS NULL')
+for (const [slug, typeName] of Object.entries(_typeNames)) _upd.run(typeName, slug)
+
 if (db.prepare('SELECT COUNT(*) as c FROM categories').get().c !== 7) {
   seed()
 }
+
+db.prepare('DELETE FROM crews WHERE id NOT IN (SELECT DISTINCT crew_id FROM crew_members)').run()
 
 function seed() {
   db.prepare('DELETE FROM solves').run()

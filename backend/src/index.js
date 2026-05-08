@@ -301,8 +301,9 @@ app.post('/api/categories/:category/challenges/:slug/flag', requireAuth, (req, r
 // Bounties
 // ---------------------------------------------------------------------------
 app.get('/api/bounties', requireAuth, (req, res) => {
+  const uid = req.userId
   const rows = db.prepare(`
-    SELECT c.name AS crewName,
+    SELECT c.id AS crewId, c.name AS crewName,
            COALESCE(SUM(s.points_earned),0) AS totalPoints,
            COUNT(DISTINCT CASE WHEN s.type='flag' THEN s.challenge_id END) AS solveCount
     FROM crews c
@@ -310,7 +311,31 @@ app.get('/api/bounties', requireAuth, (req, res) => {
     LEFT JOIN solves s ON s.user_id=cm.user_id
     GROUP BY c.id ORDER BY totalPoints DESC
   `).all()
-  res.json(rows.map((r, i) => ({ rank: i + 1, crewName: r.crewName, totalPoints: r.totalPoints, solveCount: r.solveCount })))
+
+  const allMembers = db.prepare(`
+    SELECT cm.crew_id, u.username
+    FROM crew_members cm JOIN users u ON u.id=cm.user_id
+    ORDER BY cm.crew_id, u.username
+  `).all()
+
+  const membersByCrewId = {}
+  for (const m of allMembers) {
+    if (!membersByCrewId[m.crew_id]) membersByCrewId[m.crew_id] = []
+    membersByCrewId[m.crew_id].push(m.username)
+  }
+
+  const membership = db.prepare('SELECT crew_id FROM crew_members WHERE user_id=?').get(uid)
+  const currentCrewId = membership?.crew_id ?? null
+
+  res.json(rows.map((r, i) => ({
+    rank: i + 1,
+    crewId: r.crewId,
+    crewName: r.crewName,
+    totalPoints: r.totalPoints,
+    solveCount: r.solveCount,
+    members: membersByCrewId[r.crewId] ?? [],
+    isCurrentCrew: r.crewId === currentCrewId,
+  })))
 })
 
 // ---------------------------------------------------------------------------
@@ -368,7 +393,12 @@ app.post('/api/crew/join', requireAuth, (req, res) => {
 })
 
 app.post('/api/crew/leave', requireAuth, (req, res) => {
+  const membership = db.prepare('SELECT crew_id FROM crew_members WHERE user_id=?').get(req.userId)
   db.prepare('DELETE FROM crew_members WHERE user_id=?').run(req.userId)
+  if (membership) {
+    const remaining = db.prepare('SELECT COUNT(*) as v FROM crew_members WHERE crew_id=?').get(membership.crew_id).v
+    if (remaining === 0) db.prepare('DELETE FROM crews WHERE id=?').run(membership.crew_id)
+  }
   res.json({})
 })
 

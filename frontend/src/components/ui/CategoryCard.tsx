@@ -29,7 +29,7 @@ export default function CategoryCard({ category }: Props) {
         <h3 className="text-white font-bold text-lg leading-snug mb-0.5 group-hover:text-teal transition-colors duration-300">
           {category.name}
         </h3>
-        <p className="text-steel text-xs uppercase tracking-widest mb-4">
+        <p className="text-white font-light text-sm mb-4">
           {category.typeName}
         </p>
         <p className="text-steel text-xs mb-2">
