@@ -81,8 +81,22 @@ export default function AuthLayout() {
       {/* Back to home */}
       <Link
         to="/"
-        className="relative mt-6 font-mono text-xs tracking-[0.2em] uppercase transition-opacity duration-200 hover:opacity-100 opacity-50"
-        style={{ zIndex: 10, color: '#d8ffe9' }}
+        className="relative mt-6 font-mono font-bold text-xs tracking-[0.3em] uppercase px-6 py-2 rounded transition-all duration-200"
+        style={{
+          zIndex: 10,
+          color: '#d8ffe9',
+          border: '1px solid rgba(216,255,233,0.30)',
+          textShadow: '0 0 10px rgba(0,255,136,0.45)',
+          boxShadow: '0 0 12px rgba(0,255,136,0.08)',
+        }}
+        onMouseEnter={e => {
+          (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(216,255,233,0.65)'
+          ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 0 18px rgba(0,255,136,0.18)'
+        }}
+        onMouseLeave={e => {
+          (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(216,255,233,0.30)'
+          ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 0 12px rgba(0,255,136,0.08)'
+        }}
       >
         ← Home
       </Link>
