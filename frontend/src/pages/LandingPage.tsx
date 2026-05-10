@@ -156,12 +156,13 @@ const STARS: [number, number, number][] = [
 ]
 
 const CHALLENGES = [
-  { name: 'Web Exploitation', flavor: 'Find the cracks in the hull. Bypass auth, abuse logic, and chain bugs into a full takeover.', Icon: Globe },
-  { name: 'Cryptography',     flavor: 'Crack ancient codes and modern ciphers. The math is unforgiving, but the loot is sweeter for it.', Icon: Lock },
-  { name: 'Reverse Engineering', flavor: 'Tear apart the binary, follow the strings, and figure out what the program is really doing.', Icon: Cog },
-  { name: 'Forensics',        flavor: 'Dig through packet dumps, disk images, and memory captures. The evidence is in there somewhere.', Icon: Magnifier },
-  { name: 'Binary Exploitation', flavor: 'Smash the stack, hijack the heap, and turn a buggy program into a shell of its former self.', Icon: Bug },
-  { name: 'OSINT and Misc.',  flavor: 'Scout the open web, follow the breadcrumbs, and catch what no map will show you.', Icon: Spyglass },
+  { name: 'Web Exploitation',       flavor: 'Find the cracks in the hull. Bypass auth, abuse logic, and chain bugs into a full takeover.', Icon: Globe },
+  { name: 'Cryptography',           flavor: 'Crack ancient codes and modern ciphers. The math is unforgiving, but the loot is sweeter for it.', Icon: Lock },
+  { name: 'Network and Log Analysis', flavor: 'Read the tides. Parse packet captures and log trails to piece together what moved through these waters.', Icon: Map },
+  { name: 'Forensics',              flavor: 'Dig through disk images, memory dumps, and corrupted files. The evidence is in there somewhere.', Icon: Magnifier },
+  { name: 'OSINT',                  flavor: 'Scout the open web, follow the breadcrumbs, and surface what no chart will show you.', Icon: Spyglass },
+  { name: 'Steganography',          flavor: 'The message is hidden in plain sight. Images, audio, text — contraband concealed in cargo.', Icon: Scroll },
+  { name: 'Password Cracking',      flavor: 'Every lock has a key. Wordlists, rules, and raw compute — break what stands between you and the treasure.', Icon: Skull },
 ]
 
 const TIERS = [
