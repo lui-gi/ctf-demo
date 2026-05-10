@@ -14,6 +14,7 @@ import BountiesPage from '../pages/BountiesPage'
 import CrewPage from '../pages/CrewPage'
 import ProfilePage from '../pages/ProfilePage'
 import NotFoundPage from '../pages/NotFoundPage'
+import SponsorPage from '../pages/SponsorPage'
 
 export const router = createBrowserRouter([
   {
@@ -46,5 +47,6 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  { path: '/sponsor', element: <SponsorPage /> },
   { path: '*', element: <NotFoundPage /> },
 ])
