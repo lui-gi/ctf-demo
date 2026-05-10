@@ -32,7 +32,15 @@ export default function RegisterPage() {
 
   return (
     <>
-      <h2 className="text-xl font-bold text-white mb-6 text-center">Create Account</h2>
+      <p
+        className="font-mono font-bold text-xs tracking-[0.4em] uppercase text-center mb-6"
+        style={{
+          color: '#d8ffe9',
+          textShadow: '0 0 12px rgba(0,255,136,0.55), 0 0 28px rgba(57,255,20,0.35)',
+        }}
+      >
+        Create Account
+      </p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div>
           <label className="block text-steel text-xs mb-1" htmlFor="username">Username</label>
@@ -42,7 +50,7 @@ export default function RegisterPage() {
             required
             value={username}
             onChange={e => setUsername(e.target.value)}
-            className="w-full bg-navy-950 border border-navy-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-steel"
+            className="w-full bg-navy-950 border border-navy-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-teal"
           />
         </div>
         <div>
@@ -53,7 +61,7 @@ export default function RegisterPage() {
             required
             value={email}
             onChange={e => setEmail(e.target.value)}
-            className="w-full bg-navy-950 border border-navy-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-steel"
+            className="w-full bg-navy-950 border border-navy-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-teal"
           />
         </div>
         <div>
@@ -65,7 +73,7 @@ export default function RegisterPage() {
             minLength={8}
             value={password}
             onChange={e => setPassword(e.target.value)}
-            className="w-full bg-navy-950 border border-navy-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-steel"
+            className="w-full bg-navy-950 border border-navy-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-teal"
           />
         </div>
         {error && <p className="text-danger text-xs">{error}</p>}
