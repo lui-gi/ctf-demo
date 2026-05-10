@@ -6,3 +6,6 @@ dist/
 .claude/
 *.db-shm
 *.db-wal
+
+# Visual brainstorming sessions
+.superpowers/
