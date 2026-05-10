@@ -770,14 +770,13 @@ export default function LandingPage() {
               Challenges
             </h2>
             <p className="gsap-reveal" style={{ fontSize: 15, lineHeight: 1.7, color: '#8ab4e8', maxWidth: 680, marginBottom: 48 }}>
-              Six categories, dozens of challenges, and difficulty tiers from gentle to brutal. Pick a category
-              that intrigues you and follow it down until something breaks loose.
+              Seven challenge categories plus a sponsored track, dozens of challenges, and difficulty tiers from gentle to brutal. Pick a category that intrigues you and follow it down until something breaks loose.
             </p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 18 }}>
               {CHALLENGES.map(({ name, flavor, Icon, sponsored }) => (
                 <div
                   key={name}
-                  className="challenge-card"
+                  className={sponsored ? 'challenge-card challenge-card--sponsored' : 'challenge-card'}
                   style={sponsored ? {
                     borderColor: 'rgba(255,215,0,0.28)',
                     background: 'radial-gradient(ellipse at 50% 0%, rgba(255,215,0,0.09) 0%, transparent 65%), #071230',
@@ -785,6 +784,7 @@ export default function LandingPage() {
                   } : undefined}
                 >
                   {sponsored && (
+                    /* screen readers announce this — intentional */
                     <span style={{
                       position: 'absolute', top: 12, right: 14,
                       fontSize: 9, fontWeight: 800, letterSpacing: '0.18em',
@@ -830,6 +830,10 @@ export default function LandingPage() {
               background: rgba(62,207,190,0.08);
               border: 1px solid rgba(62,207,190,0.35);
               color: #3ecfbe;
+            }
+            .challenge-card--sponsored:hover {
+              border-color: rgba(255,215,0,0.55);
+              box-shadow: 0 18px 40px -24px rgba(255,215,0,0.35);
             }
           `}</style>
         </section>
