@@ -24,7 +24,7 @@ describe('SponsorPage', () => {
 
   test('renders the Get Involved card title and why label', () => {
     renderPage()
-    expect(screen.getByText('Get Involved')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Get Involved' })).toBeInTheDocument()
     expect(screen.getByText('Why Get Involved?')).toBeInTheDocument()
   })
 
