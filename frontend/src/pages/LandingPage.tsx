@@ -145,6 +145,12 @@ const Map = ({ size, strokeWidth, className }: IconProps) => (
   </svg>
 )
 
+const Star = ({ size, strokeWidth, className }: IconProps) => (
+  <svg {...ICON_DEFAULTS(size, strokeWidth)} className={className} aria-hidden>
+    <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
+  </svg>
+)
+
 /* ─── Constants ──────────────────────────────────────────────────── */
 
 const STARS: [number, number, number][] = [
@@ -155,7 +161,7 @@ const STARS: [number, number, number][] = [
   [17, 57, 2], [23, 67, 2], [6, 77, 3], [29, 5, 2],
 ]
 
-const CHALLENGES = [
+const CHALLENGES: { name: string; flavor: string; Icon: React.FC<IconProps>; sponsored?: true }[] = [
   { name: 'Web Exploitation',       flavor: 'Find the cracks in the hull. Bypass auth, abuse logic, and chain bugs into a full takeover.', Icon: Globe },
   { name: 'Cryptography',           flavor: 'Crack ancient codes and modern ciphers. The math is unforgiving, but the loot is sweeter for it.', Icon: Lock },
   { name: 'Network and Log Analysis', flavor: 'Read the tides. Parse packet captures and log trails to piece together what moved through these waters.', Icon: Map },
@@ -163,6 +169,7 @@ const CHALLENGES = [
   { name: 'OSINT',                  flavor: 'Scout the open web, follow the breadcrumbs, and surface what no chart will show you.', Icon: Spyglass },
   { name: 'Steganography',          flavor: 'The message is hidden in plain sight. Images, audio, text — contraband concealed in cargo.', Icon: Scroll },
   { name: 'Password Cracking',      flavor: 'Every lock has a key. Wordlists, rules, and raw compute — break what stands between you and the treasure.', Icon: Skull },
+  { name: "Patron's Plunder",       flavor: "Challenges crafted in partnership with those who back this voyage. Sponsor-tailored hunts with a twist you won't find on any ordinary chart.", Icon: Star, sponsored: true },
 ]
 
 const TIERS = [
@@ -767,9 +774,37 @@ export default function LandingPage() {
               that intrigues you and follow it down until something breaks loose.
             </p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 18 }}>
-              {CHALLENGES.map(({ name, flavor, Icon }) => (
-                <div key={name} className="challenge-card">
-                  <div className="challenge-card__icon"><Icon size={24} strokeWidth={1.5} /></div>
+              {CHALLENGES.map(({ name, flavor, Icon, sponsored }) => (
+                <div
+                  key={name}
+                  className="challenge-card"
+                  style={sponsored ? {
+                    borderColor: 'rgba(255,215,0,0.28)',
+                    background: 'radial-gradient(ellipse at 50% 0%, rgba(255,215,0,0.09) 0%, transparent 65%), #071230',
+                    position: 'relative',
+                  } : undefined}
+                >
+                  {sponsored && (
+                    <span style={{
+                      position: 'absolute', top: 12, right: 14,
+                      fontSize: 9, fontWeight: 800, letterSpacing: '0.18em',
+                      textTransform: 'uppercase' as const,
+                      color: 'rgba(255,215,0,0.75)',
+                      fontFamily: '"JetBrains Mono", monospace',
+                    }}>
+                      Sponsored
+                    </span>
+                  )}
+                  <div
+                    className="challenge-card__icon"
+                    style={sponsored ? {
+                      background: 'rgba(255,215,0,0.08)',
+                      border: '1px solid rgba(255,215,0,0.45)',
+                      color: '#ffd700',
+                    } : undefined}
+                  >
+                    <Icon size={24} strokeWidth={1.5} />
+                  </div>
                   <div style={{ fontSize: 16, fontWeight: 800, color: '#fff', marginTop: 18 }}>{name}</div>
                   <div style={{ fontSize: 13, color: '#8ab4e8', lineHeight: 1.6, marginTop: 8 }}>{flavor}</div>
                 </div>
