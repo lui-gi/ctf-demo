@@ -552,26 +552,6 @@ export default function LandingPage() {
           }}
         />
 
-        {/* Drifting waterline text */}
-        <div aria-hidden className="hero-drift-outer">
-          <div className="hero-drift-inner">
-            <div className="hero-drift-trail" />
-            <span className="hero-drift-text">VOYAGE BEGINS NOV 7, 2026</span>
-          </div>
-        </div>
-
-        {/* Water cap — sits above the drifting text to create semi-submerged look */}
-        <div
-          aria-hidden
-          style={{
-            position: 'absolute', zIndex: 5,
-            bottom: 0, left: 0, right: 0,
-            height: '13%',
-            background: 'linear-gradient(180deg, transparent 0%, rgba(9,24,74,0.65) 50%, rgba(10,26,82,0.93) 100%)',
-            pointerEvents: 'none',
-          }}
-        />
-
         {/* Nav */}
         <nav className="relative flex items-center justify-end gap-4 px-10 py-4" style={{ zIndex: 10 }}>
           <Link
@@ -688,48 +668,6 @@ export default function LandingPage() {
           .nav-register:hover {
             background: #5fffae;
             box-shadow: 0 0 26px 4px rgba(62,207,190,0.55);
-          }
-
-          /* ── Drifting waterline text ── */
-          @keyframes heroTextDrift {
-            from { transform: translateX(-110%); }
-            to   { transform: translateX(calc(100vw + 10%)); }
-          }
-          .hero-drift-outer {
-            position: absolute;
-            bottom: 9%;
-            left: 0;
-            right: 0;
-            z-index: 4;
-            pointer-events: none;
-            overflow: visible;
-          }
-          .hero-drift-inner {
-            display: inline-flex;
-            align-items: center;
-            white-space: nowrap;
-            animation: heroTextDrift 45s linear infinite;
-          }
-          .hero-drift-trail {
-            width: 260px;
-            height: 38px;
-            background: radial-gradient(ellipse at right center,
-              rgba(255, 250, 205, 0.22) 0%,
-              rgba(62, 207, 190, 0.10) 35%,
-              transparent 70%
-            );
-            filter: blur(5px);
-          }
-          .hero-drift-text {
-            font-family: "JetBrains Mono", ui-monospace, monospace;
-            font-weight: 700;
-            font-size: clamp(0.8rem, 1.3vw, 1.1rem);
-            letter-spacing: 0.35em;
-            text-transform: uppercase;
-            color: rgba(216, 255, 233, 0.8);
-            text-shadow:
-              0 0 14px rgba(0, 255, 136, 0.45),
-              0 0 32px rgba(62, 207, 190, 0.20);
           }
         `}</style>
       </div>
