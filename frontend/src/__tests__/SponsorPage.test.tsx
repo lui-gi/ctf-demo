@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import SponsorPage from '../pages/SponsorPage'
@@ -52,7 +53,7 @@ describe('SponsorPage', () => {
 
   test('renders Get Involved CTA as an external link', () => {
     renderPage()
-    const link = screen.getByRole('link', { name: /get involved/i })
+    const link = screen.getByRole('link', { name: 'Get Involved' })
     expect(link).toHaveAttribute('href', expect.stringContaining('docs.google.com'))
     expect(link).toHaveAttribute('target', '_blank')
     expect(link).toHaveAttribute('rel', 'noopener noreferrer')
@@ -60,7 +61,7 @@ describe('SponsorPage', () => {
 
   test('renders the home link', () => {
     renderPage()
-    const homeLink = screen.getByRole('link', { name: /home/i })
+    const homeLink = screen.getByRole('link', { name: '← Home' })
     expect(homeLink).toHaveAttribute('href', '/')
   })
 })
