@@ -45,6 +45,7 @@ export default function LoginPage() {
             id="email"
             type="email"
             required
+            autoComplete="off"
             value={email}
             onChange={e => setEmail(e.target.value)}
             className="w-full bg-navy-950 border border-navy-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-teal"
@@ -56,6 +57,7 @@ export default function LoginPage() {
             id="password"
             type="password"
             required
+            autoComplete="new-password"
             value={password}
             onChange={e => setPassword(e.target.value)}
             className="w-full bg-navy-950 border border-navy-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-teal"
