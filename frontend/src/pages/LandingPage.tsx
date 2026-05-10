@@ -147,17 +147,6 @@ const Map = ({ size, strokeWidth, className }: IconProps) => (
 
 /* ─── Constants ──────────────────────────────────────────────────── */
 
-// Cutscene timing.
-//   0 ─────────── 5500   sky / sun / moon / ship / CTF cross-fade
-//   5500 ────── 6300   "Encrypted Treasures" sign spawns in (letter-spacing intake)
-//   6300 ────── 7800   sign "unlocks" → gold pop + coin arcs burst from the sign
-//   7800              scroll unlocks
-const CUTSCENE_MS = 5500
-const SIGN_DELAY = 5500
-const SIGN_MS = 800
-const UNLOCK_DELAY = 6300
-const LOCK_MS = 7800
-
 const STARS: [number, number, number][] = [
   [4, 8, 3], [7, 22, 2], [3, 38, 2], [6, 55, 3], [2, 70, 2], [9, 85, 3],
   [14, 93, 2], [11, 45, 2], [18, 30, 3], [16, 65, 2], [22, 78, 2], [5, 95, 3],
@@ -406,27 +395,6 @@ export default function LandingPage() {
   const scrollToAbout = () => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
   const devLogin = () => login('dev-token', { id: 0, username: 'dev', email: 'dev@example.com' })
 
-  // Lock scroll while the cutscene + sparkle play. Ref guard makes the
-  // effect a no-op on dev double-mount so we don't keep re-locking.
-  const lockedRef = useRef(false)
-  useEffect(() => {
-    if (lockedRef.current) return
-    lockedRef.current = true
-    const prevOverflow = document.body.style.overflow
-    const prevHtmlOverflow = document.documentElement.style.overflow
-    document.body.style.overflow = 'hidden'
-    document.documentElement.style.overflow = 'hidden'
-    const id = window.setTimeout(() => {
-      document.body.style.overflow = prevOverflow
-      document.documentElement.style.overflow = prevHtmlOverflow
-    }, LOCK_MS)
-    return () => {
-      window.clearTimeout(id)
-      document.body.style.overflow = prevOverflow
-      document.documentElement.style.overflow = prevHtmlOverflow
-    }
-  }, [])
-
   // ─── GSAP scroll entrances (everything below the hero) ──────────
   // Each section's heading + intro paragraphs reveal up-and-fade as
   // they cross 85% of the viewport. Card grids reveal with a stagger.
@@ -521,7 +489,7 @@ export default function LandingPage() {
           ))}
         </div>
 
-        {/* Moon — animates from low-right with an arc into top-left */}
+        {/* Moon */}
         <div
           className="absolute pointer-events-none"
           style={{
@@ -533,9 +501,6 @@ export default function LandingPage() {
             borderRadius: '50%',
             background: 'radial-gradient(circle at 36% 36%, #ffffff 0%, #f5edd8 45%, #d4c280 100%)',
             boxShadow: '0 0 50px 28px rgba(255,248,215,0.22), 0 0 110px 60px rgba(200,225,255,0.10)',
-            opacity: 0,
-            transform: 'scale(0.6)',
-            animation: `cs-moonArc ${CUTSCENE_MS}ms cubic-bezier(0.33, 0.66, 0.45, 1) forwards`,
           }}
         />
 
@@ -585,58 +550,7 @@ export default function LandingPage() {
           }}
         />
 
-        {/* ── CUTSCENE: day sky overlay ───────────────────────────────
-            Sunset-tinged gradient; opacity decay holds at dusk so the
-            night reveals in two stages instead of a smooth wash. */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            zIndex: 4,
-            background:
-              'linear-gradient(180deg, #7ec8ff 0%, #a9d8ff 24%, #ffd2a3 50%, #ff9d5e 60%, #1f7aa6 70%, #0e4d77 88%, #c89253 100%)',
-            animation: `cs-dayFade ${CUTSCENE_MS}ms cubic-bezier(0.4, 0.0, 0.4, 1) forwards`,
-          }}
-          aria-hidden
-        />
-
-        {/* ── CUTSCENE: warm tint overlay ─────────────────────────────
-            Orange/pink wash that fades in at sunset and out at dusk so
-            the transition reads as golden hour, not a hard fade. */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            zIndex: 4,
-            background:
-              'radial-gradient(80% 60% at 18% 75%, rgba(255,140,80,0.55) 0%, rgba(255,90,120,0.28) 35%, rgba(255,90,120,0) 70%), linear-gradient(180deg, rgba(255,160,80,0) 0%, rgba(255,140,80,0.18) 60%, rgba(180,40,80,0.22) 100%)',
-            mixBlendMode: 'screen',
-            opacity: 0,
-            animation: `cs-warmTint ${CUTSCENE_MS}ms ease-in-out forwards`,
-          }}
-          aria-hidden
-        />
-
-        {/* ── CUTSCENE: sun ───────────────────────────────────────────
-            Arcs DOWN-LEFT from upper-right into the lower-left horizon,
-            fading as it descends. Sunset, not a swap. */}
-        <div
-          className="absolute pointer-events-none"
-          style={{
-            zIndex: 5,
-            width: '150px',
-            height: '150px',
-            borderRadius: '50%',
-            background:
-              'radial-gradient(circle at 38% 36%, #fff8e1 0%, #ffd97a 38%, #ff9c3a 75%, rgba(255,140,40,0) 100%)',
-            boxShadow:
-              '0 0 80px 28px rgba(255,200,90,0.5), 0 0 160px 60px rgba(255,170,80,0.22)',
-            top: '18%',
-            left: '78%',
-            animation: `cs-sunArc ${CUTSCENE_MS}ms cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards`,
-          }}
-          aria-hidden
-        />
-
-        {/* Nav (existing) */}
+        {/* Nav */}
         <nav className="relative flex items-center justify-end gap-4 px-10 py-4" style={{ zIndex: 10 }}>
           <Link to="/login" className="text-steel text-sm px-4 py-1.5 hover:text-white transition-colors">
             Login
@@ -662,84 +576,41 @@ export default function LandingPage() {
                 className="text-teal cs-ctf"
                 style={{
                   textShadow: '0 0 24px rgba(62,207,190,0.80), 0 0 55px rgba(62,207,190,0.45), 0 0 100px rgba(62,207,190,0.20)',
-                  opacity: 0,
                   display: 'inline-block',
-                  animation: `cs-ctfReveal ${CUTSCENE_MS}ms ease-out forwards`,
                 }}
               >
                 ctf
               </span>
             </h1>
 
-            {/* Encrypted Treasure sign — sits hidden through the
-                cutscene + the gold unlock, then spawns in once the
-                coins have settled. */}
             <div className="cs-sign relative">
               <p
                 className="font-bold text-xs tracking-[0.4em] uppercase cs-sign-text"
                 style={{
-                  opacity: 0,
                   color: '#d8ffe9',
                   textShadow:
                     '0 0 12px rgba(0,255,136,0.55), 0 0 28px rgba(57,255,20,0.35)',
-                  animation: `cs-signSpawn ${SIGN_MS}ms cubic-bezier(0.16, 0.84, 0.44, 1) ${SIGN_DELAY}ms forwards`,
                 }}
               >
                 Encrypted Treasures
               </p>
-              {/* Treasure unlock pop — fires AFTER the sign has
-                  finished settling, so it reads as the sign itself
-                  cracking open. */}
-              <span
-                className="cs-unlock"
-                aria-hidden
-                style={{ animationDelay: `${UNLOCK_DELAY}ms` }}
-              />
-              {/* Gold coins — fan out from sign centre on parabolic
-                  arcs (rise then settle), gated to the same delay so
-                  they spill from the sign once it's in place. */}
-              <div className="cs-coin-field" aria-hidden>
-                {COINS.map((c, i) => (
-                  <span
-                    key={i}
-                    className="cs-coin"
-                    style={{
-                      width: c.size,
-                      height: c.size,
-                      animationDelay: `${UNLOCK_DELAY + c.delay}ms`,
-                      // @ts-expect-error CSS custom props
-                      '--dx': `${c.dx}px`,
-                      '--peak-y': `${c.peakY}px`,
-                      '--end-y': `${c.endY}px`,
-                      '--spin': `${c.spin}deg`,
-                    }}
-                  />
-                ))}
-              </div>
             </div>
           </div>
 
           {/* Ship */}
           <div
             style={{
-              opacity: 0,
-              animation: `cs-shipReveal ${CUTSCENE_MS}ms ease-out forwards`,
+              width: 'clamp(280px, 30vw, 460px)',
+              animation: 'shipFloat 7s ease-in-out infinite',
+              filter: 'drop-shadow(0 0 44px rgba(62,207,190,0.55)) drop-shadow(0 30px 40px rgba(0,0,0,0.75))',
+              transform: 'rotate(15deg)',
             }}
           >
-            <div
-              style={{
-                width: 'clamp(280px, 30vw, 460px)',
-                animation: 'shipFloat 7s ease-in-out infinite',
-                filter: 'drop-shadow(0 0 44px rgba(62,207,190,0.55)) drop-shadow(0 30px 40px rgba(0,0,0,0.75))',
-                transform: 'rotate(15deg)',
-              }}
-            >
-              <img
-                src="/assets/progctf-ship-removebg-preview.png"
-                alt=""
-                className="w-full h-auto pointer-events-none select-none"
-              />
-            </div>
+            <img
+              src="/assets/progctf-ship-removebg-preview.png"
+              alt=""
+              className="w-full h-auto pointer-events-none select-none"
+            />
           </div>
 
           {/* CTA */}
@@ -749,8 +620,6 @@ export default function LandingPage() {
             className="text-white text-4xl hover:opacity-70 transition-opacity"
             style={{
               textShadow: '0 0 12px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.4)',
-              opacity: 0,
-              animation: `cs-cueReveal ${CUTSCENE_MS}ms ease-out forwards`,
             }}
           >
             <span aria-hidden="true">↓</span>
@@ -763,71 +632,6 @@ export default function LandingPage() {
             50%       { transform: rotate(15deg) translateY(-12px); }
           }
 
-          /* ── Cutscene timeline (5500ms total) ────────────────────────
-             Phase 1 — sunset (0%–45%):
-               Sun arcs down-left, day overlay holds bright with warm
-               cast. Day stays at near-full opacity until ~35%.
-             Phase 2 — dusk hold (45%–62%):
-               Day overlay drops to ~0.55 and HOLDS. Warm tint at peak.
-               Night composition (stars, hills, water) starts to peek.
-             Phase 3 — full night (62%–100%):
-               Day overlay drains to 0; warm tint fades; stars + moon
-               climb to full brightness; ship + CTF + green sign reveal.
-             Phase 4 — sparkle (5500–7000ms):
-               Gold particles around the Encrypted Treasure sign. */
-
-          @keyframes cs-dayFade {
-            0%   { opacity: 1; }
-            30%  { opacity: 0.98; }
-            45%  { opacity: 0.78; }
-            55%  { opacity: 0.55; }
-            68%  { opacity: 0.55; }   /* dusk hold */
-            100% { opacity: 0; }
-          }
-          @keyframes cs-warmTint {
-            0%   { opacity: 0; }
-            22%  { opacity: 0.15; }
-            42%  { opacity: 0.95; }   /* sunset peak */
-            58%  { opacity: 0.7; }    /* dusk fade */
-            80%  { opacity: 0.15; }
-            100% { opacity: 0; }
-          }
-          @keyframes cs-sunArc {
-            0%   { top: 18%; left: 78%; opacity: 1; }
-            22%  { top: 28%; left: 60%; opacity: 0.95; }
-            45%  { top: 50%; left: 38%; opacity: 0.78; }
-            65%  { top: 68%; left: 22%; opacity: 0.4; }
-            82%  { top: 80%; left: 12%; opacity: 0.12; }
-            100% { top: 86%; left: 4%;  opacity: 0; }
-          }
-          @keyframes cs-moonArc {
-            0%   { top: 95%; left: 78%; opacity: 0; transform: scale(0.6); }
-            38%  { top: 95%; left: 78%; opacity: 0; transform: scale(0.6); }
-            55%  { top: 78%; left: 62%; opacity: 0.18; transform: scale(0.78); }
-            72%  { top: 42%; left: 40%; opacity: 0.55; transform: scale(0.92); }
-            88%  { top: 14%; left: 18%; opacity: 0.92; transform: scale(0.99); }
-            100% { top: 5%;  left: 11%; opacity: 1;    transform: scale(1); }
-          }
-          @keyframes cs-shipReveal {
-            0%   { opacity: 0; }
-            65%  { opacity: 0; }
-            100% { opacity: 1; }
-          }
-          @keyframes cs-ctfReveal {
-            0%   { opacity: 0; }
-            62%  { opacity: 0; }
-            100% { opacity: 1; }
-          }
-          @keyframes cs-cueReveal {
-            0%   { opacity: 0; transform: translateY(8px); }
-            70%  { opacity: 0; transform: translateY(8px); }
-            100% { opacity: 1; transform: translateY(0); }
-          }
-
-          /* ── PROGCTF hover ────────────────────────────────────────
-             On hover, both words drop their fill and reveal only a
-             ghost-green outline so the wordmark reads as carved /
-             hollow. Smooth transitions on color + stroke + shadow. */
           .cs-wordmark {
             cursor: pointer;
             transition: filter 0.4s ease;
@@ -850,116 +654,7 @@ export default function LandingPage() {
             -webkit-text-stroke: 1.4px #00ff88;
           }
 
-          /* ── Treasure unlock (post-cutscene) ──────────────────────
-             A quick radial bloom seals the cutscene, then a tight
-             cluster of gold coins fans outward in parabolic arcs. */
           .cs-sign { position: relative; }
-
-          .cs-unlock {
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #fff8c2 0%, #ffd76a 30%, rgba(255,170,0,0) 70%);
-            opacity: 0;
-            transform: translate(-50%, -50%) scale(0.4);
-            animation: cs-unlock 700ms cubic-bezier(0.18, 0.78, 0.32, 1) forwards;
-            pointer-events: none;
-          }
-          /* Bright pop, then dissolve fast — sells the "chest opens"
-             beat without lingering. */
-          @keyframes cs-unlock {
-            0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
-            22%  { opacity: 1; transform: translate(-50%, -50%) scale(14); }
-            55%  { opacity: 0.45; transform: translate(-50%, -50%) scale(26); }
-            100% { opacity: 0; transform: translate(-50%, -50%) scale(34); }
-          }
-
-          .cs-coin-field {
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 0; height: 0;
-            pointer-events: none;
-          }
-          /* Each coin lives at the field's anchor (sign centre) and
-             travels along a parabola defined by --dx (horizontal end),
-             --peak-y (highest point, negative) and --end-y (settled
-             y, positive). --spin gives a subtle tumble. */
-          .cs-coin {
-            position: absolute;
-            top: 0; left: 0;
-            margin-top: -50%;
-            margin-left: -50%;
-            border-radius: 50%;
-            background:
-              radial-gradient(circle at 38% 36%, #fff8c2 0%, #ffd76a 35%, #c8961a 75%, #7a4f00 100%);
-            box-shadow:
-              0 0 12px 3px rgba(255,215,0,0.7),
-              0 0 28px 8px rgba(255,170,0,0.32),
-              inset 0 -2px 3px rgba(120, 70, 0, 0.45);
-            opacity: 0;
-            animation-name: cs-coin;
-            animation-duration: 1500ms;
-            animation-timing-function: cubic-bezier(0.18, 0.78, 0.32, 1);
-            animation-fill-mode: forwards;
-            will-change: transform, opacity;
-          }
-          @keyframes cs-coin {
-            0% {
-              opacity: 0;
-              transform: translate(-50%, -50%) scale(0.3) rotate(0deg);
-            }
-            12% {
-              opacity: 1;
-              transform:
-                translate(calc(-50% + var(--dx) * 0.12), calc(-50% + var(--peak-y) * 0.45))
-                scale(1.05) rotate(calc(var(--spin) * 0.3));
-            }
-            42% {
-              opacity: 1;
-              transform:
-                translate(calc(-50% + var(--dx) * 0.5), calc(-50% + var(--peak-y)))
-                scale(1) rotate(calc(var(--spin) * 0.65));
-            }
-            78% {
-              opacity: 0.85;
-              transform:
-                translate(calc(-50% + var(--dx) * 0.85), calc(-50% + var(--end-y) * 0.7))
-                scale(0.92) rotate(calc(var(--spin) * 0.9));
-            }
-            100% {
-              opacity: 0;
-              transform:
-                translate(calc(-50% + var(--dx)), calc(-50% + var(--end-y)))
-                scale(0.7) rotate(var(--spin));
-            }
-          }
-
-          /* ── Encrypted Treasure sign spawn ────────────────────────
-             Lands once the gold has settled. Letter-spacing tightens
-             from spread to settled so the type "intakes" into place. */
-          @keyframes cs-signSpawn {
-            0%   { opacity: 0; transform: translateY(8px); letter-spacing: 0.62em; }
-            70%  { opacity: 1; }
-            100% { opacity: 1; transform: translateY(0); letter-spacing: 0.4em; }
-          }
-
-          /* Reduced motion: collapse the whole cutscene to a quick
-             cross-fade so people who opt out aren't held up by a 7s
-             scroll lock either. */
-          @media (prefers-reduced-motion: reduce) {
-            [style*="cs-dayFade"],
-            [style*="cs-warmTint"],
-            [style*="cs-sunArc"],
-            [style*="cs-moonArc"],
-            [style*="cs-shipReveal"],
-            [style*="cs-ctfReveal"],
-            [style*="cs-signSpawn"],
-            [style*="cs-cueReveal"] {
-              animation-duration: 600ms !important;
-            }
-            .cs-coin, .cs-unlock { animation-duration: 600ms !important; }
-          }
         `}</style>
       </div>
 
@@ -1184,24 +879,6 @@ export default function LandingPage() {
     </>
   )
 }
-
-/* ─── Treasure unlock coins ──────────────────────────────────────── */
-/* Parabolic flight params for each coin: dx is the horizontal landing
-   offset (px), peakY is the highest y-position reached (negative =
-   above origin), endY is the resting y-position after the arc settles
-   (positive = below origin), spin is a small tumble (deg). Fewer coins
-   keeps the unlock readable; tuned so half clear the wordmark up and
-   the rest fan low like coins spilling out of a chest. */
-const COINS: { dx: number; peakY: number; endY: number; size: number; spin: number; delay: number }[] = [
-  { dx: -130, peakY: -70,  endY:  40, size: 14, spin: -240, delay:  20 },
-  { dx:  -80, peakY: -110, endY:  60, size: 12, spin: -200, delay:  90 },
-  { dx:  -40, peakY: -130, endY:  70, size: 10, spin: -160, delay: 160 },
-  { dx:   40, peakY: -130, endY:  70, size: 10, spin:  160, delay: 130 },
-  { dx:   80, peakY: -110, endY:  60, size: 12, spin:  200, delay:  60 },
-  { dx:  130, peakY: -70,  endY:  40, size: 14, spin:  240, delay:   0 },
-  { dx:  -20, peakY: -150, endY:  90, size:  8, spin:  -90, delay: 240 },
-  { dx:   20, peakY: -150, endY:  90, size:  8, spin:   90, delay: 220 },
-]
 
 /* ─── Prize section ──────────────────────────────────────────────── */
 function PrizeSection() {
