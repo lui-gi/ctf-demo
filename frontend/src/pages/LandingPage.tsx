@@ -469,21 +469,23 @@ export default function LandingPage() {
 
       {/* ── HERO ── */}
       <div
-        className="min-h-screen flex flex-col relative overflow-hidden"
+        className="h-screen flex flex-col relative overflow-hidden"
         style={{ background: 'linear-gradient(180deg, #010310 0%, #03082e 18%, #070f3a 40%, #0c1f6a 58%, #0a1a58 75%, #050d38 90%, #030820 100%)' }}
       >
-        {/* Stars (existing night sky element) */}
+        {/* Stars */}
         <div className="absolute inset-0 pointer-events-none select-none" style={{ zIndex: 1 }}>
           {STARS.map(([top, left, size], i) => (
             <div
               key={i}
-              className="absolute rounded-full bg-white"
+              className="absolute rounded-full bg-white star-twinkle"
               style={{
                 top: `${top}%`,
                 left: `${left}%`,
                 width: `${size}px`,
                 height: `${size}px`,
                 opacity: 0.25 + (i % 5) * 0.12,
+                animationDelay: `${(i * 379) % 4200}ms`,
+                animationDuration: `${2800 + (i * 211) % 2000}ms`,
               }}
             />
           ))}
@@ -531,7 +533,7 @@ export default function LandingPage() {
             zIndex: 3,
             bottom: 0, left: 0, right: 0,
             height: '22%',
-            background: 'linear-gradient(180deg, transparent 0%, #05102a 25%, #040d22 60%, #030918 100%)',
+            background: 'linear-gradient(180deg, transparent 0%, #071535 25%, #09184a 60%, #0a1a52 100%)',
           }}
         />
 
@@ -552,12 +554,15 @@ export default function LandingPage() {
 
         {/* Nav */}
         <nav className="relative flex items-center justify-end gap-4 px-10 py-4" style={{ zIndex: 10 }}>
-          <Link to="/login" className="text-steel text-sm px-4 py-1.5 hover:text-white transition-colors">
+          <Link
+            to="/login"
+            className="text-sm px-4 py-1.5 transition-colors nav-login"
+          >
             Login
           </Link>
           <Link
             to="/register"
-            className="text-sm px-4 py-1.5 bg-teal text-black font-semibold rounded hover:opacity-90 transition-opacity"
+            className="text-sm px-4 py-1.5 rounded transition-all nav-register"
           >
             Register
           </Link>
@@ -568,7 +573,7 @@ export default function LandingPage() {
           {/* Wordmark */}
           <div className="flex flex-col items-center text-center pt-2 cs-wordmark-wrap">
             <h1
-              className="font-mono font-black italic tracking-wide leading-none mb-3 cs-wordmark"
+              className="font-mono font-black italic tracking-wide leading-none mb-3"
               style={{ fontSize: 'clamp(3rem, 7vw, 5.5rem)' }}
             >
               <span className="text-white">prog</span>
@@ -632,29 +637,38 @@ export default function LandingPage() {
             50%       { transform: rotate(15deg) translateY(-12px); }
           }
 
-          .cs-wordmark {
-            cursor: pointer;
-            transition: filter 0.4s ease;
+          .cs-sign { position: relative; }
+
+          /* ── Star twinkle ── */
+          @keyframes twinkle {
+            0%, 100% { opacity: var(--base-opacity, 0.4); transform: scale(1); }
+            50%       { opacity: 1; transform: scale(1.35); }
           }
-          .cs-wordmark .text-white,
-          .cs-wordmark .cs-ctf {
-            -webkit-text-stroke: 0px transparent;
-            transition:
-              color 0.4s ease,
-              text-shadow 0.4s ease,
-              -webkit-text-stroke 0.4s ease;
+          .star-twinkle {
+            animation-name: twinkle;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
           }
-          .cs-wordmark:hover {
-            filter: drop-shadow(0 0 16px rgba(0, 255, 136, 0.4));
-          }
-          .cs-wordmark:hover .text-white,
-          .cs-wordmark:hover .cs-ctf {
-            color: transparent !important;
-            text-shadow: none !important;
-            -webkit-text-stroke: 1.4px #00ff88;
+          @media (prefers-reduced-motion: reduce) {
+            .star-twinkle { animation: none; }
           }
 
-          .cs-sign { position: relative; }
+          /* ── Nav links ── */
+          .nav-login {
+            color: #fff;
+            font-weight: 700;
+          }
+          .nav-login:hover { opacity: 0.75; }
+          .nav-register {
+            color: #0a1a3a;
+            font-weight: 700;
+            background: #3ecfbe;
+            box-shadow: 0 0 18px 2px rgba(62,207,190,0.35);
+          }
+          .nav-register:hover {
+            background: #5fffae;
+            box-shadow: 0 0 26px 4px rgba(62,207,190,0.55);
+          }
         `}</style>
       </div>
 
