@@ -393,7 +393,6 @@ function SectionDivider() {
 export default function LandingPage() {
   const { login } = useAuth()
   const scrollToAbout = () => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
-  const devLogin = () => login('dev-token', { id: 0, username: 'dev', email: 'dev@example.com' })
 
   // ─── GSAP scroll entrances (everything below the hero) ──────────
   // Each section's heading + intro paragraphs reveal up-and-fade as
@@ -459,13 +458,7 @@ export default function LandingPage() {
 
   return (
     <>
-      {/* DEV ONLY — remove before launch */}
-      <button
-        onClick={devLogin}
-        style={{ position: 'fixed', top: 12, right: 12, zIndex: 9999, background: '#f59e0b', color: '#000', fontWeight: 700, fontSize: 12, padding: '6px 12px', borderRadius: 6, border: 'none', cursor: 'pointer', letterSpacing: '0.05em' }}
-      >
-        DEV LOGIN
-      </button>
+
 
       {/* ── HERO ── */}
       <div
@@ -569,7 +562,7 @@ export default function LandingPage() {
         </nav>
 
         {/* Content column */}
-        <div className="relative flex-1 flex flex-col items-center justify-between pb-16 px-4" style={{ zIndex: 10 }}>
+        <div className="relative flex-1 flex flex-col items-center justify-between pb-12 px-4" style={{ zIndex: 10 }}>
           {/* Wordmark */}
           <div className="flex flex-col items-center text-center pt-2 cs-wordmark-wrap">
             <h1
@@ -622,12 +615,31 @@ export default function LandingPage() {
           <button
             onClick={scrollToAbout}
             aria-label="Scroll to about section"
-            className="text-white text-4xl hover:opacity-70 transition-opacity"
-            style={{
-              textShadow: '0 0 12px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.4)',
-            }}
+            className="cs-cta-group flex flex-col items-center gap-2"
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
           >
-            <span aria-hidden="true">↓</span>
+            <span
+              className="cs-cta-label font-mono font-bold tracking-[0.4em] uppercase transition-all duration-200"
+              style={{
+                fontSize: 'clamp(0.6rem, 1.2vw, 0.75rem)',
+                color: '#d8ffe9',
+                textShadow: '0 0 12px rgba(0,255,136,0.55), 0 0 28px rgba(57,255,20,0.35)',
+              }}
+            >
+              Explore the Challenge
+            </span>
+            <svg
+              aria-hidden="true"
+              className="cs-cta-chevron"
+              width="10" height="16"
+              viewBox="0 0 14 22"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{ filter: 'drop-shadow(0 0 4px rgba(0,255,136,0.70)) drop-shadow(0 0 10px rgba(57,255,20,0.40))' }}
+            >
+              <line x1="7" y1="1" x2="7" y2="18" stroke="#d8ffe9" strokeWidth="2" strokeLinecap="round" />
+              <polyline points="2,13 7,20 12,13" stroke="#d8ffe9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </button>
         </div>
 
@@ -651,6 +663,22 @@ export default function LandingPage() {
           }
           @media (prefers-reduced-motion: reduce) {
             .star-twinkle { animation: none; }
+          }
+
+          /* ── CTA scroll group ── */
+          @keyframes chevronBounce {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(2px); }
+          }
+          .cs-cta-chevron {
+            animation: chevronBounce 1.6s ease-in-out infinite;
+          }
+          .cs-cta-group:hover .cs-cta-label {
+            text-shadow: 0 0 16px rgba(0,255,136,0.80), 0 0 36px rgba(57,255,20,0.55);
+            letter-spacing: 0.45em;
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .cs-cta-chevron { animation: none; }
           }
 
           /* ── Nav links ── */
