@@ -441,7 +441,7 @@ export default function LandingPage() {
       }
       stagger('.countdown-cell')
       stagger('.ctf-stat', { y: 18, duration: 0.6, stagger: 0.06 })
-      stagger('.challenge-card')
+      stagger('.challenge-card', { y: 0 })
       stagger('.tier-card', { y: 44, duration: 0.85, stagger: 0.12 })
 
       // Prize amount: scale-up + glow grow as it enters viewport.
