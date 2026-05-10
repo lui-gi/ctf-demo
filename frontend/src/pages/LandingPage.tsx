@@ -905,23 +905,62 @@ export default function LandingPage() {
                 Board the Ship
                 <Anchor size={16} strokeWidth={1.6} />
               </Link>
-              <Link
-                to="/sponsor"
-                style={{
-                  fontSize: 13,
-                  fontFamily: '"JetBrains Mono", monospace',
-                  letterSpacing: '0.24em',
-                  textTransform: 'uppercase',
-                  color: '#8ab4e8',
-                  textDecoration: 'underline',
-                  textUnderlineOffset: 4,
-                  textDecorationColor: 'rgba(138,180,232,0.4)',
-                }}
-              >
+              <Link to="/sponsor" className="sponsor-ghost-btn">
                 Sponsor or get involved
+                <Coins size={16} strokeWidth={1.5} />
+                <span className="sponsor-ghost-btn__shimmer" aria-hidden />
               </Link>
             </div>
           </div>
+          <style>{`
+            .sponsor-ghost-btn {
+              position: relative;
+              overflow: hidden;
+              display: inline-flex;
+              align-items: center;
+              gap: 8px;
+              padding: 12px 28px;
+              font-family: "JetBrains Mono", monospace;
+              font-size: 14px;
+              font-weight: 700;
+              letter-spacing: 0.24em;
+              text-transform: uppercase;
+              color: #c8daf4;
+              text-decoration: none;
+              border: 1px solid rgba(138,180,232,0.45);
+              border-radius: 4px;
+              transition: border-color 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
+            }
+            .sponsor-ghost-btn:hover {
+              color: #ffffff;
+              border-color: rgba(138,180,232,0.85);
+              box-shadow: 0 0 20px -4px rgba(138,180,232,0.35);
+            }
+            .sponsor-ghost-btn__shimmer {
+              position: absolute;
+              inset: 0;
+              background: linear-gradient(
+                105deg,
+                transparent 30%,
+                rgba(138,180,232,0.22) 50%,
+                transparent 70%
+              );
+              transform: translateX(-100%) skewX(-20deg);
+              animation: sponsorShimmer 4.2s linear infinite;
+              pointer-events: none;
+            }
+            .sponsor-ghost-btn:hover .sponsor-ghost-btn__shimmer {
+              animation-duration: 2.1s;
+            }
+            @keyframes sponsorShimmer {
+              0%     { transform: translateX(-100%) skewX(-20deg); }
+              66.7%  { transform: translateX(250%) skewX(-20deg); }
+              66.8%, 100% { transform: translateX(-100%) skewX(-20deg); }
+            }
+            @media (prefers-reduced-motion: reduce) {
+              .sponsor-ghost-btn__shimmer { animation: none; }
+            }
+          `}</style>
         </section>
       </div>
     </>
