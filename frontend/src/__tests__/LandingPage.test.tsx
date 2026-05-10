@@ -11,9 +11,12 @@ vi.mock('../contexts/AuthContext', () => ({
     crewRank: null,
     login: vi.fn(),
     logout: vi.fn(),
+    updateUser: vi.fn(),
   })),
 }))
 
+// Both mocks are required: LandingPage.tsx imports gsap via two paths —
+// `import gsap from 'gsap'` and `import { ScrollTrigger } from 'gsap/ScrollTrigger'`.
 vi.mock('gsap', () => ({
   default: {
     registerPlugin: vi.fn(),
