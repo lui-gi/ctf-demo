@@ -1,17 +1,9 @@
 import { Link } from 'react-router-dom'
+import { STARS } from '../components/layout/starfield'
 
-const STARS: [number, number, number, number][] = [
-  [8, 5, 2, 0.70], [15, 12, 1, 0.40], [23, 3, 1, 0.60], [31, 18, 2, 0.50],
-  [42, 8, 1, 0.35], [55, 4, 2, 0.65], [63, 15, 1, 0.45], [71, 7, 1, 0.55],
-  [79, 11, 2, 0.40], [87, 3, 1, 0.70], [92, 19, 1, 0.30], [4, 28, 1, 0.50],
-  [18, 35, 2, 0.40], [29, 22, 1, 0.60], [47, 30, 1, 0.35], [58, 25, 2, 0.50],
-  [67, 32, 1, 0.45], [76, 28, 1, 0.55], [84, 22, 2, 0.40], [93, 35, 1, 0.30],
-  [11, 42, 1, 0.50], [36, 45, 2, 0.40], [52, 38, 1, 0.60], [74, 43, 1, 0.35],
-  [89, 48, 2, 0.45], [6, 58, 1, 0.30], [27, 65, 1, 0.35], [44, 72, 2, 0.25],
-  [61, 55, 1, 0.30], [78, 68, 1, 0.35], [91, 62, 2, 0.28], [33, 78, 1, 0.25],
-]
-
+// TODO: replace with real Google Form URL when ready
 const SPONSOR_FORM_URL = 'https://docs.google.com/forms/sponsor-placeholder'
+// TODO: replace with real Google Form URL when ready
 const INVOLVE_FORM_URL = 'https://docs.google.com/forms/involve-placeholder'
 
 export default function SponsorPage() {
@@ -75,12 +67,12 @@ export default function SponsorPage() {
           boxShadow: '0 0 12px rgba(0,255,136,0.08)',
         }}
         onMouseEnter={e => {
-          e.currentTarget.style.borderColor = 'rgba(216,255,233,0.65)'
-          e.currentTarget.style.boxShadow = '0 0 18px rgba(0,255,136,0.18)'
+          ;(e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(216,255,233,0.65)'
+          ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 0 18px rgba(0,255,136,0.18)'
         }}
         onMouseLeave={e => {
-          e.currentTarget.style.borderColor = 'rgba(216,255,233,0.30)'
-          e.currentTarget.style.boxShadow = '0 0 12px rgba(0,255,136,0.08)'
+          ;(e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(216,255,233,0.30)'
+          ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 0 12px rgba(0,255,136,0.08)'
         }}
       >
         ← Home
@@ -180,12 +172,12 @@ function GetInvolvedCard() {
           border: '1px solid rgba(62,207,190,0.50)',
         }}
         onMouseEnter={e => {
-          e.currentTarget.style.background = 'rgba(62,207,190,0.25)'
-          e.currentTarget.style.borderColor = 'rgba(62,207,190,0.75)'
+          ;(e.currentTarget as HTMLAnchorElement).style.background = 'rgba(62,207,190,0.25)'
+          ;(e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(62,207,190,0.75)'
         }}
         onMouseLeave={e => {
-          e.currentTarget.style.background = 'rgba(62,207,190,0.15)'
-          e.currentTarget.style.borderColor = 'rgba(62,207,190,0.50)'
+          ;(e.currentTarget as HTMLAnchorElement).style.background = 'rgba(62,207,190,0.15)'
+          ;(e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(62,207,190,0.50)'
         }}
       >
         Get Involved
