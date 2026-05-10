@@ -905,8 +905,8 @@ export default function LandingPage() {
                 Board the Ship
                 <Anchor size={16} strokeWidth={1.6} />
               </Link>
-              <a
-                href="mailto:sponsors@progctf.example"
+              <Link
+                to="/sponsor"
                 style={{
                   fontSize: 13,
                   fontFamily: '"JetBrains Mono", monospace',
@@ -919,7 +919,7 @@ export default function LandingPage() {
                 }}
               >
                 Sponsor or get involved
-              </a>
+              </Link>
             </div>
           </div>
         </section>
