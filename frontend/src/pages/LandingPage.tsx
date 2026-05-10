@@ -487,7 +487,7 @@ export default function LandingPage() {
 
         {/* Moon */}
         <div
-          className="absolute pointer-events-none"
+          className="absolute pointer-events-none cs-moon"
           style={{
             zIndex: 2,
             top: '5%',
@@ -504,8 +504,8 @@ export default function LandingPage() {
         <img
           src="/assets/clouds.png"
           alt=""
-          className="absolute pointer-events-none select-none w-full"
-          style={{ zIndex: 2, top: 0, left: 0, opacity: 0.22, mixBlendMode: 'screen' }}
+          className="absolute pointer-events-none select-none w-full h-full md:h-auto"
+          style={{ zIndex: 2, top: 0, left: 0, opacity: 0.22, mixBlendMode: 'screen', objectFit: 'cover' }}
         />
 
         {/* Mid-ground hills (existing night silhouette) */}
@@ -680,6 +680,11 @@ export default function LandingPage() {
           }
           @media (prefers-reduced-motion: reduce) {
             .cs-cta-chevron { animation: none; }
+          }
+
+          /* ── Moon (mobile) ── */
+          @media (max-width: 767px) {
+            .cs-moon { width: 72px !important; height: 72px !important; }
           }
 
           /* ── Nav links ── */
