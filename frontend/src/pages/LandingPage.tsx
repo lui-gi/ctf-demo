@@ -563,16 +563,19 @@ export default function LandingPage() {
             </svg>
           </div>
 
-          {/* Hand — stand-in SVG, replace with <img src="/assets/hero-hand.png"> when asset is ready */}
-          <svg aria-hidden className="hero-water-hand" viewBox="0 0 50 82" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="19" y="54" width="12" height="28" rx="3" fill="#c8c3b0" stroke="#8a8070" strokeWidth="1"/>
-            <ellipse cx="25" cy="52" rx="12" ry="9" fill="#c8c3b0" stroke="#8a8070" strokeWidth="1"/>
-            <rect x="6" y="18" width="6" height="34" rx="3" fill="#c8c3b0" stroke="#8a8070" strokeWidth="1"/>
-            <rect x="14" y="10" width="6" height="42" rx="3" fill="#c8c3b0" stroke="#8a8070" strokeWidth="1"/>
-            <rect x="22" y="4" width="6" height="48" rx="3" fill="#c8c3b0" stroke="#8a8070" strokeWidth="1"/>
-            <rect x="30" y="10" width="6" height="42" rx="3" fill="#c8c3b0" stroke="#8a8070" strokeWidth="1"/>
-            <rect x="38" y="24" width="5" height="28" rx="2.5" fill="#c8c3b0" stroke="#8a8070" strokeWidth="1"/>
-          </svg>
+          {/* Hand — wrapper handles x-centering so the bob keyframe only uses translateY */}
+          {/* Stand-in SVG, replace inner <svg> with <img src="/assets/hero-hand.png"> when asset is ready */}
+          <div aria-hidden className="hero-water-hand-wrap">
+            <svg className="hero-water-hand" viewBox="0 0 50 82" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="19" y="54" width="12" height="28" rx="3" fill="#c8c3b0" stroke="#8a8070" strokeWidth="1"/>
+              <ellipse cx="25" cy="52" rx="12" ry="9" fill="#c8c3b0" stroke="#8a8070" strokeWidth="1"/>
+              <rect x="6" y="18" width="6" height="34" rx="3" fill="#c8c3b0" stroke="#8a8070" strokeWidth="1"/>
+              <rect x="14" y="10" width="6" height="42" rx="3" fill="#c8c3b0" stroke="#8a8070" strokeWidth="1"/>
+              <rect x="22" y="4" width="6" height="48" rx="3" fill="#c8c3b0" stroke="#8a8070" strokeWidth="1"/>
+              <rect x="30" y="10" width="6" height="42" rx="3" fill="#c8c3b0" stroke="#8a8070" strokeWidth="1"/>
+              <rect x="38" y="24" width="5" height="28" rx="2.5" fill="#c8c3b0" stroke="#8a8070" strokeWidth="1"/>
+            </svg>
+          </div>
         </div>
 
         {/* Moonlight streak (existing) */}
@@ -717,7 +720,7 @@ export default function LandingPage() {
             pointer-events: none;
             user-select: none;
             filter: drop-shadow(0 0 10px rgba(62,207,190,0.25));
-            animation: heroElemBob 5.2s ease-in-out infinite;
+            animation: heroElemBobChest 5.2s ease-in-out infinite;
           }
           .hero-water-skull-wrap {
             position: absolute;
@@ -731,21 +734,33 @@ export default function LandingPage() {
             display: block;
             width: clamp(40px, 5vw, 65px);
             filter: drop-shadow(0 0 10px rgba(62,207,190,0.25));
-            animation: heroElemBob 4.0s ease-in-out 1.4s infinite;
+            animation: heroElemBobSkull 4.0s ease-in-out 1.4s infinite;
           }
-          .hero-water-hand {
+          .hero-water-hand-wrap {
             position: absolute;
             bottom: 0;
-            right: 18%;
-            width: clamp(35px, 4vw, 55px);
+            left: 82%;
+            transform: translateX(-50%);
             pointer-events: none;
             user-select: none;
-            filter: drop-shadow(0 0 10px rgba(62,207,190,0.25));
-            animation: heroElemBob 3.6s ease-in-out 0.7s infinite;
           }
-          @keyframes heroElemBob {
+          .hero-water-hand {
+            display: block;
+            width: clamp(35px, 4vw, 55px);
+            filter: drop-shadow(0 0 10px rgba(62,207,190,0.25));
+            animation: heroElemBobHand 3.6s ease-in-out 0.7s infinite;
+          }
+          @keyframes heroElemBobChest {
             0%, 100% { transform: translateY(0px); }
-            50%       { transform: translateY(-6px); }
+            50%       { transform: translateY(-5px); }
+          }
+          @keyframes heroElemBobSkull {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-7px); }
+          }
+          @keyframes heroElemBobHand {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-4px); }
           }
           @media (max-width: 640px) {
             .hero-water-chest { width: clamp(42px, 6vw, 66px); }
