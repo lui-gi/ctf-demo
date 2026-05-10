@@ -669,6 +669,51 @@ export default function LandingPage() {
             background: #5fffae;
             box-shadow: 0 0 26px 4px rgba(62,207,190,0.55);
           }
+
+          /* ── Hero water elements ── */
+          .hero-water-chest {
+            position: absolute;
+            bottom: 0;
+            left: 12%;
+            width: clamp(70px, 8vw, 110px);
+            pointer-events: none;
+            user-select: none;
+            filter: drop-shadow(0 0 10px rgba(62,207,190,0.25));
+            animation: heroElemBob 5.2s ease-in-out infinite;
+          }
+          .hero-water-skull-wrap {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            pointer-events: none;
+            user-select: none;
+          }
+          .hero-water-skull {
+            display: block;
+            width: clamp(40px, 5vw, 65px);
+            filter: drop-shadow(0 0 10px rgba(62,207,190,0.25));
+            animation: heroElemBob 4.0s ease-in-out 1.4s infinite;
+          }
+          .hero-water-hand {
+            position: absolute;
+            bottom: 0;
+            right: 18%;
+            width: clamp(35px, 4vw, 55px);
+            pointer-events: none;
+            user-select: none;
+            filter: drop-shadow(0 0 10px rgba(62,207,190,0.25));
+            animation: heroElemBob 3.6s ease-in-out 0.7s infinite;
+          }
+          @keyframes heroElemBob {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-6px); }
+          }
+          @media (max-width: 640px) {
+            .hero-water-chest { width: clamp(42px, 6vw, 66px); }
+            .hero-water-skull { width: clamp(24px, 4vw, 39px); }
+            .hero-water-hand  { width: clamp(21px, 3vw, 33px); }
+          }
         `}</style>
       </div>
 
