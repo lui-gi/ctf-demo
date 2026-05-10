@@ -10,5 +10,7 @@ dist/
 
 # Visual brainstorming sessions
 .superpowers/
-
+docs/superpowers/
+docs/superpowers
+.github/workflows
 .github/workflows/
