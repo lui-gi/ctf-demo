@@ -777,21 +777,22 @@ export default function LandingPage() {
                 <div
                   key={name}
                   className={sponsored ? 'challenge-card challenge-card--sponsored' : 'challenge-card'}
+                  aria-label={sponsored ? `${name} (Sponsored)` : undefined}
                   style={sponsored ? {
                     borderColor: 'rgba(255,215,0,0.28)',
                     background: 'radial-gradient(ellipse at 50% 0%, rgba(255,215,0,0.09) 0%, transparent 65%), #071230',
-                    position: 'relative',
                   } : undefined}
                 >
                   {sponsored && (
-                    /* screen readers announce this — intentional */
-                    <span style={{
-                      position: 'absolute', top: 12, right: 14,
-                      fontSize: 9, fontWeight: 800, letterSpacing: '0.18em',
-                      textTransform: 'uppercase' as const,
-                      color: 'rgba(255,215,0,0.75)',
-                      fontFamily: '"JetBrains Mono", monospace',
-                    }}>
+                    <span
+                      aria-hidden="true"
+                      style={{
+                        position: 'absolute', top: 12, right: 14,
+                        fontSize: 9, fontWeight: 800, letterSpacing: '0.18em',
+                        textTransform: 'uppercase' as const,
+                        color: 'rgba(255,215,0,0.75)',
+                        fontFamily: '"JetBrains Mono", monospace',
+                      }}>
                       Sponsored
                     </span>
                   )}
@@ -813,6 +814,7 @@ export default function LandingPage() {
           </div>
           <style>{`
             .challenge-card {
+              position: relative;
               background: #071230;
               border: 1px solid rgba(26,58,106,0.7);
               border-radius: 6px;
@@ -832,6 +834,7 @@ export default function LandingPage() {
               color: #3ecfbe;
             }
             .challenge-card--sponsored:hover {
+              transform: translateY(-3px);
               border-color: rgba(255,215,0,0.55);
               box-shadow: 0 18px 40px -24px rgba(255,215,0,0.35);
             }

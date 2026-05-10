@@ -52,8 +52,14 @@ describe('LandingPage — Patron\'s Plunder card', () => {
   })
 
   test('renders eight challenge cards total', () => {
-    renderPage()
-    const cards = document.querySelectorAll('.challenge-card')
+    const { container } = renderPage()
+    const cards = container.querySelectorAll('.challenge-card')
     expect(cards).toHaveLength(8)
+  })
+
+  test('Patron\'s Plunder card has the sponsored modifier class', () => {
+    const { container } = renderPage()
+    const cards = container.querySelectorAll('.challenge-card')
+    expect(cards[7]).toHaveClass('challenge-card--sponsored')
   })
 })
