@@ -77,6 +77,15 @@ export default function AuthLayout() {
       >
         <Outlet />
       </div>
+
+      {/* Back to home */}
+      <Link
+        to="/"
+        className="relative mt-6 font-mono text-xs tracking-[0.2em] uppercase transition-opacity duration-200 hover:opacity-100 opacity-50"
+        style={{ zIndex: 10, color: '#d8ffe9' }}
+      >
+        ← Home
+      </Link>
     </div>
   )
 }
