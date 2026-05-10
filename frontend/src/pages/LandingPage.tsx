@@ -535,48 +535,7 @@ export default function LandingPage() {
             height: '22%',
             background: 'linear-gradient(180deg, transparent 0%, #071535 25%, #09184a 60%, #0a1a52 100%)',
           }}
-        >
-          {/* Chest — stand-in SVG, replace with <img src="/assets/hero-chest.png"> when asset is ready */}
-          <svg aria-hidden className="hero-water-chest" viewBox="0 0 100 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 36 Q50 8 92 36" fill="#4a3015" stroke="#7a4f00" strokeWidth="1.5"/>
-            <rect x="8" y="36" width="84" height="36" rx="2" fill="#3a2410" stroke="#7a4f00" strokeWidth="1.5"/>
-            <rect x="8" y="38" width="84" height="6" fill="#c8a000" opacity="0.7"/>
-            <rect x="40" y="44" width="20" height="14" rx="2" fill="#c8a000" opacity="0.85"/>
-            <circle cx="50" cy="51" r="3" fill="#3a2410"/>
-            <ellipse cx="18" cy="70" rx="7" ry="3.5" fill="#c8a000" opacity="0.65"/>
-            <ellipse cx="84" cy="68" rx="5" ry="3" fill="#c8a000" opacity="0.5"/>
-          </svg>
-
-          {/* Skull — wrapper handles x-centering so the bob keyframe only uses translateY */}
-          {/* Stand-in SVG, replace inner <svg> with <img src="/assets/hero-skull.png"> when asset is ready */}
-          <div aria-hidden className="hero-water-skull-wrap">
-            <svg className="hero-water-skull" viewBox="0 0 60 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 30 a24 24 0 0 1 48 0" fill="#d4cfbd" stroke="#8a8070" strokeWidth="1.5"/>
-              <rect x="10" y="30" width="40" height="16" rx="3" fill="#c8c3b0" stroke="#8a8070" strokeWidth="1.2"/>
-              <ellipse cx="20" cy="24" rx="7" ry="8" fill="#09184a"/>
-              <ellipse cx="40" cy="24" rx="7" ry="8" fill="#09184a"/>
-              <path d="M27 32 L30 28 L33 32 Z" fill="#09184a"/>
-              <line x1="16" y1="38" x2="16" y2="46" stroke="#8a8070" strokeWidth="2"/>
-              <line x1="24" y1="38" x2="24" y2="46" stroke="#8a8070" strokeWidth="2"/>
-              <line x1="36" y1="38" x2="36" y2="46" stroke="#8a8070" strokeWidth="2"/>
-              <line x1="44" y1="38" x2="44" y2="46" stroke="#8a8070" strokeWidth="2"/>
-            </svg>
-          </div>
-
-          {/* Hand — wrapper handles x-centering so the bob keyframe only uses translateY */}
-          {/* Stand-in SVG, replace inner <svg> with <img src="/assets/hero-hand.png"> when asset is ready */}
-          <div aria-hidden className="hero-water-hand-wrap">
-            <svg className="hero-water-hand" viewBox="0 0 50 82" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="19" y="54" width="12" height="28" rx="3" fill="#c8c3b0" stroke="#8a8070" strokeWidth="1"/>
-              <ellipse cx="25" cy="52" rx="12" ry="9" fill="#c8c3b0" stroke="#8a8070" strokeWidth="1"/>
-              <rect x="6" y="18" width="6" height="34" rx="3" fill="#c8c3b0" stroke="#8a8070" strokeWidth="1"/>
-              <rect x="14" y="10" width="6" height="42" rx="3" fill="#c8c3b0" stroke="#8a8070" strokeWidth="1"/>
-              <rect x="22" y="4" width="6" height="48" rx="3" fill="#c8c3b0" stroke="#8a8070" strokeWidth="1"/>
-              <rect x="30" y="10" width="6" height="42" rx="3" fill="#c8c3b0" stroke="#8a8070" strokeWidth="1"/>
-              <rect x="38" y="24" width="5" height="28" rx="2.5" fill="#c8c3b0" stroke="#8a8070" strokeWidth="1"/>
-            </svg>
-          </div>
-        </div>
+        />
 
         {/* Moonlight streak (existing) */}
         <div
@@ -709,63 +668,6 @@ export default function LandingPage() {
           .nav-register:hover {
             background: #5fffae;
             box-shadow: 0 0 26px 4px rgba(62,207,190,0.55);
-          }
-
-          /* ── Hero water elements ── */
-          .hero-water-chest {
-            position: absolute;
-            bottom: 0;
-            left: 12%;
-            width: clamp(70px, 8vw, 110px);
-            pointer-events: none;
-            user-select: none;
-            filter: drop-shadow(0 0 10px rgba(62,207,190,0.25));
-            animation: heroElemBobChest 5.2s ease-in-out infinite;
-          }
-          .hero-water-skull-wrap {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            pointer-events: none;
-            user-select: none;
-          }
-          .hero-water-skull {
-            display: block;
-            width: clamp(40px, 5vw, 65px);
-            filter: drop-shadow(0 0 10px rgba(62,207,190,0.25));
-            animation: heroElemBobSkull 4.0s ease-in-out 1.4s infinite;
-          }
-          .hero-water-hand-wrap {
-            position: absolute;
-            bottom: 0;
-            left: 82%;
-            transform: translateX(-50%);
-            pointer-events: none;
-            user-select: none;
-          }
-          .hero-water-hand {
-            display: block;
-            width: clamp(35px, 4vw, 55px);
-            filter: drop-shadow(0 0 10px rgba(62,207,190,0.25));
-            animation: heroElemBobHand 3.6s ease-in-out 0.7s infinite;
-          }
-          @keyframes heroElemBobChest {
-            0%, 100% { transform: translateY(0px); }
-            50%       { transform: translateY(-5px); }
-          }
-          @keyframes heroElemBobSkull {
-            0%, 100% { transform: translateY(0px); }
-            50%       { transform: translateY(-7px); }
-          }
-          @keyframes heroElemBobHand {
-            0%, 100% { transform: translateY(0px); }
-            50%       { transform: translateY(-4px); }
-          }
-          @media (max-width: 640px) {
-            .hero-water-chest { width: clamp(42px, 6vw, 66px); }
-            .hero-water-skull { width: clamp(24px, 4vw, 39px); }
-            .hero-water-hand  { width: clamp(21px, 3vw, 33px); }
           }
         `}</style>
       </div>
