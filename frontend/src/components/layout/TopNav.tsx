@@ -2,7 +2,6 @@ import { NavLink, Link } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import CrewBadge from '../ui/CrewBadge'
 import { CompassRose } from '../ui/PirateMotifs'
-import { PowerChip } from '../ui/PowerChip'
 import { useScrollRotation } from '../../lib/useScrollRotation'
 
 const links = [
@@ -67,8 +66,7 @@ export default function TopNav() {
           </NavLink>
         ))}
         <CrewBadge crewRank={crewRank} />
-        <PowerChip compact />
-        <button
+<button
           onClick={logout}
           className="text-sm font-bold transition-colors"
           style={{ color: '#4a3318', fontFamily: '"IM Fell English SC", Georgia, serif', letterSpacing: '0.08em' }}

@@ -1,20 +1,9 @@
 import { useEffect, useRef } from 'react'
-import { usePowerToggle } from '../../lib/usePowerToggle'
 
 /* ─── CursorTrail ─────────────────────────────────────────────
    Drops faint accent-coloured dots behind the cursor. Mounted at
-   the app root; only renders DOM when usePowerToggle returns true.
-
-   Implementation: a single document-level mousemove listener,
-   throttled to ~60fps. Each tick spawns one absolutely-positioned
-   <span class="fx-cursor-trail-dot"> that fades out via CSS and
-   self-removes after its keyframe ends. The dot's color picks up
-   the current section's accent via a CSS variable on the dot
-   itself; we recompute the tint on each frame using the same
-   logic as ScrollProgressBar.
-
-   Off entirely when prefers-reduced-motion is set, or when the
-   toggle hasn't been switched on. Mobile/touch is treated as off. */
+   the app root. Off on touch devices and when prefers-reduced-motion
+   is set. */
 
 const SECTION_TINTS: { selector: string; tint: string }[] = [
   { selector: '[id="about"]',                  tint: 'var(--role-sniper-ink, #6b5d1a)' },
@@ -37,13 +26,10 @@ function currentTint(): string {
 }
 
 export function CursorTrail() {
-  const [enabled] = usePowerToggle()
   const lastSpawnRef = useRef(0)
 
   useEffect(() => {
-    if (!enabled) return
-    /* Skip touch devices entirely — trail under a finger is just
-       random dots, not a trail. */
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return
     if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return
 
     const handler = (e: MouseEvent) => {
@@ -63,7 +49,7 @@ export function CursorTrail() {
 
     document.addEventListener('mousemove', handler, { passive: true })
     return () => document.removeEventListener('mousemove', handler)
-  }, [enabled])
+  }, [])
 
   return null
 }

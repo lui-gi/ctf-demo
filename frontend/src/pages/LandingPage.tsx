@@ -11,7 +11,6 @@ import { SponsorsSection }   from '../components/sections/landing/SponsorsSectio
 import { FinalCTA }          from '../components/sections/landing/FinalCTA'
 import { SectionDivider }    from '../components/sections/landing/SectionDivider'
 import { HeroAwaken }        from '../components/ui/HeroAwaken'
-import { PowerChip }         from '../components/ui/PowerChip'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -97,18 +96,6 @@ export default function LandingPage() {
         <FinalCTA />
       </div>
 
-      {/* Floating power chip — fixed bottom-right, only on the
-          landing page. Authed pages get an inline TopNav chip. */}
-      <div
-        style={{
-          position: 'fixed',
-          right: 16,
-          bottom: 16,
-          zIndex: 200,
-        }}
-      >
-        <PowerChip />
-      </div>
     </>
   )
 }
