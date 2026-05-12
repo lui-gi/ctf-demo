@@ -1,11 +1,42 @@
-import { useState, type FormEvent } from 'react'
+import { useState, type FormEvent, type ReactNode } from 'react'
 import { api } from '../lib/api'
 import { useAuth } from '../contexts/AuthContext'
+import { SectionEyebrow } from '../components/ui/SectionRole'
+import { RoleDoctor } from '../components/ui/PirateMotifs'
+import { PlusIcon } from '../components/ui/AbilityPrims'
+
+/* ─── Pulsemend field-host ────────────────────────────────────
+   Wraps an input/textarea so we can drop a faint plus icon at its
+   right edge that fades in on :focus-within, and overlay a green
+   ripple keyframe pulse when the parent form reports a success. */
+function FieldHost({
+  children,
+  rippleKey,
+}: {
+  children: ReactNode
+  /* When this value changes to a non-null value, a ripple is
+     mounted and culled 700ms later. */
+  rippleKey?: number | null
+}) {
+  return (
+    <div className="fx-doctor-host" style={{ position: 'relative' }}>
+      {children}
+      <span className="fx-doctor-plus" aria-hidden>
+        <PlusIcon size={14} />
+      </span>
+      {rippleKey != null && (
+        <span key={rippleKey} className="fx-doctor-ripple" aria-hidden />
+      )}
+    </div>
+  )
+}
 
 function SettingCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-[#060f1e]/80 backdrop-blur-sm border border-steel/10 rounded-xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.4)]">
-      <h2 className="text-steel/70 text-xs font-semibold uppercase tracking-widest mb-4">{title}</h2>
+    <div className="parchment-card p-6 relative">
+      <span className="stamp-corner stamp-corner--tl" /><span className="stamp-corner stamp-corner--tr" />
+      <span className="stamp-corner stamp-corner--bl" /><span className="stamp-corner stamp-corner--br" />
+      <h2 className="text-xs font-semibold uppercase tracking-widest mb-4 ink-soft font-poster">{title}</h2>
       {children}
     </div>
   )
@@ -25,6 +56,11 @@ export default function ProfilePage() {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [passwordMsg, setPasswordMsg] = useState<{ ok: boolean; text: string } | null>(null)
 
+  /* Pulsemend — bump these on successful save to remount the ripple. */
+  const [usernameRipple, setUsernameRipple] = useState<number | null>(null)
+  const [emailRipple, setEmailRipple]       = useState<number | null>(null)
+  const [passwordRipple, setPasswordRipple] = useState<number | null>(null)
+
   async function handleUsername(e: FormEvent) {
     e.preventDefault()
     setUsernameMsg(null)
@@ -32,6 +68,7 @@ export default function ProfilePage() {
       await api.patch('/api/me/username', { username })
       updateUser({ username })
       setUsernameMsg({ ok: true, text: 'Username updated.' })
+      setUsernameRipple(Date.now())
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Could not update username.'
       setUsernameMsg({ ok: false, text: msg })
@@ -45,6 +82,7 @@ export default function ProfilePage() {
       await api.patch('/api/me/email', { email })
       updateUser({ email })
       setEmailMsg({ ok: true, text: 'Email updated.' })
+      setEmailRipple(Date.now())
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Could not update email.'
       setEmailMsg({ ok: false, text: msg })
@@ -64,90 +102,109 @@ export default function ProfilePage() {
       setNewPassword('')
       setConfirmPassword('')
       setPasswordMsg({ ok: true, text: 'Password updated.' })
+      setPasswordRipple(Date.now())
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Could not update password.'
       setPasswordMsg({ ok: false, text: msg })
     }
   }
 
-  const inputClass =
-    'w-full bg-[#040d1a] border border-steel/15 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-teal/50 transition-colors'
-  const saveBtn =
-    'py-2 px-5 bg-teal text-navy-950 font-bold rounded-lg hover:bg-teal/90 transition-colors shadow-[0_0_20px_rgba(62,207,190,0.25)] text-sm'
-
   return (
     <div className="max-w-lg mx-auto w-full px-6 py-10 flex flex-col gap-6">
       <div className="mb-2">
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-teal bg-clip-text text-transparent mb-1">
+        <SectionEyebrow
+          role="doctor"
+          label="Tend to your kit"
+          icon={<RoleDoctor size={16} strokeWidth={1.8} />}
+        />
+        <h1 className="h-poster mb-1" style={{ fontSize: '2.1rem', fontWeight: 800 }}>
           Profile Settings
         </h1>
-        <p className="text-steel text-sm">Update your account information below.</p>
+        <p className="ink-soft text-sm font-poster" style={{ letterSpacing: '0.06em' }}>
+          Update your account information below.
+        </p>
       </div>
 
       <SettingCard title="Username">
         <form onSubmit={handleUsername} className="flex flex-col gap-3">
-          <input
-            type="text"
-            required
-            value={username}
-            onChange={e => setUsername(e.target.value)}
-            placeholder="New username"
-            className={inputClass}
-          />
+          <FieldHost rippleKey={usernameRipple}>
+            <input
+              type="text"
+              required
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+              placeholder="New username"
+              className="field-paper fx-doctor w-full"
+            />
+          </FieldHost>
           {usernameMsg && (
-            <p className={`text-xs ${usernameMsg.ok ? 'text-teal' : 'text-danger'}`}>{usernameMsg.text}</p>
+            <p className="text-xs font-poster" style={{ color: usernameMsg.ok ? '#3d6b3a' : '#8a2a1f' }}>
+              {usernameMsg.text}
+            </p>
           )}
-          <button type="submit" className={saveBtn}>Save</button>
+          <button type="submit" className="btn-stamp">Save</button>
         </form>
       </SettingCard>
 
       <SettingCard title="Email">
         <form onSubmit={handleEmail} className="flex flex-col gap-3">
-          <input
-            type="email"
-            required
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            placeholder="New email"
-            className={inputClass}
-          />
+          <FieldHost rippleKey={emailRipple}>
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              placeholder="New email"
+              className="field-paper fx-doctor w-full"
+            />
+          </FieldHost>
           {emailMsg && (
-            <p className={`text-xs ${emailMsg.ok ? 'text-teal' : 'text-danger'}`}>{emailMsg.text}</p>
+            <p className="text-xs font-poster" style={{ color: emailMsg.ok ? '#3d6b3a' : '#8a2a1f' }}>
+              {emailMsg.text}
+            </p>
           )}
-          <button type="submit" className={saveBtn}>Save</button>
+          <button type="submit" className="btn-stamp">Save</button>
         </form>
       </SettingCard>
 
       <SettingCard title="Password">
         <form onSubmit={handlePassword} className="flex flex-col gap-3">
-          <input
-            type="password"
-            required
-            value={currentPassword}
-            onChange={e => setCurrentPassword(e.target.value)}
-            placeholder="Current password"
-            className={inputClass}
-          />
-          <input
-            type="password"
-            required
-            value={newPassword}
-            onChange={e => setNewPassword(e.target.value)}
-            placeholder="New password"
-            className={inputClass}
-          />
-          <input
-            type="password"
-            required
-            value={confirmPassword}
-            onChange={e => setConfirmPassword(e.target.value)}
-            placeholder="Confirm new password"
-            className={inputClass}
-          />
+          <FieldHost rippleKey={passwordRipple}>
+            <input
+              type="password"
+              required
+              value={currentPassword}
+              onChange={e => setCurrentPassword(e.target.value)}
+              placeholder="Current password"
+              className="field-paper fx-doctor w-full"
+            />
+          </FieldHost>
+          <FieldHost>
+            <input
+              type="password"
+              required
+              value={newPassword}
+              onChange={e => setNewPassword(e.target.value)}
+              placeholder="New password"
+              className="field-paper fx-doctor w-full"
+            />
+          </FieldHost>
+          <FieldHost>
+            <input
+              type="password"
+              required
+              value={confirmPassword}
+              onChange={e => setConfirmPassword(e.target.value)}
+              placeholder="Confirm new password"
+              className="field-paper fx-doctor w-full"
+            />
+          </FieldHost>
           {passwordMsg && (
-            <p className={`text-xs ${passwordMsg.ok ? 'text-teal' : 'text-danger'}`}>{passwordMsg.text}</p>
+            <p className="text-xs font-poster" style={{ color: passwordMsg.ok ? '#3d6b3a' : '#8a2a1f' }}>
+              {passwordMsg.text}
+            </p>
           )}
-          <button type="submit" className={saveBtn}>Save</button>
+          <button type="submit" className="btn-stamp">Save</button>
         </form>
       </SettingCard>
     </div>

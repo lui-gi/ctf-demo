@@ -1,4 +1,6 @@
+import { useEffect, useRef, useState } from 'react'
 import type { BountyEntry } from '../../lib/types'
+import { Vine } from './AbilityPrims'
 
 interface WantedPosterProps {
   entry: BountyEntry
@@ -48,8 +50,35 @@ export default function WantedPoster({ entry, size }: WantedPosterProps) {
   const displayedMembers = entry.members.slice(0, 5)
   const extraMembers = entry.members.length - displayedMembers.length
 
+  /* Bloomsprout — vines + flowers sprout from the four corners
+     once the poster scrolls into view. One-shot. */
+  const hostRef = useRef<HTMLDivElement>(null)
+  const [bloomed, setBloomed] = useState(false)
+  useEffect(() => {
+    const el = hostRef.current
+    if (!el) return
+    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    if (reduced || typeof IntersectionObserver === 'undefined') {
+      setBloomed(true)
+      return
+    }
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          setBloomed(true)
+          obs.disconnect()
+        }
+      })
+    }, { threshold: 0.4 })
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [])
+
   return (
-    <div className={`flex flex-col items-center [filter:drop-shadow(0_8px_24px_rgba(0,0,0,0.7))] ${cfg.poster}`}>
+    <div
+      ref={hostRef}
+      className={`flex flex-col items-center fx-paper-flip fx-arch-host relative [filter:drop-shadow(0_8px_24px_rgba(0,0,0,0.7))] ${cfg.poster}`}
+    >
       {/* Rank badge */}
       <div className="mb-[-10px] z-10 relative">
         <span
@@ -81,6 +110,35 @@ export default function WantedPoster({ entry, size }: WantedPosterProps) {
           className="absolute inset-0 pointer-events-none opacity-[0.07]"
           style={{ backgroundImage: TEXTURE_SVG, backgroundSize: '80px 80px' }}
         />
+
+        {/* Bloomsprout vines — sprout from each corner on first reveal,
+            with additional curls layered on hover via .fx-arch-host. */}
+        {bloomed && (
+          <>
+            <span className="fx-arch-vine" aria-hidden style={{ top: -8, left: -8, animationDelay: '0s' }}>
+              <Vine size={42} strokeWidth={1.8} rotation={0} />
+            </span>
+            <span className="fx-arch-vine" aria-hidden style={{ top: -8, right: -8, animationDelay: '0.08s' }}>
+              <Vine size={42} strokeWidth={1.8} rotation={90} />
+            </span>
+            <span className="fx-arch-vine" aria-hidden style={{ bottom: -8, left: -8, animationDelay: '0.16s' }}>
+              <Vine size={42} strokeWidth={1.8} rotation={-90} />
+            </span>
+            <span className="fx-arch-vine" aria-hidden style={{ bottom: -8, right: -8, animationDelay: '0.24s' }}>
+              <Vine size={42} strokeWidth={1.8} rotation={180} />
+            </span>
+
+            {/* Hover-only mid-edge curls. */}
+            <span className="fx-arch-vine fx-arch-vine--hover" aria-hidden
+                  style={{ top: '40%', left: -22, transform: 'translateY(-50%)', opacity: 0 }}>
+              <Vine size={30} strokeWidth={1.6} rotation={-45} />
+            </span>
+            <span className="fx-arch-vine fx-arch-vine--hover" aria-hidden
+                  style={{ top: '40%', right: -22, transform: 'translateY(-50%)', opacity: 0 }}>
+              <Vine size={30} strokeWidth={1.6} rotation={135} />
+            </span>
+          </>
+        )}
 
         {/* "YOU" badge */}
         {entry.isCurrentCrew && (
