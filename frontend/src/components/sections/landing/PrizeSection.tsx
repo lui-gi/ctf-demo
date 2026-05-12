@@ -36,7 +36,7 @@ export function PrizeSection() {
         <h2 className="gsap-reveal h-poster" style={{ fontSize: 'clamp(2.2rem, 5.4vw, 3.8rem)', fontWeight: 900, marginBottom: 18 }}>
           Treasure Awaits
         </h2>
-        <p className="gsap-reveal font-poster" style={{ fontSize: 16, color: 'var(--ink-soft, #4a3318)', maxWidth: 580, margin: '0 auto 48px', lineHeight: 1.7 }}>
+        <p className="gsap-reveal font-poster" style={{ fontSize: 21, fontWeight: 500, color: 'var(--ink-soft, #4a3318)', maxWidth: 580, margin: '0 auto 48px', lineHeight: 1.7 }}>
           The chest is real. Crack the most challenges across the eight hours and your crew sails
           home with the lion&rsquo;s share.
         </p>
@@ -96,7 +96,7 @@ export function PrizeSection() {
           )}
         </div>
 
-        <p className="font-poster" style={{ marginTop: 40, fontSize: 13, color: '#6b3a18', fontStyle: 'italic', maxWidth: 520, marginLeft: 'auto', marginRight: 'auto' }}>
+        <p className="font-poster" style={{ marginTop: 40, fontSize: 17.5, color: '#6b3a18', fontStyle: 'italic', maxWidth: 520, marginLeft: 'auto', marginRight: 'auto' }}>
           Final split is subject to participation and sponsor confirmation.
         </p>
       </div>

@@ -79,7 +79,7 @@ export function Countdown() {
         <h2 className="gsap-reveal h-poster" style={{ fontSize: 'clamp(2rem, 4.4vw, 3.4rem)', fontWeight: 900, marginTop: 22 }}>
           Time Until ProgCTF
         </h2>
-        <p className="gsap-reveal ink-soft font-poster" style={{ marginTop: 14, fontSize: 15 }}>
+        <p className="gsap-reveal ink-soft font-poster" style={{ marginTop: 14, fontSize: 21, fontWeight: 500 }}>
           The voyage begins{' '}
           <span style={{ color: 'var(--role-captain-ink, #8a2a1f)', fontWeight: 700 }}>November 7, 2026</span>.
         </p>

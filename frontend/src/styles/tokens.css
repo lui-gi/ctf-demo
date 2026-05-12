@@ -74,9 +74,9 @@
   --type-h1:  clamp(2.4rem, 5.4vw, 3.8rem);
   --type-h2:  clamp(1.9rem, 4.2vw, 3rem);
   --type-h3:  clamp(1.3rem, 2.4vw, 1.8rem);
-  --type-body: 1rem;
-  --type-small: 0.85rem;
-  --type-mini:  0.7rem;
+  --type-body: 1.2rem;
+  --type-small: 1rem;
+  --type-mini:  0.85rem;
 
   /* ── Base ink + parchment colour ramp (the warm side) ─────────── */
   --ink:       #1d1408;

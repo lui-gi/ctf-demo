@@ -9,7 +9,8 @@
 }
 
 .intro {
-  font-size: 15px;
+  font-size: 20px;
+  font-weight: 500;
   line-height: 1.75;
   color: var(--ink-soft, #4a3318);
   max-width: 720px;
@@ -59,28 +60,28 @@
   top: 16px;
   right: 18px;
   font-family: var(--font-poster, 'IM Fell English SC', serif);
-  font-size: 10px;
-  letter-spacing: 0.3em;
+  font-size: 12px;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
   color: rgba(90, 58, 26, 0.65);
 }
 
 .tierName {
-  font-size: 22px;
+  font-size: 27px;
   font-weight: 800;
   margin-top: 22px;
 }
 
 .tierPitch {
-  font-size: 11px;
-  letter-spacing: 0.32em;
+  font-size: 13.5px;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   margin-top: 6px;
   color: var(--role-captain-ink, #8a2a1f);
 }
 
 .tierCopy {
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.7;
   color: var(--ink, #2a1a08);
   margin-top: 18px;

@@ -38,13 +38,13 @@ export function AboutSection() {
         <h2 className="gsap-reveal h-poster" style={{ fontSize: 'var(--type-h2, clamp(1.9rem, 4.2vw, 3rem))', fontWeight: 900, marginBottom: 28 }}>
           What is a CTF?
         </h2>
-        <p className="ctf-copy font-poster" style={{ fontSize: 17, lineHeight: 1.75, color: 'var(--ink, #2a1a08)', maxWidth: 720, marginBottom: 22 }}>
+        <p className="ctf-copy font-poster" style={{ fontSize: 21.5, fontWeight: 500, lineHeight: 1.75, color: 'var(--ink, #2a1a08)', maxWidth: 720, marginBottom: 22 }}>
           A Capture the Flag is a hands-on cybersecurity competition where crews hunt for hidden
           flags by solving challenges across web exploitation, cryptography, reverse engineering,
           forensics, and binary exploitation. Each flag is a short string buried inside a problem.
           Find it, submit it, score points.
         </p>
-        <p className="ctf-copy font-poster" style={{ fontSize: 17, lineHeight: 1.75, color: 'var(--ink, #2a1a08)', maxWidth: 720 }}>
+        <p className="ctf-copy font-poster" style={{ fontSize: 21.5, fontWeight: 500, lineHeight: 1.75, color: 'var(--ink, #2a1a08)', maxWidth: 720 }}>
           ProgCTF runs for{' '}
           <span style={{ color: 'var(--role-captain-ink, #8a2a1f)', fontWeight: 700 }}>8 hours straight</span>.
           One sitting, one venue, one chest. Easy challenges come with hints baked in, the harder
@@ -128,7 +128,7 @@ function StatWithReticle({ value, label }: { value: string; label: string }) {
       <div
         className="font-poster"
         style={{
-          fontSize: 11,
+          fontSize: 15.5,
           color: '#6b3a18',
           letterSpacing: '0.2em',
           textTransform: 'uppercase',

@@ -14,7 +14,8 @@
 }
 
 .intro {
-  font-size: 15px;
+  font-size: 20px;
+  font-weight: 500;
   line-height: 1.7;
   color: var(--ink-soft, #4a3318);
   max-width: 680px;
@@ -94,14 +95,15 @@
 }
 
 .cardName {
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 800;
   color: var(--ink, #2a1a08);
   margin-top: 18px;
   letter-spacing: 0.04em;
 }
 .cardFlavor {
-  font-size: 13px;
+  font-size: 17px;
+  font-weight: 500;
   color: var(--ink-soft, #4a3318);
   line-height: 1.6;
   margin-top: 8px;

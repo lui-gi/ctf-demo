@@ -55,8 +55,8 @@
 .label {
   margin-top: 22px;
   font-family: var(--font-poster, 'IM Fell English SC', serif);
-  font-size: 10.5px;
-  letter-spacing: 0.42em;
+  font-size: 15.5px;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   color: #6b3a18;
 }

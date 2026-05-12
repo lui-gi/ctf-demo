@@ -95,7 +95,7 @@ export function FinalCTA() {
         <h2 className="gsap-reveal h-poster" style={{ fontSize: 'clamp(2.1rem, 5vw, 3.6rem)', fontWeight: 900, marginBottom: 14 }}>
           Ready to Sail?
         </h2>
-        <p className="gsap-reveal font-poster" style={{ fontSize: 16, color: 'var(--ink, #2a1a08)', maxWidth: 540, margin: '0 auto 38px', lineHeight: 1.7 }}>
+        <p className="gsap-reveal font-poster" style={{ fontSize: 21, fontWeight: 500, color: 'var(--ink, #2a1a08)', maxWidth: 540, margin: '0 auto 38px', lineHeight: 1.7 }}>
           Registration is free and the manifest is open. Bring a crew, pick a category, and find
           out what you can crack open in eight hours.
         </p>
