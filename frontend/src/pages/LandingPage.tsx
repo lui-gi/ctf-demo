@@ -58,7 +58,7 @@ export default function LandingPage() {
       stagger('.ctf-stat',       { y: 18, duration: 0.6,  stagger: 0.06 })
       /* .challenge-card uses .fx-sword-slash-in (CSS clip-path) — see
          ChallengesSection.tsx. Don't double up GSAP on the same nodes. */
-      stagger('.tier-card',      { y: 44, duration: 0.85, stagger: 0.12 })
+      stagger('.tier-card',      { y: 44, duration: 0.85, stagger: 0.12, clearProps: 'transform' })
 
       const prize = document.querySelector<HTMLElement>('.prize-amount, [aria-label="Two thousand US dollars"]')
       if (prize) {

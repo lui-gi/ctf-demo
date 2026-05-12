@@ -33,8 +33,14 @@
     0 14px 28px -14px rgba(60, 30, 5, 0.45);
   overflow: hidden;
   transition:
-    transform var(--motion-base, 0.35s) var(--ease-glide, cubic-bezier(0.2, 0.7, 0.2, 1)),
-    box-shadow 0.4s ease;
+    transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 0.25s ease;
+}
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    inset 0 0 28px rgba(120, 80, 30, 0.20),
+    0 22px 36px -14px rgba(60, 30, 5, 0.55);
 }
 
 .icon {
@@ -46,9 +52,7 @@
   border-radius: 50%;
   background: rgba(255, 245, 210, 0.55);
   color: var(--parchment-600, #5a3a1a);
-  transition: transform 0.5s ease;
 }
-.card:hover .icon { transform: rotate(8deg); }
 
 .order {
   position: absolute;

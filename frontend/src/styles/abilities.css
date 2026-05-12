@@ -172,7 +172,7 @@
     rgba(46,107,58,0.30) 50%,
     transparent 65%);
   pointer-events: none;
-  animation: fx-sword-shimmer 0.7s ease-out;
+  animation: fx-sword-shimmer 0.7s ease-out forwards;
 }
 
 /* ═══ Cook — Flamekick ════════════════════════════════════════════ */
