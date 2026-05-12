@@ -1,0 +1,44 @@
+/* ─── PrizeSection — local styles ────────────────────────────── */
+
+.amountWrap {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: baseline;
+  line-height: 1;
+  padding: 0 8px;
+}
+
+.amount {
+  font-family: var(--font-poster, 'IM Fell English SC', serif);
+  font-weight: 900;
+  font-size: clamp(96px, 17vw, 260px);
+  letter-spacing: 0.005em;
+  background: linear-gradient(100deg,
+    #6a4a10 0%,  #9a6f15 14%, #c9962a 30%, #e1b049 44%,
+    #c9962a 56%, #b8860b 72%, #9a6f15 88%, #6a4a10 100%);
+  background-size: 220% 100%;
+  background-position: -110% 50%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 8px 36px rgba(154, 111, 21, 0.45));
+  animation: prizeShimmer 6.5s linear infinite;
+}
+@keyframes prizeShimmer {
+  0%   { background-position: -110% 50%; }
+  100% { background-position:  110% 50%; }
+}
+
+.corner {
+  position: absolute;
+  width: 22px; height: 22px;
+  border-color: var(--parchment-600, #5a3a1a);
+  border-style: solid;
+  border-width: 0;
+}
+.cornerTl { top: -16px;    left: -16px;  border-top-width: 2px;    border-left-width: 2px; }
+.cornerTr { top: -16px;    right: -16px; border-top-width: 2px;    border-right-width: 2px; }
+.cornerBl { bottom: -8px;  left: -16px;  border-bottom-width: 2px; border-left-width: 2px; }
+.cornerBr { bottom: -8px;  right: -16px; border-bottom-width: 2px; border-right-width: 2px; }

@@ -1,6 +1,10 @@
 import { useState, useEffect, type FormEvent, type ReactNode } from 'react'
 import { api } from '../lib/api'
 import type { Crew, CrewPreview } from '../lib/types'
+import { SectionEyebrow } from '../components/ui/SectionRole'
+import { RoleMusician } from '../components/ui/PirateMotifs'
+import { Waveform } from '../components/ui/AbilityPrims'
+import { LogPose } from '../components/ui/LogPose'
 
 type View = 'loading' | 'no-crew' | 'crew' | 'error'
 type Tab = 'my-crew' | 'all-crews'
@@ -9,11 +13,14 @@ function TabButton({ active, onClick, children }: { active: boolean; onClick: ()
   return (
     <button
       onClick={onClick}
-      className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all duration-200 ${
-        active
-          ? 'bg-teal text-navy-950 shadow-[0_0_12px_rgba(62,207,190,0.3)]'
-          : 'text-steel hover:text-white'
-      }`}
+      className="flex-1 py-2 px-4 rounded-sm font-poster text-sm transition-all duration-200"
+      style={{
+        background: active ? '#8a2a1f' : 'transparent',
+        color: active ? '#f5e8c8' : '#4a3318',
+        letterSpacing: '0.12em',
+        textTransform: 'uppercase',
+        fontWeight: 700,
+      }}
     >
       {children}
     </button>
@@ -84,19 +91,29 @@ export default function CrewPage() {
   }
 
   const tabBar = (
-    <div className="flex gap-1 bg-[#060f1e]/80 border border-steel/10 rounded-xl p-1 mb-8">
-      <TabButton active={tab === 'my-crew'} onClick={() => setTab('my-crew')}>My Crew</TabButton>
+    <div
+      className="flex gap-1 p-1 mb-8 rounded-sm"
+      style={{
+        background: 'rgba(90,58,26,0.10)',
+        border: '1.5px solid #c9a96a',
+      }}
+    >
+      <TabButton active={tab === 'my-crew'}   onClick={() => setTab('my-crew')}>My Crew</TabButton>
       <TabButton active={tab === 'all-crews'} onClick={() => setTab('all-crews')}>All Crews</TabButton>
     </div>
   )
 
   if (view === 'loading') {
-    return <div className="flex-1 flex items-center justify-center text-steel text-sm">Loading…</div>
+    return (
+      <div className="flex-1 flex items-center justify-center">
+        <LogPose label="Charting course" />
+      </div>
+    )
   }
 
   if (view === 'error') {
     return (
-      <div className="flex-1 flex items-center justify-center text-steel text-sm">
+      <div className="flex-1 flex items-center justify-center text-sm font-poster ink-soft">
         The seas are rough — couldn't load crew info.
       </div>
     )
@@ -109,49 +126,51 @@ export default function CrewPage() {
       {tab === 'my-crew' && view === 'no-crew' && (
         <div className="max-w-md mx-auto flex flex-col gap-8">
           <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-teal bg-clip-text text-transparent mb-1">Crew</h1>
-            <p className="text-steel text-sm">You're sailing solo. Create or join a crew.</p>
+            <SectionEyebrow
+              role="musician"
+              label="A song needs a crew"
+              icon={<RoleMusician size={16} strokeWidth={1.8} />}
+            />
+            <h1 className="h-poster mb-1" style={{ fontSize: '2rem', fontWeight: 800 }}>Crew</h1>
+            <p className="ink-soft text-sm font-poster" style={{ letterSpacing: '0.06em' }}>
+              You're sailing solo. Create or join a crew.
+            </p>
           </div>
 
-          {formError && <p className="text-danger text-xs">{formError}</p>}
+          {formError && <p className="text-xs" style={{ color: '#8a2a1f' }}>{formError}</p>}
 
-          <div className="bg-[#060f1e]/80 backdrop-blur-sm border border-steel/10 rounded-xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.4)]">
+          <div className="parchment-card p-6 relative">
+            <span className="stamp-corner stamp-corner--tl" /><span className="stamp-corner stamp-corner--tr" />
+            <span className="stamp-corner stamp-corner--bl" /><span className="stamp-corner stamp-corner--br" />
             <form onSubmit={handleCreate} className="flex flex-col gap-3">
-              <h2 className="text-white font-semibold mb-1">Create a Crew</h2>
+              <h2 className="h-poster mb-1" style={{ fontSize: '1.2rem', fontWeight: 700 }}>Found a Crew</h2>
               <input
                 type="text"
                 required
                 value={crewName}
                 onChange={e => setCrewName(e.target.value)}
                 placeholder="Crew name"
-                className="bg-[#040d1a] border border-steel/15 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-teal/50 transition-colors"
+                className="field-paper"
               />
-              <button
-                type="submit"
-                className="py-2 bg-teal text-navy-950 font-bold rounded-lg hover:bg-teal/90 transition-colors shadow-[0_0_20px_rgba(62,207,190,0.25)]"
-              >
-                Create Crew
-              </button>
+              <button type="submit" className="btn-stamp">Create Crew</button>
             </form>
           </div>
 
-          <div className="bg-[#060f1e]/80 backdrop-blur-sm border border-steel/10 rounded-xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.4)]">
+          <div className="parchment-card p-6 relative">
+            <span className="stamp-corner stamp-corner--tl" /><span className="stamp-corner stamp-corner--tr" />
+            <span className="stamp-corner stamp-corner--bl" /><span className="stamp-corner stamp-corner--br" />
             <form onSubmit={handleJoin} className="flex flex-col gap-3">
-              <h2 className="text-white font-semibold mb-1">Join a Crew</h2>
+              <h2 className="h-poster mb-1" style={{ fontSize: '1.2rem', fontWeight: 700 }}>Join a Crew</h2>
               <input
                 type="text"
                 required
                 value={inviteCode}
                 onChange={e => setInviteCode(e.target.value)}
                 placeholder="Invite code"
-                className="bg-[#040d1a] border border-steel/15 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-teal/50 transition-colors font-mono"
+                className="field-paper"
+                style={{ fontFamily: '"Special Elite", monospace' }}
               />
-              <button
-                type="submit"
-                className="py-2 border border-teal/30 text-teal rounded-lg hover:bg-teal/10 hover:border-teal/60 transition-all duration-300"
-              >
-                Join Crew
-              </button>
+              <button type="submit" className="btn-ink">Join Crew</button>
             </form>
           </div>
         </div>
@@ -161,35 +180,51 @@ export default function CrewPage() {
         <>
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-teal bg-clip-text text-transparent mb-1">
+              <h1 className="h-poster mb-1" style={{ fontSize: '2rem', fontWeight: 800 }}>
                 {crew!.name}
               </h1>
-              <p className="text-steel text-xs mt-1">
+              <p className="text-xs mt-1 ink-soft font-poster">
                 Invite code:{' '}
-                <span className="font-mono text-amber">{crew!.inviteCode}</span>
+                <span
+                  className="font-mono"
+                  style={{ color: '#8a2a1f', fontFamily: '"Special Elite", monospace', fontWeight: 700 }}
+                >
+                  {crew!.inviteCode}
+                </span>
               </p>
             </div>
             <button
               onClick={handleLeave}
-              className="text-xs text-steel hover:text-danger transition-colors"
+              className="text-xs font-poster transition-colors hover:underline"
+              style={{ color: '#4a3318', letterSpacing: '0.08em' }}
             >
               Leave crew
             </button>
           </div>
 
-          <div className="bg-[#060f1e]/80 backdrop-blur-sm border border-steel/10 rounded-xl shadow-[0_4px_24px_rgba(0,0,0,0.4)] overflow-hidden">
+          <div className="parchment-card overflow-hidden relative">
+            <span className="stamp-corner stamp-corner--tl" /><span className="stamp-corner stamp-corner--tr" />
+            <span className="stamp-corner stamp-corner--bl" /><span className="stamp-corner stamp-corner--br" />
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-steel/70 text-xs uppercase tracking-widest border-b border-steel/10">
+                <tr
+                  className="text-xs uppercase tracking-widest font-poster ink-soft"
+                  style={{ borderBottom: '1.5px solid #c9a96a' }}
+                >
                   <th className="text-left px-5 py-4">Member</th>
-                  <th className="text-right px-5 py-4">Points</th>
+                  <th className="text-right px-5 py-4">Bounty</th>
                 </tr>
               </thead>
               <tbody>
                 {crew!.members.map(m => (
-                  <tr key={m.id} className="border-b border-steel/5 hover:bg-white/[0.02] transition-colors">
-                    <td className="px-5 py-3 text-white">{m.username}</td>
-                    <td className="px-5 py-3 text-right text-amber font-mono">{m.points.toLocaleString()}</td>
+                  <tr key={m.id} style={{ borderBottom: '1px solid rgba(90,58,26,0.15)' }}>
+                    <td className="px-5 py-3 font-poster" style={{ color: '#2a1a08' }}>{m.username}</td>
+                    <td
+                      className="px-5 py-3 text-right font-mono font-bold"
+                      style={{ color: '#8a2a1f', fontFamily: '"Special Elite", monospace' }}
+                    >
+                      {m.points.toLocaleString()}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -200,11 +235,13 @@ export default function CrewPage() {
 
       {tab === 'all-crews' && (
         <>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-teal bg-clip-text text-transparent mb-6">All Crews</h1>
+          <h1 className="h-poster" style={{ fontSize: '2rem', fontWeight: 800 }}>All Crews</h1>
+          {/* Echotone — heading underline animates left-to-right on mount. */}
+          <span className="fx-music-underline" aria-hidden style={{ marginBottom: 24 }} />
           {crewsLoading ? (
-            <p className="text-steel text-sm text-center py-16">Loading…</p>
+            <div className="text-center py-16"><LogPose label="Charting course" /></div>
           ) : allCrews.length === 0 ? (
-            <p className="text-steel text-sm text-center py-16">No crews yet — be the first!</p>
+            <p className="text-sm text-center py-16 ink-soft font-poster">No crews yet — be the first!</p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {allCrews.map(c => {
@@ -212,21 +249,42 @@ export default function CrewPage() {
                 return (
                   <div
                     key={c.id}
-                    className={`bg-[#060f1e]/80 backdrop-blur-sm rounded-xl p-5 shadow-[0_4px_24px_rgba(0,0,0,0.4)] border transition-all ${
-                      isMine
-                        ? 'border-teal/50 shadow-[0_0_20px_rgba(62,207,190,0.1)]'
-                        : 'border-steel/10'
-                    }`}
+                    className="parchment-card fx-bob fx-music-host p-5 relative overflow-hidden transition-all"
+                    style={{ borderColor: isMine ? '#8a2a1f' : '#c9a96a' }}
                   >
+                    <span className="stamp-corner stamp-corner--tl" /><span className="stamp-corner stamp-corner--tr" />
+                    <span className="stamp-corner stamp-corner--bl" /><span className="stamp-corner stamp-corner--br" />
+
+                    {/* Echotone — waveform along the bottom edge,
+                        pulses on hover. */}
+                    <span
+                      aria-hidden
+                      style={{
+                        position: 'absolute',
+                        left: 14, right: 14, bottom: 8,
+                        opacity: 0.55,
+                        pointerEvents: 'none',
+                      }}
+                    >
+                      <Waveform bars={isMine ? 16 : 12} height={14} />
+                    </span>
+
                     <div className="flex items-center gap-2 mb-3">
-                      <span className="text-white font-semibold text-sm truncate">{c.name}</span>
+                      <span className="font-poster font-bold text-sm truncate" style={{ color: '#2a1a08' }}>
+                        {c.name}
+                      </span>
                       {isMine && (
-                        <span className="shrink-0 text-[10px] font-bold text-navy-950 bg-teal px-1.5 py-0.5 rounded">YOU</span>
+                        <span
+                          className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded-sm"
+                          style={{ background: '#8a2a1f', color: '#f5e8c8', letterSpacing: '0.12em' }}
+                        >
+                          YOU
+                        </span>
                       )}
                     </div>
                     <div className="flex flex-col gap-1">
                       {c.members.map(username => (
-                        <span key={username} className="text-steel text-xs">{username}</span>
+                        <span key={username} className="text-xs ink-soft font-poster">{username}</span>
                       ))}
                     </div>
                   </div>

@@ -7,10 +7,15 @@ interface Props {
 export default function CrewBadge({ crewRank }: Props) {
   if (!crewRank) return null
   return (
-    <span className="text-steel text-xs font-bold">
-      Crew: <span className="text-white font-semibold">{crewRank.crewName}</span>
+    <span
+      className="text-xs font-poster"
+      style={{ color: '#4a3318', letterSpacing: '0.06em' }}
+    >
+      Crew: <span style={{ color: '#2a1a08', fontWeight: 700 }}>{crewRank.crewName}</span>
       {' '}·{' '}
-      <span className="text-amber font-mono">#{crewRank.rank}</span>
+      <span style={{ color: '#8a2a1f', fontFamily: '"Special Elite", monospace', fontWeight: 700 }}>
+        #{crewRank.rank}
+      </span>
     </span>
   )
 }

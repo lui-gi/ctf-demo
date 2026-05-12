@@ -29,18 +29,18 @@ export default function LoginPage() {
 
   return (
     <>
+      <p className="h-poster text-center mb-1" style={{ fontSize: '1.6rem', fontWeight: 700 }}>
+        Board the Ship
+      </p>
       <p
-        className="font-mono font-bold text-xs tracking-[0.4em] uppercase text-center mb-6"
-        style={{
-          color: '#d8ffe9',
-          textShadow: '0 0 12px rgba(0,255,136,0.55), 0 0 28px rgba(57,255,20,0.35)',
-        }}
+        className="font-poster text-center mb-6"
+        style={{ fontSize: '0.7rem', letterSpacing: '0.4em', textTransform: 'uppercase', color: '#6b3a18' }}
       >
         Login
       </p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div>
-          <label className="block text-steel text-xs mb-1" htmlFor="email">Email</label>
+          <label className="block text-xs mb-1 ink-soft font-poster tracking-widest uppercase" htmlFor="email">Email</label>
           <input
             id="email"
             type="email"
@@ -48,11 +48,11 @@ export default function LoginPage() {
             autoComplete="off"
             value={email}
             onChange={e => setEmail(e.target.value)}
-            className="w-full bg-navy-950 border border-navy-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-teal"
+            className="field-paper w-full"
           />
         </div>
         <div>
-          <label className="block text-steel text-xs mb-1" htmlFor="password">Password</label>
+          <label className="block text-xs mb-1 ink-soft font-poster tracking-widest uppercase" htmlFor="password">Password</label>
           <input
             id="password"
             type="password"
@@ -60,21 +60,21 @@ export default function LoginPage() {
             autoComplete="new-password"
             value={password}
             onChange={e => setPassword(e.target.value)}
-            className="w-full bg-navy-950 border border-navy-700 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-teal"
+            className="field-paper w-full"
           />
         </div>
-        {error && <p className="text-danger text-xs">{error}</p>}
+        {error && <p className="text-xs" style={{ color: '#8a2a1f' }}>{error}</p>}
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-2 bg-amber text-navy-950 font-bold rounded hover:bg-amber/90 disabled:opacity-50 transition-colors"
+          className="btn-stamp w-full"
         >
           {loading ? 'Logging in…' : 'Login'}
         </button>
       </form>
-      <p className="text-center text-steel text-xs mt-4">
+      <p className="text-center text-xs mt-4 ink-soft">
         No account?{' '}
-        <Link to="/register" className="text-amber hover:underline">Register</Link>
+        <Link to="/register" className="hover:underline" style={{ color: '#8a2a1f', fontWeight: 700 }}>Register</Link>
       </p>
     </>
   )

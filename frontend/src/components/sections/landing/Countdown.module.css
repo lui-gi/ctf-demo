@@ -1,0 +1,80 @@
+/* ─── Countdown — local styles ────────────────────────────────────
+   Component-scoped styles for the countdown grid + cells. Animation
+   keyframes (cc-live-pulse) and the storm overlay live here because
+   they're only used by this section. */
+
+.grid {
+  margin-top: 64px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  list-style: none;
+  padding: 0;
+}
+@media (min-width: 720px) {
+  .grid { grid-template-columns: repeat(4, 1fr); gap: 22px; }
+}
+
+.cell {
+  position: relative;
+  overflow: hidden;
+  padding: 44px 14px 30px;
+  background: linear-gradient(180deg, var(--parchment-100, #fff3cf) 0%, var(--parchment-300, #ecd084) 100%);
+  border: 2px solid var(--parchment-600, #5a3a1a);
+  border-radius: var(--radius-sharp, 3px);
+  box-shadow:
+    inset 0 0 24px rgba(120, 80, 30, 0.22),
+    0 18px 36px -20px rgba(60, 30, 5, 0.45);
+}
+.cell.live { border-color: var(--role-captain-ink, #8a2a1f); }
+
+/* Stormcall — wind streaks pause until hover, so the cell doesn't
+   fire animations 24/7. */
+.cell :global(.fx-nav-wind) { animation-play-state: paused; opacity: 0; }
+.cell:hover :global(.fx-nav-wind) { animation-play-state: running; opacity: 1; }
+
+.midline {
+  position: absolute;
+  left: 12%; right: 12%; top: 50%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(90, 58, 26, 0.45), transparent);
+  pointer-events: none;
+}
+
+.value {
+  font-family: var(--font-mono, 'Special Elite', monospace);
+  font-weight: 700;
+  font-size: clamp(3.4rem, 9vw, 6.4rem);
+  line-height: 0.95;
+  color: var(--ink, #2a1a08);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+  text-shadow: 0 1px 0 rgba(255, 240, 200, 0.55);
+  will-change: transform, color;
+}
+
+.label {
+  margin-top: 22px;
+  font-family: var(--font-poster, 'IM Fell English SC', serif);
+  font-size: 10.5px;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: #6b3a18;
+}
+
+.tick { position: absolute; width: 12px; height: 12px; border-color: var(--parchment-600, #5a3a1a); border-style: solid; border-width: 0; pointer-events: none; }
+.tickTl { top: -2px; left: -2px;  border-top-width: 2px; border-left-width: 2px; }
+.tickTr { top: -2px; right: -2px; border-top-width: 2px; border-right-width: 2px; }
+.tickBl { bottom: -2px; left: -2px;  border-bottom-width: 2px; border-left-width: 2px; }
+.tickBr { bottom: -2px; right: -2px; border-bottom-width: 2px; border-right-width: 2px; }
+
+.liveDot {
+  position: absolute; top: 14px; right: 14px;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--role-captain-ink, #8a2a1f);
+  box-shadow: 0 0 10px 2px rgba(138, 42, 31, 0.7);
+  animation: liveDotPulse 1.4s ease-in-out infinite;
+}
+@keyframes liveDotPulse {
+  0%, 100% { opacity: 0.55; transform: scale(0.85); }
+  50%      { opacity: 1;    transform: scale(1.15); }
+}

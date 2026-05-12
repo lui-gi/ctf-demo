@@ -33,8 +33,37 @@ export default function FlagInput({ endpoint, initialSolved }: Props) {
     }
   }
 
+  const borderColor = solved
+    ? '#3d6b3a'
+    : status === 'incorrect'
+    ? '#8a2a1f'
+    : '#a3823d'
+  const inputColor = solved
+    ? '#2e5a2c'
+    : '#8a2a1f'
+
   return (
     <div className={`flex flex-col gap-2 ${shake ? 'animate-shake' : ''}`}>
+      {/* Terminal-prompt header — subtle cyber flavour above the
+          input. Reads like the user is at a shell about to submit. */}
+      <div
+        aria-hidden
+        className="font-mono"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 6,
+          fontFamily: 'var(--font-mono, "Special Elite", monospace)',
+          fontSize: 11,
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          color: 'var(--ink-soft, #4a3318)',
+        }}
+      >
+        <span style={{ color: 'var(--cyber-cursor, #2e6b3a)', fontWeight: 700 }}>$</span>
+        submit&nbsp;flag
+        <span className="cyber-caret" />
+      </div>
       <div className="flex gap-2">
         <input
           type="text"
@@ -43,29 +72,28 @@ export default function FlagInput({ endpoint, initialSolved }: Props) {
           disabled={solved || status === 'loading'}
           onKeyDown={e => e.key === 'Enter' && handleSubmit()}
           placeholder="progctf{...}"
-          className={`flex-1 bg-navy-950 border rounded px-3 py-2 text-sm font-mono focus:outline-none transition-colors disabled:opacity-60 ${
-            solved
-              ? 'border-success/50 text-success'
-              : status === 'incorrect'
-              ? 'border-danger/50 text-white'
-              : 'border-amber/40 text-amber focus:border-amber'
-          }`}
+          className="field-paper flex-1"
+          style={{ borderColor, color: inputColor }}
         />
         {!solved && (
           <button
             onClick={handleSubmit}
             disabled={status === 'loading' || !flag.trim()}
-            className="px-5 py-2 bg-amber text-navy-950 font-bold text-sm rounded hover:bg-amber/90 disabled:opacity-40 transition-colors"
+            className="btn-stamp"
           >
             {status === 'loading' ? '…' : 'Submit Flag'}
           </button>
         )}
       </div>
       {status === 'correct' && (
-        <p className="text-success text-xs font-semibold">🏴‍☠️ Flag captured!</p>
+        <p className="text-xs font-poster font-semibold" style={{ color: '#3d6b3a', letterSpacing: '0.1em' }}>
+          🏴‍☠️ Flag captured!
+        </p>
       )}
       {status === 'incorrect' && (
-        <p className="text-danger text-xs">✗ Incorrect flag, keep digging.</p>
+        <p className="text-xs font-poster" style={{ color: '#8a2a1f', letterSpacing: '0.08em' }}>
+          ✗ Incorrect flag, keep digging.
+        </p>
       )}
     </div>
   )

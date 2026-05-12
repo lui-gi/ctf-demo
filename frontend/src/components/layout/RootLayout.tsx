@@ -3,9 +3,9 @@ import TopNav from './TopNav'
 
 export default function RootLayout() {
   return (
-    <div className="min-h-screen flex flex-col bg-navy-950 font-sans">
+    <div className="min-h-screen flex flex-col">
       <TopNav />
-      <main className="flex-1 flex flex-col bg-navy-975">
+      <main className="flex-1 flex flex-col">
         <Outlet />
       </main>
     </div>
