@@ -1,0 +1,467 @@
+/* ─── Per-section "ability" effects ───────────────────────────────
+   Keyframes + utility classes for the 10 generic crew-role
+   archetypes. All animations are transform/opacity only (no
+   layout-thrashing properties). Every animation is wrapped in a
+   prefers-reduced-motion override at the bottom of this file:
+   reduced motion collapses every effect to a 200ms fade-in.
+
+   This file is imported once from index.css.
+
+   Naming: each block is prefixed with the archetype role
+   (.fx-cap-* for Captain, .fx-nav-* for Navigator, etc.). The
+   per-section interactions from the previous pass (fx-stretch,
+   fx-sizzle, fx-paper-flip, etc.) live in index.css and are kept
+   for backwards-compat; the .fx-<role>-* utilities here are the
+   newer, more elaborate "ability" effects. */
+
+/* ═══ Captain — Elastic Reach ═════════════════════════════════════ */
+
+@keyframes fx-cap-title-pop {
+  0%   { transform: scale(0.6);  opacity: 0; }
+  55%  { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1);    opacity: 1; }
+}
+.fx-cap-title-pop {
+  animation: fx-cap-title-pop 0.65s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+  transform-origin: 50% 70%;
+}
+
+/* Proximity pull — wired up in JS by setting the --pull-x / --pull-y
+   CSS variables on the element when the cursor is near. The CSS
+   side just consumes them with an elastic spring. */
+.fx-cap-pull {
+  --pull-x: 0px;
+  --pull-y: 0px;
+  transform: translate3d(var(--pull-x), var(--pull-y), 0);
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+}
+
+/* ═══ Navigator — Stormcall ═══════════════════════════════════════ */
+
+@keyframes fx-nav-cloud-drift {
+  0%   { transform: translate3d(-15%, 0, 0); }
+  100% { transform: translate3d(115%, 0, 0); }
+}
+.fx-nav-cloud {
+  position: absolute;
+  opacity: 0.18;
+  color: #1f5f87;
+  animation: fx-nav-cloud-drift linear infinite;
+  pointer-events: none;
+  will-change: transform;
+}
+
+@keyframes fx-nav-flash {
+  0%   { opacity: 0; }
+  10%  { opacity: 0.85; }
+  100% { opacity: 0; }
+}
+.fx-nav-flash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg,
+    transparent 0%,
+    rgba(255,255,255,0) 38%,
+    rgba(255,255,255,0.55) 50%,
+    rgba(255,255,255,0) 62%,
+    transparent 100%);
+  pointer-events: none;
+  animation: fx-nav-flash 60ms linear;
+  mix-blend-mode: screen;
+}
+
+@keyframes fx-nav-wind-streak {
+  0%   { transform: translateX(-20vw); opacity: 0; }
+  20%  { opacity: 0.55; }
+  100% { transform: translateX(120vw); opacity: 0; }
+}
+.fx-nav-wind {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);
+  border-radius: 1px;
+  pointer-events: none;
+  animation: fx-nav-wind-streak linear infinite;
+  will-change: transform, opacity;
+}
+
+/* ═══ Treasurer — Goldfall ════════════════════════════════════════ */
+
+@keyframes fx-treas-coin-fall {
+  0%   { transform: translate3d(var(--cx, 0), -120%, 0) rotate(0deg);  opacity: 0; }
+  10%  { opacity: 0.95; }
+  85%  { opacity: 0.85; }
+  100% { transform: translate3d(calc(var(--cx, 0) + var(--cdx, 0)), 220%, 0) rotate(var(--crot, 360deg)); opacity: 0; }
+}
+.fx-treas-coin {
+  position: absolute;
+  width: 18px; height: 18px;
+  pointer-events: none;
+  animation: fx-treas-coin-fall var(--cdur, 1.8s) cubic-bezier(0.4, 0, 0.6, 1) both;
+  will-change: transform, opacity;
+}
+
+/* ═══ Sniper — Sharpshot ══════════════════════════════════════════ */
+
+@keyframes fx-sniper-reticle-draw {
+  0%   { stroke-dashoffset: 240; opacity: 0; }
+  20%  { opacity: 1; }
+  90%  { stroke-dashoffset: 0;   opacity: 1; }
+  100% { stroke-dashoffset: 0;   opacity: 0.85; }
+}
+.fx-sniper-reticle path,
+.fx-sniper-reticle line,
+.fx-sniper-reticle circle {
+  stroke-dasharray: 240;
+  animation: fx-sniper-reticle-draw 0.7s ease-out both;
+}
+
+@keyframes fx-sniper-projectile {
+  0%   { transform: translate3d(-20vw, 30%, 0) rotate(-12deg); opacity: 0; }
+  20%  { opacity: 0.9; }
+  100% { transform: translate3d(120vw, -30%, 0) rotate(-12deg); opacity: 0; }
+}
+.fx-sniper-projectile {
+  position: absolute;
+  top: 38%;
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #fff8e0 50%, transparent);
+  pointer-events: none;
+  animation: fx-sniper-projectile 0.32s linear both;
+  will-change: transform, opacity;
+}
+
+/* ═══ Swordsman — Edgeslash ═══════════════════════════════════════ */
+
+@keyframes fx-sword-slash-in {
+  0%   { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); opacity: 0; }
+  10%  { opacity: 1; }
+  100% { clip-path: polygon(0 0, 110% 0, 110% 100%, 0 100%); opacity: 1; }
+}
+.fx-sword-slash-in { animation: fx-sword-slash-in 0.42s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+
+@keyframes fx-sword-heading-line {
+  0%   { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
+.fx-sword-line {
+  display: block;
+  height: 3px;
+  width: 64px;
+  margin-bottom: 14px;
+  background: #2e6b3a;
+  border-radius: 2px;
+  transform-origin: left center;
+  animation: fx-sword-heading-line 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  box-shadow: 0 1px 0 #1d1408;
+}
+
+@keyframes fx-sword-shimmer {
+  0%   { transform: translateX(-110%); }
+  100% { transform: translateX(110%); }
+}
+.fx-sword-shimmer-host { position: relative; overflow: hidden; }
+.fx-sword-shimmer-host:hover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg,
+    transparent 35%,
+    rgba(46,107,58,0.30) 50%,
+    transparent 65%);
+  pointer-events: none;
+  animation: fx-sword-shimmer 0.7s ease-out;
+}
+
+/* ═══ Cook — Flamekick ════════════════════════════════════════════ */
+
+@keyframes fx-cook-flame-flicker {
+  0%   { transform: translate3d(0, 8px, 0)  scaleY(0.4) scaleX(0.7); opacity: 0; }
+  15%  { transform: translate3d(0, 0, 0)    scaleY(1)   scaleX(1);   opacity: 0.9; }
+  55%  { transform: translate3d(var(--fx, 2px), -22px, 0) scaleY(1.05) scaleX(0.85); opacity: 0.75; }
+  100% { transform: translate3d(var(--fx, 2px), -50px, 0) scaleY(0.8) scaleX(0.4);  opacity: 0; }
+}
+.fx-cook-flame {
+  position: absolute;
+  bottom: -6px;
+  pointer-events: none;
+  transform-origin: 50% 100%;
+  animation: fx-cook-flame-flicker var(--fdur, 1.4s) ease-out infinite;
+  will-change: transform, opacity;
+}
+
+/* Heat-haze edge — we keep it CHEAP (a static turbulence reference)
+   instead of animating <feTurbulence baseFrequency>. The edge of
+   the card is masked to expose the filter. */
+.fx-cook-haze {
+  position: absolute;
+  inset: -2px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  filter: url(#fx-cook-haze-filter);
+}
+.fx-cook-host:hover .fx-cook-haze { opacity: 0.6; }
+
+/* ═══ Shipwright — Ironbuild ══════════════════════════════════════ */
+
+@keyframes fx-ship-plank-slide-l {
+  0%   { transform: translate3d(-200px, 0, 0) rotate(-8deg); opacity: 0; }
+  100% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0.9; }
+}
+@keyframes fx-ship-plank-slide-r {
+  0%   { transform: translate3d(200px, 0, 0) rotate(8deg); opacity: 0; }
+  100% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0.9; }
+}
+@keyframes fx-ship-plank-slide-t {
+  0%   { transform: translate3d(0, -120px, 0) rotate(-4deg); opacity: 0; }
+  100% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0.9; }
+}
+@keyframes fx-ship-plank-slide-b {
+  0%   { transform: translate3d(0, 120px, 0) rotate(4deg); opacity: 0; }
+  100% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0.9; }
+}
+.fx-ship-plank {
+  position: absolute;
+  pointer-events: none;
+  color: #2a4a6a;
+  opacity: 0;
+}
+.fx-ship-plank--in-l { animation: fx-ship-plank-slide-l 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.fx-ship-plank--in-r { animation: fx-ship-plank-slide-r 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.fx-ship-plank--in-t { animation: fx-ship-plank-slide-t 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.fx-ship-plank--in-b { animation: fx-ship-plank-slide-b 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+
+/* Click sparks — 4-pointed asterisk drawn as a 0-area span with two
+   crossing pseudo-bars that scale + fade. */
+@keyframes fx-ship-spark {
+  0%   { transform: scale(0) rotate(0deg); opacity: 0; }
+  20%  { transform: scale(1) rotate(45deg); opacity: 1; }
+  100% { transform: scale(2) rotate(180deg); opacity: 0; }
+}
+.fx-ship-spark {
+  position: absolute;
+  pointer-events: none;
+  width: 18px; height: 18px;
+  margin: -9px 0 0 -9px;
+  color: #fff8e0;
+  animation: fx-ship-spark 0.5s ease-out forwards;
+  will-change: transform, opacity;
+  z-index: 100;
+}
+
+/* ═══ Archaeologist — Bloomsprout ═════════════════════════════════ */
+
+@keyframes fx-arch-bloom {
+  0%   { transform: scale(0) rotate(-20deg); opacity: 0; }
+  60%  { transform: scale(1.1) rotate(8deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 0.9; }
+}
+.fx-arch-vine {
+  position: absolute;
+  pointer-events: none;
+  color: #8a3e1a;
+  animation: fx-arch-bloom 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  transform-origin: center;
+}
+/* hover-state: extra curl on the corners */
+.fx-arch-host:hover .fx-arch-vine--hover {
+  animation: fx-arch-bloom 0.45s ease-out both;
+}
+
+/* ═══ Musician — Echotone ═════════════════════════════════════════ */
+
+@keyframes fx-music-wave-pulse {
+  0%, 100% { transform: scaleY(1);    opacity: 0.6; }
+  50%      { transform: scaleY(1.6);  opacity: 1; }
+}
+.fx-music-wave-bar {
+  display: inline-block;
+  width: 2px;
+  background: #5e3a8a;
+  border-radius: 1px;
+  transform-origin: bottom;
+  animation: fx-music-wave-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes fx-music-underline {
+  0%   { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
+.fx-music-underline {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background: repeating-linear-gradient(90deg,
+    #5e3a8a 0, #5e3a8a 6px,
+    transparent 6px, transparent 9px,
+    #5e3a8a 9px, #5e3a8a 13px,
+    transparent 13px, transparent 18px);
+  transform-origin: left center;
+  animation: fx-music-underline 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* ═══ Doctor — Pulsemend ══════════════════════════════════════════ */
+
+@keyframes fx-doctor-plus-fade {
+  0%   { opacity: 0; transform: translate(-4px, -50%) scale(0.8); }
+  100% { opacity: 0.85; transform: translate(0, -50%) scale(1); }
+}
+.fx-doctor-plus {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  color: #a83a6a;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.fx-doctor-host:focus-within .fx-doctor-plus {
+  animation: fx-doctor-plus-fade 0.35s ease-out both;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fx-doctor-ripple {
+  0%   { transform: translate(-50%, -50%) scale(0.2); opacity: 0.7; }
+  100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
+}
+.fx-doctor-ripple {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  border: 2px solid #3d6b3a;
+  pointer-events: none;
+  animation: fx-doctor-ripple 0.7s ease-out forwards;
+}
+
+/* ═══ Global — hero awaken, scroll progress, cursor trail ════════ */
+
+@keyframes fx-awaken-sun {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+.fx-awaken-sun { animation: fx-awaken-sun 0.4s ease-in-out both; }
+
+@keyframes fx-awaken-rock {
+  0%, 100% { transform: rotate(11deg); }
+  50%      { transform: rotate(22deg); }
+}
+.fx-awaken-rock { animation: fx-awaken-rock 0.6s ease-in-out both; }
+
+.fx-scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: var(--scroll-pct, 0%);
+  background: var(--scroll-tint, #a8302a);
+  z-index: 9999;
+  transition: background 0.4s ease;
+  pointer-events: none;
+  box-shadow: 0 0 6px var(--scroll-tint, #a8302a);
+}
+
+/* Cursor trail dot — appended/removed by JS. Pure transform anim. */
+@keyframes fx-cursor-trail {
+  0%   { opacity: 0.85; transform: translate(-50%, -50%) scale(1);    }
+  100% { opacity: 0;    transform: translate(-50%, -50%) scale(0.25); }
+}
+.fx-cursor-trail-dot {
+  position: fixed;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  animation: fx-cursor-trail 0.55s ease-out forwards;
+  will-change: transform, opacity;
+}
+
+/* ═══ Cyber flavour ════════════════════════════════════════════════
+   Minimal cybersecurity-tinted layer: a blinking terminal caret
+   used after "$ submit flag", a code-snippet badge for challenge
+   cards, and a faint scanline overlay reserved for the global
+   hero / authed-app chrome. */
+
+@keyframes cyber-blink {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.cyber-caret {
+  display: inline-block;
+  width: 6px;
+  height: 12px;
+  background: var(--cyber-cursor, #2e6b3a);
+  margin-left: 4px;
+  animation: cyber-blink 1s steps(1) infinite;
+  transform: translateY(2px);
+}
+
+/* Code-snippet flourish used on challenge cards. A small monospace
+   badge that shows a hex address + a "::" — visually evokes a
+   memory address without saying anything real. Kept low-contrast
+   so it doesn't fight the card title. */
+.cyber-snippet {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono, 'Special Elite', monospace);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  color: rgba(46, 107, 58, 0.85);
+  background: rgba(46, 107, 58, 0.10);
+  border: 1px solid rgba(46, 107, 58, 0.32);
+  border-radius: 3px;
+  padding: 1px 6px;
+  white-space: nowrap;
+}
+
+/* Site-wide scanline overlay. 0.05 opacity so it reads as texture
+   not pattern. Fixed-position so it stays put on scroll. The
+   element is mounted by <ScanlineOverlay /> in main.tsx. */
+.cyber-scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    180deg,
+    rgba(29, 20, 8, 0.0) 0,
+    rgba(29, 20, 8, 0.0) 2px,
+    rgba(29, 20, 8, 0.045) 2px,
+    rgba(29, 20, 8, 0.045) 3px
+  );
+  mix-blend-mode: multiply;
+}
+
+/* ═══ Reduced motion ══════════════════════════════════════════════
+   Collapse every effect above to a flat 200ms fade-in. We disable
+   the animations on the role-prefixed classes AND on the legacy
+   .fx-* utilities defined in index.css. */
+@media (prefers-reduced-motion: reduce) {
+  .fx-cap-title-pop, .fx-cap-pull,
+  .fx-nav-cloud, .fx-nav-flash, .fx-nav-wind,
+  .fx-treas-coin,
+  .fx-sniper-reticle path, .fx-sniper-reticle line, .fx-sniper-reticle circle,
+  .fx-sniper-projectile,
+  .fx-sword-slash-in, .fx-sword-line, .fx-sword-shimmer-host:hover::before,
+  .fx-cook-flame, .fx-cook-haze,
+  .fx-ship-plank, .fx-ship-plank--in-l, .fx-ship-plank--in-r,
+  .fx-ship-plank--in-t, .fx-ship-plank--in-b, .fx-ship-spark,
+  .fx-arch-vine,
+  .fx-music-wave-bar, .fx-music-underline,
+  .fx-doctor-plus, .fx-doctor-ripple,
+  .fx-awaken-sun, .fx-awaken-rock,
+  .fx-scroll-progress, .fx-cursor-trail-dot,
+  .cyber-caret {
+    animation: fx-reduced-fade 0.2s ease-out both !important;
+    transition: opacity 0.2s ease-out !important;
+    transform: none !important;
+  }
+}
+@keyframes fx-reduced-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}

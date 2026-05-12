@@ -1,0 +1,159 @@
+/* ─── Design tokens ────────────────────────────────────────────────
+   Single source of truth for spacing, radius, shadow, motion, type,
+   and the role-accent colour ramps. Every component consumes these
+   via CSS custom properties so visual tuning is centralised.
+
+   Naming convention:
+     --space-{n}       spacing scale (4px-based, 0..16 steps)
+     --radius-{n}      corner radius scale
+     --shadow-cartoon-{n} hard cartoon drop-shadow scale
+     --shadow-soft-{n}    soft ambient shadow scale
+     --motion-{name}      duration / easing tokens
+     --type-{role}        typography role tokens
+     --role-{name}-{slot} per-archetype accent slots (ink/soft/chip)
+*/
+
+:root {
+  /* ── Spacing (4px base, fibonacci-ish) ───────────────────────── */
+  --space-0:  0;
+  --space-1:  0.25rem;   /*  4px */
+  --space-2:  0.5rem;    /*  8px */
+  --space-3:  0.75rem;   /* 12px */
+  --space-4:  1rem;      /* 16px */
+  --space-5:  1.5rem;    /* 24px */
+  --space-6:  2rem;      /* 32px */
+  --space-7:  2.5rem;    /* 40px */
+  --space-8:  3rem;      /* 48px */
+  --space-9:  4rem;      /* 64px */
+  --space-10: 5rem;      /* 80px */
+  --space-11: 6.5rem;    /* 104px */
+  --space-12: 8rem;      /* 128px */
+
+  /* ── Radius scale ────────────────────────────────────────────── */
+  --radius-sharp: 2px;
+  --radius-sm:    4px;
+  --radius-md:    6px;
+  --radius-lg:    10px;
+  --radius-pill:  999px;
+
+  /* ── Cartoon drop-shadows (the "senior look" black-stroke shadow)
+     Each step is one hard offset + an ambient softener. */
+  --shadow-cartoon-1:
+    0 2px 0 -1px var(--ink, #1d1408),
+    0 4px 6px rgba(40, 20, 5, 0.18);
+  --shadow-cartoon-2:
+    0 4px 0 -1px var(--ink, #1d1408),
+    0 8px 14px rgba(40, 20, 5, 0.28);
+  --shadow-cartoon-3:
+    0 6px 0 -2px var(--ink, #1d1408),
+    0 12px 22px rgba(40, 20, 5, 0.35);
+
+  /* Pure ambient shadows for cards that don't want the hard stroke. */
+  --shadow-soft-1: 0 4px 12px rgba(40, 20, 5, 0.12);
+  --shadow-soft-2: 0 10px 24px rgba(40, 20, 5, 0.20);
+  --shadow-soft-3: 0 22px 44px -14px rgba(40, 20, 5, 0.35);
+
+  /* ── Motion ───────────────────────────────────────────────────── */
+  /* Durations. We have THREE: fast (micro feedback), base (most
+     transitions), slow (entrance / hero moments). */
+  --motion-fast: 0.18s;
+  --motion-base: 0.35s;
+  --motion-slow: 0.6s;
+
+  /* Easings. The spec uses three: elastic for "stretchy / springy",
+     glide for "smooth deceleration", and ease for everything else. */
+  --ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-glide:   cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-snap:    cubic-bezier(0.6, 0.05, 0.2, 1);
+
+  /* ── Typography ───────────────────────────────────────────────── */
+  --font-serif:  'IM Fell English', Georgia, 'Times New Roman', ui-serif, serif;
+  --font-poster: 'IM Fell English SC', 'IM Fell English', Georgia, ui-serif, serif;
+  --font-mono:   'Special Elite', 'JetBrains Mono', ui-monospace, monospace;
+
+  --type-h1:  clamp(2.4rem, 5.4vw, 3.8rem);
+  --type-h2:  clamp(1.9rem, 4.2vw, 3rem);
+  --type-h3:  clamp(1.3rem, 2.4vw, 1.8rem);
+  --type-body: 1rem;
+  --type-small: 0.85rem;
+  --type-mini:  0.7rem;
+
+  /* ── Base ink + parchment colour ramp (the warm side) ─────────── */
+  --ink:       #1d1408;
+  --ink-soft:  #4a3318;
+  --parchment-50:  #fff8e0;
+  --parchment-100: #fff3cf;
+  --parchment-200: #f5e2a8;
+  --parchment-300: #ecd084;
+  --parchment-400: #c9a96a;
+  --parchment-500: #a3823d;
+  --parchment-600: #5a3a1a;
+
+  /* ── Sea ramp (the cool side, used in hero + body backgrounds) ── */
+  --sea-50:  #cfeaef;
+  --sea-100: #b8e6ec;
+  --sea-200: #74c8d9;
+  --sea-300: #5cc1d4;
+  --sea-400: #2e8aa8;
+  --sea-500: #1d6c8a;
+  --sea-600: #0f4862;
+  --sea-700: #073245;
+
+  /* ── Per-archetype accent slots ───────────────────────────────── */
+  --role-captain-ink:        #a8302a;
+  --role-captain-soft:       rgba(168, 48, 42, 0.18);
+  --role-captain-chip:       #fde0dc;
+
+  --role-navigator-ink:      #1f5f87;
+  --role-navigator-soft:     rgba(31, 95, 135, 0.20);
+  --role-navigator-chip:     #d6ecf6;
+
+  --role-treasurer-ink:      #b27210;
+  --role-treasurer-soft:     rgba(178, 114, 16, 0.22);
+  --role-treasurer-chip:     #fbe5b8;
+
+  --role-sniper-ink:         #6b5d1a;
+  --role-sniper-soft:        rgba(107, 93, 26, 0.20);
+  --role-sniper-chip:        #ede4b8;
+
+  --role-swordsman-ink:      #2e6b3a;
+  --role-swordsman-soft:     rgba(46, 107, 58, 0.20);
+  --role-swordsman-chip:     #d4e8d8;
+
+  --role-cook-ink:           #c4541d;
+  --role-cook-soft:          rgba(196, 84, 29, 0.22);
+  --role-cook-chip:          #fbdac4;
+
+  --role-shipwright-ink:     #2a4a6a;
+  --role-shipwright-soft:    rgba(42, 74, 106, 0.22);
+  --role-shipwright-chip:    #d4dfeb;
+
+  --role-archaeologist-ink:  #8a3e1a;
+  --role-archaeologist-soft: rgba(138, 62, 26, 0.20);
+  --role-archaeologist-chip: #ecd6c4;
+
+  --role-doctor-ink:         #a83a6a;
+  --role-doctor-soft:        rgba(168, 58, 106, 0.20);
+  --role-doctor-chip:        #f6dce6;
+
+  --role-musician-ink:       #5e3a8a;
+  --role-musician-soft:      rgba(94, 58, 138, 0.20);
+  --role-musician-chip:      #dfd2ee;
+
+  /* ── Status colours ──────────────────────────────────────────── */
+  --status-ok:    #3d6b3a;
+  --status-warn:  #b27210;
+  --status-err:   #a8302a;
+  --status-info:  #1f5f87;
+
+  /* ── Cyber-flavour tokens (used sparingly on code-y contexts) ── */
+  --cyber-amber:   #d4a948;
+  --cyber-glow:    #fff8e0;
+  --cyber-cursor:  #2e6b3a;
+
+  /* ── Container widths ─────────────────────────────────────────── */
+  --container-narrow: 720px;
+  --container-base:   960px;
+  --container-wide:   1100px;
+  --container-page:   1280px;
+}

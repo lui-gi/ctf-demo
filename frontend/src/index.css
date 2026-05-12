@@ -1,12 +1,490 @@
+/* @imports MUST come before any other CSS statement (PostCSS rule).
+   tokens.css loads the design-system custom-property values; the
+   abilities.css file is the per-section "power" effects layer. */
+@import './styles/tokens.css';
+@import './styles/abilities.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Themed fonts (IM Fell English, IM Fell English SC, Special Elite)
+   are loaded via <link> in index.html — open-source Google Fonts,
+   no franchise marks. */
 
 @layer base {
   html, body, #root {
     height: 100%;
   }
   body {
-    @apply bg-navy-975 text-white;
+    /* Sunny tropical day — cream/peach sky fading into turquoise sea. */
+    background-color: #ffe9b0;
+    background-image:
+      radial-gradient(ellipse 700px 520px at 78% 8%, rgba(255, 224, 140, 0.85) 0%, transparent 60%),
+      radial-gradient(ellipse 1200px 360px at 50% 58%, rgba(255, 243, 200, 0.65) 0%, transparent 75%),
+      linear-gradient(180deg,
+        #ffeec1 0%,
+        #ffe0a4 18%,
+        #b8e6ec 38%,
+        #5cc1d4 62%,
+        #2e8aa8 100%);
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: var(--font-serif);
+  }
+
+  input[type='text'], input[type='email'], input[type='password'],
+  input[type='number'], textarea {
+    font-family: var(--font-mono);
+  }
+}
+
+/* ─── Shared themed utilities ──────────────────────────────────────
+   Component-layer classes consumed across the site. Token-driven
+   where it pays off; raw values where the visual is hand-tuned and
+   not part of a scale. */
+@layer components {
+
+  /* ── Surfaces ─────────────────────────────────────────────────── */
+
+  .parchment-card {
+    position: relative;
+    background:
+      radial-gradient(ellipse 200% 120% at 10% 0%, rgba(255, 245, 210, 0.7) 0%, transparent 55%),
+      linear-gradient(180deg,
+        var(--parchment-100) 0%,
+        var(--parchment-200) 50%,
+        var(--parchment-300) 100%);
+    color: var(--ink);
+    border: 2.5px solid var(--ink);
+    border-radius: var(--radius-md);
+    box-shadow:
+      inset 0 0 22px rgba(120, 80, 30, 0.15),
+      var(--shadow-cartoon-3);
+  }
+
+  .bounty-frame {
+    position: relative;
+    background:
+      radial-gradient(ellipse at 30% 20%, var(--parchment-100) 0%, #f0d995 40%, var(--parchment-400) 80%, #b58f3a 100%);
+    border: 4px solid var(--ink);
+    border-radius: var(--radius-md);
+    box-shadow:
+      inset 0 0 30px rgba(100, 60, 0, 0.30),
+      0 8px 0 -2px var(--ink),
+      0 14px 36px rgba(20, 10, 2, 0.45);
+  }
+  .bounty-frame::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: 1.5px solid var(--parchment-600);
+    border-radius: var(--radius-sharp);
+    pointer-events: none;
+  }
+
+  .stamp-corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: var(--parchment-600);
+    border-style: solid;
+    border-width: 0;
+    pointer-events: none;
+  }
+  .stamp-corner--tl { top: -1px; left: -1px;     border-top-width: 2px;    border-left-width: 2px; }
+  .stamp-corner--tr { top: -1px; right: -1px;    border-top-width: 2px;    border-right-width: 2px; }
+  .stamp-corner--bl { bottom: -1px; left: -1px;  border-bottom-width: 2px; border-left-width: 2px; }
+  .stamp-corner--br { bottom: -1px; right: -1px; border-bottom-width: 2px; border-right-width: 2px; }
+
+  .wax-stamp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 28%, #c8473b 0%, #8a2a1f 55%, #5e1a10 100%);
+    color: var(--parchment-50);
+    font-family: var(--font-poster);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 1;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+    box-shadow:
+      inset 0 -4px 8px rgba(0, 0, 0, 0.35),
+      inset 0 4px 8px rgba(255, 200, 180, 0.18),
+      0 6px 16px rgba(60, 15, 5, 0.45);
+    transform: rotate(-8deg);
+  }
+
+  /* ── Dividers / decoration ────────────────────────────────────── */
+
+  .map-route {
+    width: 100%;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--parchment-600);
+  }
+  .map-route::before,
+  .map-route::after {
+    content: '';
+    flex: 1;
+    height: 0;
+    border-top: 2px dashed currentColor;
+    opacity: 0.55;
+    margin: 0 var(--space-3);
+  }
+  .map-route > * { flex-shrink: 0; }
+
+  .swirl-backdrop {
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-radial-gradient(
+        circle at 50% 50%,
+        transparent 0,
+        transparent 22px,
+        rgba(90, 58, 26, 0.06) 22px,
+        rgba(90, 58, 26, 0.06) 24px);
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  /* ── Form inputs ──────────────────────────────────────────────── */
+
+  .field-paper {
+    background: rgba(255, 252, 232, 0.90);
+    border: 2px solid var(--ink);
+    border-radius: var(--radius-sm);
+    color: var(--ink);
+    padding: var(--space-2) var(--space-3);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    box-shadow:
+      inset 0 1px 3px rgba(90, 58, 26, 0.22),
+      0 3px 0 -1px var(--ink);
+    transition:
+      border-color var(--motion-fast) ease,
+      box-shadow var(--motion-fast) ease,
+      transform var(--motion-fast) ease;
+  }
+  .field-paper:focus {
+    outline: none;
+    border-color: #8a2a1f;
+    box-shadow:
+      inset 0 1px 3px rgba(90, 58, 26, 0.22),
+      0 0 0 2px rgba(138, 42, 31, 0.18);
+  }
+  .field-paper::placeholder { color: rgba(90, 58, 26, 0.55); }
+  .field-paper:disabled     { opacity: 0.7; }
+
+  /* ── Buttons ──────────────────────────────────────────────────── */
+
+  /* Shared base — every cartoon button. */
+  .btn-stamp,
+  .btn-ink,
+  .btn-doubloon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    font-family: var(--font-poster);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    border: 2.5px solid var(--ink);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition:
+      transform var(--motion-base) var(--ease-spring),
+      box-shadow var(--motion-fast) ease,
+      background var(--motion-fast) ease,
+      color var(--motion-fast) ease,
+      filter var(--motion-fast) ease;
+  }
+  .btn-stamp:disabled,
+  .btn-ink:disabled,
+  .btn-doubloon:disabled { opacity: 0.55; cursor: not-allowed; }
+
+  /* Primary — wax-stamp red. */
+  .btn-stamp {
+    padding: var(--space-3) var(--space-5);
+    background: linear-gradient(180deg, #d14b3a 0%, #b1352a 60%, #8a261d 100%);
+    color: var(--parchment-50);
+    font-size: 0.85rem;
+    box-shadow:
+      inset 0 2px 0 rgba(255, 210, 190, 0.4),
+      inset 0 -3px 6px rgba(0, 0, 0, 0.25),
+      0 4px 0 -1px var(--ink),
+      0 8px 14px rgba(60, 15, 5, 0.35);
+  }
+  .btn-stamp:hover:not(:disabled) {
+    transform: scale(1.05, 1.10);
+    background: linear-gradient(180deg, #e25a48 0%, #c14036 60%, #a02d22 100%);
+  }
+  .btn-stamp:active:not(:disabled) {
+    transform: scale(0.96, 0.92) translateY(2px);
+    transition-duration: var(--motion-fast);
+    box-shadow:
+      inset 0 2px 0 rgba(255, 210, 190, 0.4),
+      inset 0 -3px 6px rgba(0, 0, 0, 0.25),
+      0 2px 0 -1px var(--ink),
+      0 4px 8px rgba(60, 15, 5, 0.35);
+  }
+
+  /* Secondary — ink-outline parchment. */
+  .btn-ink {
+    padding: var(--space-2) var(--space-4);
+    background: rgba(255, 252, 232, 0.85);
+    color: var(--ink);
+    font-size: 0.8rem;
+    box-shadow: 0 4px 0 -1px var(--ink);
+  }
+  .btn-ink:hover:not(:disabled) {
+    transform: scale(1.04, 1.08);
+    background: var(--ink);
+    color: var(--parchment-50);
+  }
+  .btn-ink:active:not(:disabled) {
+    transform: scale(0.97, 0.94) translateY(2px);
+    transition-duration: var(--motion-fast);
+    box-shadow: 0 2px 0 -1px var(--ink);
+  }
+
+  /* Tertiary — doubloon gold, reserved for "treasure" CTAs. */
+  .btn-doubloon {
+    padding: var(--space-3) var(--space-5);
+    background: linear-gradient(180deg, #ffd34a 0%, #e8a91e 55%, #b27210 100%);
+    color: var(--ink);
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    box-shadow:
+      inset 0 2px 0 rgba(255, 250, 210, 0.65),
+      inset 0 -3px 6px rgba(60, 40, 0, 0.25),
+      0 4px 0 -1px var(--ink),
+      0 8px 14px rgba(60, 30, 5, 0.35);
+  }
+  .btn-doubloon:hover:not(:disabled) {
+    transform: scale(1.05, 1.10);
+    filter: brightness(1.08);
+  }
+  .btn-doubloon:active:not(:disabled) {
+    transform: scale(0.96, 0.92) translateY(2px);
+    transition-duration: var(--motion-fast);
+    box-shadow:
+      inset 0 2px 0 rgba(255, 250, 210, 0.65),
+      inset 0 -3px 6px rgba(60, 40, 0, 0.25),
+      0 2px 0 -1px var(--ink),
+      0 4px 8px rgba(60, 30, 5, 0.35);
+  }
+
+  /* ── Typography ───────────────────────────────────────────────── */
+
+  .h-poster {
+    font-family: var(--font-poster);
+    color: var(--ink);
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    text-shadow:
+      2px 2px 0 rgba(29, 20, 8, 0.18),
+      0 1px 0 rgba(255, 240, 200, 0.6);
+  }
+
+  .ink-soft { color: var(--ink-soft); }
+
+  .eyebrow-poster {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-poster);
+    font-size: 0.7rem;
+    letter-spacing: 0.36em;
+    text-transform: uppercase;
+    color: #6b3a18;
+  }
+}
+
+/* ═══ Hero / decorative animations ════════════════════════════════
+   These are scoped to the landing hero (waves, gulls, ship, spray)
+   and don't fit in abilities.css because they predate the per-role
+   "ability" system. Kept together here for one mental model. */
+
+@keyframes posterSway {
+  0%, 100% { transform: rotate(-1.2deg) translateY(0); }
+  50%      { transform: rotate(0.8deg) translateY(-3px); }
+}
+@keyframes inkPulse {
+  0%, 100% { opacity: 0.85; }
+  50%      { opacity: 1; }
+}
+
+.waves-wrap {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+.waves-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.wave {
+  transform-box: fill-box;
+  animation: wave-glide 8s linear infinite;
+}
+.wave--back  { animation-duration: 22s; animation-direction: reverse; }
+.wave--mid   { animation-duration: 14s; }
+.wave--fore  { animation-duration: 10s; animation-direction: reverse; }
+.wave--crest { animation-duration:  6s; }
+
+@keyframes wave-glide {
+  0%   { transform: translate3d(-90px, 0, 0); }
+  100% { transform: translate3d( 85px, 0, 0); }
+}
+
+@keyframes shipRideWave {
+  0%   { transform: translateY( 10px) rotate(11deg); }
+  25%  { transform: translateY( -4px) rotate(18deg); }
+  50%  { transform: translateY(-14px) rotate(14deg); }
+  75%  { transform: translateY( -2px) rotate(10deg); }
+  100% { transform: translateY( 10px) rotate(11deg); }
+}
+
+@keyframes wakePulse {
+  0%, 100% { opacity: 0;    transform: translateX(-50%) scaleX(0.85); }
+  20%      { opacity: 0.85; transform: translateX(-50%) scaleX(1.05); }
+  50%      { opacity: 0.45; transform: translateX(-50%) scaleX(1.15); }
+  80%      { opacity: 0.15; transform: translateX(-50%) scaleX(0.95); }
+}
+
+@keyframes sprayDot {
+  0%   { opacity: 0;    transform: translate(0, 0)                              scale(0.6); }
+  20%  { opacity: 0.95; transform: translate(0, -4px)                           scale(1); }
+  60%  { opacity: 0.6;  transform: translate(var(--sx, 14px), -22px)            scale(0.85); }
+  100% { opacity: 0;    transform: translate(var(--sx, 14px), -34px)            scale(0.6); }
+}
+.spray-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--parchment-50);
+  filter: blur(0.4px);
+  box-shadow: 0 0 6px 2px rgba(255, 248, 224, 0.55);
+  animation: sprayDot 2.2s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes gullGlide {
+  0%   { transform: translate(-12vw, 0); }
+  50%  { transform: translate( 50vw, -10px); }
+  100% { transform: translate(112vw, 0); }
+}
+.gull {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  will-change: transform;
+  animation: gullGlide linear infinite;
+}
+.gull--a { top: 12%; animation-duration: 38s; animation-delay:  -2s; }
+.gull--b { top: 20%; animation-duration: 52s; animation-delay: -22s; }
+.gull--c { top: 28%; animation-duration: 44s; animation-delay: -10s; }
+
+/* ═══ Legacy per-role hover utilities (pre-abilities.css) ═════════
+   These are still wired into specific components and the LandingPage
+   inline references. abilities.css carries the heavier "power"
+   effects; these stay for the smaller hover/focus flourishes. */
+
+.fx-stretch {
+  transition:
+    transform var(--motion-base) var(--ease-spring),
+    box-shadow var(--motion-fast) ease,
+    background var(--motion-fast) ease;
+}
+.fx-stretch:hover:not(:disabled)  { transform: scale(1.06, 1.10); }
+.fx-stretch:active:not(:disabled) {
+  transform: scale(0.96, 0.92) translateY(2px);
+  transition-duration: var(--motion-fast);
+}
+
+@keyframes slashIn {
+  0%   { opacity: 0; transform: translateX(-24px) translateY(8px) rotate(-3deg); }
+  100% { opacity: 1; transform: none; }
+}
+.fx-slash-in { animation: slashIn var(--motion-slow) var(--ease-glide) both; }
+
+.fx-sizzle { transition: transform var(--motion-base) ease, box-shadow var(--motion-base) ease, filter var(--motion-base) ease; }
+.fx-sizzle:hover {
+  transform: translateY(-5px);
+  filter: brightness(1.04) saturate(1.1);
+  box-shadow:
+    inset 0 0 28px rgba(196, 84, 29, 0.22),
+    0 22px 40px -16px rgba(196, 84, 29, 0.45),
+    0 6px 0 -2px var(--ink);
+}
+
+.fx-paper-flip {
+  transition:
+    transform 0.45s var(--ease-glide),
+    box-shadow var(--motion-base) ease;
+}
+.fx-paper-flip:hover {
+  transform: translateY(-6px) rotate(-1.2deg) scale(1.025);
+  box-shadow:
+    0 22px 40px -14px rgba(60, 30, 5, 0.5),
+    0 6px 0 -2px var(--ink);
+}
+
+@keyframes bobHum {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+.fx-bob:hover { animation: bobHum 1.6s ease-in-out infinite; }
+
+@keyframes doctorPulse {
+  0%, 100% {
+    box-shadow:
+      inset 0 1px 3px rgba(90, 58, 26, 0.22),
+      0 3px 0 -1px var(--ink),
+      0 0 0 0 rgba(168, 58, 106, 0.0);
+  }
+  50% {
+    box-shadow:
+      inset 0 1px 3px rgba(90, 58, 26, 0.22),
+      0 3px 0 -1px var(--ink),
+      0 0 0 4px rgba(168, 58, 106, 0.22);
+  }
+}
+.fx-doctor:focus { animation: doctorPulse 1.6s ease-in-out infinite; }
+
+@keyframes coinWiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25%      { transform: rotate(-2deg); }
+  75%      { transform: rotate( 2deg); }
+}
+.fx-coin-wiggle:hover { animation: coinWiggle 0.6s ease-in-out 1; }
+
+@keyframes needleSettle {
+  0%   { transform: rotate(-2deg); }
+  60%  { transform: rotate( 1deg); }
+  100% { transform: rotate( 0deg); }
+}
+.fx-needle { animation: needleSettle 0.7s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-flag-flap, .animate-compass, .animate-stamp,
+  .wave, .wave--back, .wave--mid, .wave--fore, .wave--crest,
+  .ship-ride, .ship-wake, .spray-dot, .gull, .sun-rays,
+  .fx-stretch, .fx-slash-in, .fx-sizzle, .fx-paper-flip,
+  .fx-bob, .fx-doctor, .fx-coin-wiggle, .fx-needle {
+    animation: none !important;
+    transition: none !important;
   }
 }
