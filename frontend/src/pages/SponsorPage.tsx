@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { STARS } from '../components/layout/starfield'
+import { CompassRose, Scroll, Coins } from '../components/ui/PirateMotifs'
 
 // TODO: replace with real Google Form URL when ready
 const SPONSOR_FORM_URL = 'https://docs.google.com/forms/sponsor-placeholder'
@@ -8,73 +8,34 @@ const INVOLVE_FORM_URL = 'https://docs.google.com/forms/involve-placeholder'
 
 export default function SponsorPage() {
   return (
-    <div
-      className="min-h-screen flex flex-col items-center justify-center px-4 py-16 relative overflow-hidden"
-      style={{ background: 'linear-gradient(180deg, #010310 0%, #03082e 55%, #0a1a52 100%)' }}
-    >
-      {STARS.map(([x, y, size, opacity], i) => (
-        <div
-          key={i}
-          className="absolute pointer-events-none"
-          style={{ left: `${x}%`, top: `${y}%`, width: size, height: size, borderRadius: '50%', background: '#fff', opacity }}
-        />
-      ))}
-
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          top: '5%', left: '4%', width: 72, height: 72, borderRadius: '50%',
-          background: 'radial-gradient(circle at 36% 36%, #ffffff 0%, #f5edd8 45%, #d4c280 100%)',
-          boxShadow: '0 0 30px 14px rgba(255,248,215,0.18), 0 0 70px 36px rgba(200,225,255,0.08)',
-        }}
-      />
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-16 relative overflow-hidden">
+      <div className="swirl-backdrop" aria-hidden />
 
       <Link
         to="/"
-        className="relative font-mono font-black italic text-3xl tracking-wide mb-8"
-        style={{ zIndex: 10 }}
+        className="relative font-poster italic text-3xl tracking-wide mb-8 flex items-center gap-2"
+        style={{ zIndex: 10, color: '#2a1a08' }}
       >
-        <span className="text-white">prog</span>
-        <span className="text-teal" style={{ textShadow: '0 0 24px rgba(62,207,190,0.70), 0 0 55px rgba(62,207,190,0.35)' }}>
-          ctf
+        <span style={{ color: '#5a3a1a' }} className="animate-compass">
+          <CompassRose size={28} strokeWidth={1.4} />
         </span>
+        <span>prog</span>
+        <span style={{ color: '#8a2a1f' }}>ctf</span>
       </Link>
 
       <h1
-        className="relative text-2xl font-bold tracking-wide mb-10 text-center"
-        style={{
-          zIndex: 10,
-          color: '#d8ffe9',
-          textShadow: '0 0 12px rgba(0,255,136,0.55), 0 0 28px rgba(57,255,20,0.35)',
-        }}
+        className="relative h-poster mb-10 text-center"
+        style={{ zIndex: 10, fontSize: '1.8rem', fontWeight: 800 }}
       >
         Support the Mission
       </h1>
 
-      <div className="relative flex gap-6 w-full max-w-2xl" style={{ zIndex: 10 }}>
+      <div className="relative flex flex-col md:flex-row gap-6 w-full max-w-2xl" style={{ zIndex: 10 }}>
         <SponsorCard />
         <GetInvolvedCard />
       </div>
 
-      <Link
-        to="/"
-        className="relative mt-6 font-mono font-bold text-xs tracking-[0.3em] uppercase px-6 py-2 rounded transition-all duration-200"
-        style={{
-          zIndex: 10,
-          color: '#d8ffe9',
-          border: '1px solid rgba(216,255,233,0.30)',
-          textShadow: '0 0 10px rgba(0,255,136,0.45)',
-          boxShadow: '0 0 12px rgba(0,255,136,0.08)',
-        }}
-        onMouseEnter={e => {
-          ;(e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(216,255,233,0.65)'
-          ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 0 18px rgba(0,255,136,0.18)'
-        }}
-        onMouseLeave={e => {
-          ;(e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(216,255,233,0.30)'
-          ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 0 12px rgba(0,255,136,0.08)'
-        }}
-      >
+      <Link to="/" className="relative mt-8 btn-ink" style={{ zIndex: 10 }}>
         ← Home
       </Link>
     </div>
@@ -83,22 +44,29 @@ export default function SponsorPage() {
 
 function SponsorCard() {
   return (
-    <div
-      className="flex-1 rounded-[10px] p-8 flex flex-col gap-5"
-      style={{
-        background: 'rgba(5, 12, 40, 0.75)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        border: '1px solid rgba(62, 207, 190, 0.30)',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.50), 0 0 18px rgba(62,207,190,0.08)',
-      }}
-    >
-      <div>
-        <h2 className="font-bold text-white tracking-[0.12em] uppercase mb-1.5">Sponsor</h2>
-        <p className="font-mono text-teal text-[10px] tracking-[0.2em] uppercase">Why Sponsor?</p>
+    <div className="flex-1 parchment-card p-7 flex flex-col gap-5 relative">
+      <span className="stamp-corner stamp-corner--tl" /><span className="stamp-corner stamp-corner--tr" />
+      <span className="stamp-corner stamp-corner--bl" /><span className="stamp-corner stamp-corner--br" />
+
+      <div className="flex items-start gap-3">
+        <span style={{ color: '#8a2a1f' }}><Coins size={26} strokeWidth={1.4} /></span>
+        <div>
+          <h2
+            className="h-poster"
+            style={{ fontSize: '1.2rem', fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase' }}
+          >
+            Sponsor
+          </h2>
+          <p
+            className="font-poster mt-1"
+            style={{ fontSize: '0.65rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: '#8a2a1f' }}
+          >
+            Why Sponsor?
+          </p>
+        </div>
       </div>
 
-      <p className="text-steel text-sm italic leading-relaxed">
+      <p className="text-sm italic leading-relaxed font-poster ink-soft" style={{ borderLeft: '3px solid #c9a96a', paddingLeft: '0.75rem' }}>
         "Back the crew — and plant your flag where the best talent sails."
       </p>
 
@@ -109,8 +77,8 @@ function SponsorCard() {
           'Support open, community-run security education',
         ].map(item => (
           <li key={item} className="flex gap-2.5 items-start">
-            <span className="text-amber text-xs mt-0.5 shrink-0">▸</span>
-            <span className="text-steel text-sm leading-snug">{item}</span>
+            <span className="text-xs mt-0.5 shrink-0" style={{ color: '#c9962a', fontWeight: 700 }}>▸</span>
+            <span className="text-sm leading-snug font-poster" style={{ color: '#2a1a08' }}>{item}</span>
           </li>
         ))}
       </ul>
@@ -119,7 +87,7 @@ function SponsorCard() {
         href={SPONSOR_FORM_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-auto w-full py-2.5 bg-amber text-navy-950 font-bold text-xs tracking-[0.12em] uppercase rounded text-center hover:bg-amber/90 transition-opacity"
+        className="mt-auto btn-doubloon w-full text-center"
       >
         Become a Sponsor
       </a>
@@ -129,22 +97,29 @@ function SponsorCard() {
 
 function GetInvolvedCard() {
   return (
-    <div
-      className="flex-1 rounded-[10px] p-8 flex flex-col gap-5"
-      style={{
-        background: 'rgba(5, 12, 40, 0.75)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        border: '1px solid rgba(62, 207, 190, 0.30)',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.50), 0 0 18px rgba(62,207,190,0.08)',
-      }}
-    >
-      <div>
-        <h2 className="font-bold text-white tracking-[0.12em] uppercase mb-1.5">Get Involved</h2>
-        <p className="font-mono text-teal text-[10px] tracking-[0.2em] uppercase">Why Get Involved?</p>
+    <div className="flex-1 parchment-card p-7 flex flex-col gap-5 relative">
+      <span className="stamp-corner stamp-corner--tl" /><span className="stamp-corner stamp-corner--tr" />
+      <span className="stamp-corner stamp-corner--bl" /><span className="stamp-corner stamp-corner--br" />
+
+      <div className="flex items-start gap-3">
+        <span style={{ color: '#8a2a1f' }}><Scroll size={26} strokeWidth={1.4} /></span>
+        <div>
+          <h2
+            className="h-poster"
+            style={{ fontSize: '1.2rem', fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase' }}
+          >
+            Get Involved
+          </h2>
+          <p
+            className="font-poster mt-1"
+            style={{ fontSize: '0.65rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: '#8a2a1f' }}
+          >
+            Why Get Involved?
+          </p>
+        </div>
       </div>
 
-      <p className="text-steel text-sm italic leading-relaxed">
+      <p className="text-sm italic leading-relaxed font-poster ink-soft" style={{ borderLeft: '3px solid #c9a96a', paddingLeft: '0.75rem' }}>
         "Help our crew manage the voyage!"
       </p>
 
@@ -155,8 +130,8 @@ function GetInvolvedCard() {
           'Oversee and guide competitors',
         ].map(item => (
           <li key={item} className="flex gap-2.5 items-start">
-            <span className="text-teal text-xs mt-0.5 shrink-0">▸</span>
-            <span className="text-steel text-sm leading-snug">{item}</span>
+            <span className="text-xs mt-0.5 shrink-0" style={{ color: '#c9962a', fontWeight: 700 }}>▸</span>
+            <span className="text-sm leading-snug font-poster" style={{ color: '#2a1a08' }}>{item}</span>
           </li>
         ))}
       </ul>
@@ -165,20 +140,7 @@ function GetInvolvedCard() {
         href={INVOLVE_FORM_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-auto w-full py-2.5 font-bold text-xs tracking-[0.12em] uppercase rounded text-center transition-all duration-200"
-        style={{
-          color: '#3ecfbe',
-          background: 'rgba(62,207,190,0.15)',
-          border: '1px solid rgba(62,207,190,0.50)',
-        }}
-        onMouseEnter={e => {
-          ;(e.currentTarget as HTMLAnchorElement).style.background = 'rgba(62,207,190,0.25)'
-          ;(e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(62,207,190,0.75)'
-        }}
-        onMouseLeave={e => {
-          ;(e.currentTarget as HTMLAnchorElement).style.background = 'rgba(62,207,190,0.15)'
-          ;(e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(62,207,190,0.50)'
-        }}
+        className="mt-auto btn-stamp w-full text-center"
       >
         Get Involved
       </a>

@@ -19,21 +19,23 @@ export default function CategoryPage() {
 
   if (error) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center gap-4 text-steel">
-        <p>The seas are rough — couldn't load this category.</p>
-        <Link to="/challenges" className="text-amber hover:underline text-sm">← Back to Challenges</Link>
+      <div className="flex-1 flex flex-col items-center justify-center gap-4 ink-soft">
+        <p className="font-poster">The seas are rough — couldn't load this category.</p>
+        <Link to="/challenges" className="text-sm font-poster hover:underline" style={{ color: '#8a2a1f' }}>
+          ← Back to Challenges
+        </Link>
       </div>
     )
   }
 
   return (
     <div className="max-w-4xl mx-auto w-full px-6 py-10">
-      <p className="text-steel text-xs mb-4">
-        <Link to="/challenges" className="hover:text-white transition-colors">Challenges</Link>
+      <p className="text-xs mb-4 font-poster ink-soft" style={{ letterSpacing: '0.06em' }}>
+        <Link to="/challenges" className="hover:underline" style={{ color: '#4a3318' }}>Challenges</Link>
         {' '}›{' '}
-        <span className="text-white">{categoryName}</span>
+        <span style={{ color: '#2a1a08' }}>{categoryName}</span>
       </p>
-      <h1 className="text-2xl font-bold text-white mb-8">{categoryName}</h1>
+      <h1 className="h-poster mb-8" style={{ fontSize: '1.8rem', fontWeight: 800 }}>{categoryName}</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {challenges.map(ch => (
           <ChallengeCard key={ch.slug} challenge={ch} categorySlug={category!} />

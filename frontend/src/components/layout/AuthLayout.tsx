@@ -1,92 +1,53 @@
 import { Outlet, Link } from 'react-router-dom'
-import { STARS } from './starfield'
+import { JollyRoger, CompassRose } from '../ui/PirateMotifs'
 
 export default function AuthLayout() {
   return (
-    <div
-      className="min-h-screen flex flex-col items-center justify-center px-4 relative overflow-hidden"
-      style={{ background: 'linear-gradient(180deg, #010310 0%, #03082e 55%, #0a1a52 100%)' }}
-    >
-      {/* Star field */}
-      {STARS.map(([x, y, size, opacity], i) => (
-        <div
-          key={i}
-          className="absolute pointer-events-none"
-          style={{
-            left: `${x}%`,
-            top: `${y}%`,
-            width: size,
-            height: size,
-            borderRadius: '50%',
-            background: '#fff',
-            opacity,
-          }}
-        />
-      ))}
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-10 relative overflow-hidden">
+      {/* Swirl decoration backdrop */}
+      <div className="swirl-backdrop" aria-hidden />
 
-      {/* Moon */}
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          top: '5%',
-          left: '4%',
-          width: 72,
-          height: 72,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle at 36% 36%, #ffffff 0%, #f5edd8 45%, #d4c280 100%)',
-          boxShadow: '0 0 30px 14px rgba(255,248,215,0.18), 0 0 70px 36px rgba(200,225,255,0.08)',
-        }}
-      />
-
-      {/* Logo */}
+      {/* Wordmark */}
       <Link
         to="/"
-        className="relative font-mono font-black italic text-3xl tracking-wide mb-8"
-        style={{ zIndex: 10 }}
+        className="relative font-poster italic text-3xl tracking-wide mb-6 flex items-center gap-2"
+        style={{ zIndex: 10, color: '#2a1a08' }}
       >
-        <span className="text-white">prog</span>
-        <span
-          className="text-teal"
-          style={{ textShadow: '0 0 24px rgba(62,207,190,0.70), 0 0 55px rgba(62,207,190,0.35)' }}
-        >
-          ctf
+        <span style={{ color: '#5a3a1a' }} className="animate-compass">
+          <CompassRose size={26} strokeWidth={1.4} />
         </span>
+        <span>prog</span>
+        <span style={{ color: '#8a2a1f' }}>ctf</span>
       </Link>
 
-      {/* Card */}
+      {/* Card — bounty-poster framing */}
       <div
-        className="relative w-full max-w-sm rounded-[10px] p-8"
-        style={{
-          zIndex: 10,
-          background: 'rgba(5, 12, 40, 0.75)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          border: '1px solid rgba(62, 207, 190, 0.30)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.50), 0 0 18px rgba(62,207,190,0.08)',
-        }}
+        className="relative w-full max-w-sm p-8 bounty-frame"
+        style={{ zIndex: 10 }}
       >
-        <Outlet />
+        {/* Decorative jolly roger header */}
+        <div
+          aria-hidden
+          className="absolute left-1/2 -top-7 -translate-x-1/2 px-3 py-1 rounded"
+          style={{
+            background: '#5a3a1a',
+            color: '#f3e2b6',
+            border: '2px solid #5a3a1a',
+          }}
+        >
+          <JollyRoger size={28} strokeWidth={1.6} />
+        </div>
+
+        <div className="pt-3">
+          <Outlet />
+        </div>
       </div>
 
       {/* Back to home */}
       <Link
         to="/"
-        className="relative mt-6 font-mono font-bold text-xs tracking-[0.3em] uppercase px-6 py-2 rounded transition-all duration-200"
-        style={{
-          zIndex: 10,
-          color: '#d8ffe9',
-          border: '1px solid rgba(216,255,233,0.30)',
-          textShadow: '0 0 10px rgba(0,255,136,0.45)',
-          boxShadow: '0 0 12px rgba(0,255,136,0.08)',
-        }}
-        onMouseEnter={e => {
-          (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(216,255,233,0.65)'
-          ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 0 18px rgba(0,255,136,0.18)'
-        }}
-        onMouseLeave={e => {
-          (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(216,255,233,0.30)'
-          ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 0 12px rgba(0,255,136,0.08)'
-        }}
+        className="relative mt-8 btn-ink"
+        style={{ zIndex: 10 }}
       >
         ← Home
       </Link>

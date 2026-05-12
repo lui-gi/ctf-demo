@@ -38,9 +38,18 @@ export default function QuestionBlock({ id, text, endpoint, initialSolved, initi
     }
   }
 
+  const borderColor = solved
+    ? '#3d6b3a'
+    : status === 'incorrect'
+    ? '#8a2a1f'
+    : '#a3823d'
+  const inputColor = solved ? '#2e5a2c' : '#2a1a08'
+
   return (
     <div className={`flex flex-col gap-2 ${shake ? 'animate-shake' : ''}`}>
-      <label htmlFor={id} className="text-steel text-sm">{text}</label>
+      <label htmlFor={id} className="text-sm font-poster ink-soft" style={{ letterSpacing: '0.04em' }}>
+        {text}
+      </label>
       <div className="flex gap-2">
         <input
           id={id}
@@ -50,29 +59,28 @@ export default function QuestionBlock({ id, text, endpoint, initialSolved, initi
           disabled={solved || status === 'loading'}
           onKeyDown={e => e.key === 'Enter' && handleSubmit()}
           placeholder="Your answer…"
-          className={`flex-1 bg-navy-950 border rounded px-3 py-2 text-sm focus:outline-none transition-colors disabled:opacity-60 ${
-            solved
-              ? 'border-success/50 text-success'
-              : status === 'incorrect'
-              ? 'border-danger/50 text-white'
-              : 'border-navy-700 text-white focus:border-steel'
-          }`}
+          className="field-paper flex-1"
+          style={{ borderColor, color: inputColor }}
         />
         {!solved && (
           <button
             onClick={handleSubmit}
             disabled={status === 'loading' || !answer.trim()}
-            className="px-4 py-2 bg-navy-700 text-steel text-sm rounded hover:bg-navy-600 hover:text-white disabled:opacity-40 transition-colors"
+            className="btn-ink"
           >
             {status === 'loading' ? '…' : 'Submit'}
           </button>
         )}
       </div>
       {status === 'correct' && (
-        <p className="text-success text-xs">✓ Correct — {points} pts</p>
+        <p className="text-xs font-poster" style={{ color: '#3d6b3a' }}>
+          ✓ Correct — {points} pts
+        </p>
       )}
       {status === 'incorrect' && (
-        <p className="text-danger text-xs">✗ Incorrect, try again.</p>
+        <p className="text-xs font-poster" style={{ color: '#8a2a1f' }}>
+          ✗ Incorrect, try again.
+        </p>
       )}
     </div>
   )
