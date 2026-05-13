@@ -49,15 +49,13 @@ export default function ChallengePage() {
         className="flex-1 flex flex-col overflow-y-auto px-8 py-8 gap-4"
         style={{ borderRight: '2px solid #5a3a1a' }}
       >
-        <p className="text-sm font-poster font-semibold" style={{ letterSpacing: '0.04em', color: '#5a3a1a' }}>
-          <Link to="/challenges" className="hover:underline" style={{ color: '#5a3a1a' }}>Challenges</Link>
-          {' › '}
-          <Link to={`/challenges/${category}`} className="hover:underline" style={{ color: '#5a3a1a' }}>
-            {categoryName}
-          </Link>
-          {' › '}
-          <span style={{ color: '#2a1a08' }}>{challenge.title}</span>
-        </p>
+        <Link
+          to={`/challenges/${category}`}
+          className="font-poster font-bold hover:underline"
+          style={{ fontSize: '0.95rem', letterSpacing: '0.06em', color: '#5a3a1a' }}
+        >
+          ← Back to {categoryName}
+        </Link>
 
         <div>
           <h1 className="h-poster mb-2" style={{ fontSize: '1.7rem', fontWeight: 800 }}>{challenge.title}</h1>
@@ -81,7 +79,7 @@ export default function ChallengePage() {
           const data  = breakIdx !== -1 ? challenge.description.slice(breakIdx + 2) : null
           return (
             <div className="flex flex-col gap-3">
-              <p className="text-base font-poster font-semibold leading-relaxed" style={{ color: '#2a1a08' }}>{intro}</p>
+              <p className="text-xl font-poster font-semibold leading-relaxed" style={{ color: '#2a1a08' }}>{intro}</p>
               {data && (
                 <pre
                   className="text-sm leading-relaxed rounded p-4 overflow-x-auto"
@@ -154,6 +152,7 @@ export default function ChallengePage() {
           <FlagInput
             endpoint={`/api/categories/${category}/challenges/${slug}/flag`}
             initialSolved={challenge.flagSolved}
+            initialPoints={challenge.points}
           />
         </div>
       </div>

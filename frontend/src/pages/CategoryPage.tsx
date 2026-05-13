@@ -30,11 +30,13 @@ export default function CategoryPage() {
 
   return (
     <div className="max-w-4xl mx-auto w-full px-6 py-10">
-      <p className="text-xs mb-4 font-poster ink-soft" style={{ letterSpacing: '0.06em' }}>
-        <Link to="/challenges" className="hover:underline" style={{ color: '#4a3318' }}>Challenges</Link>
-        {' '}›{' '}
-        <span style={{ color: '#2a1a08' }}>{categoryName}</span>
-      </p>
+      <Link
+        to="/challenges"
+        className="font-poster font-bold hover:underline mb-4 inline-block"
+        style={{ fontSize: '0.95rem', letterSpacing: '0.06em', color: '#5a3a1a' }}
+      >
+        ← Back to Challenges
+      </Link>
       <h1 className="h-poster mb-8" style={{ fontSize: '1.8rem', fontWeight: 800 }}>{categoryName}</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {challenges.map(ch => (

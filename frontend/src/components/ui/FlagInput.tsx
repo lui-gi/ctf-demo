@@ -5,13 +5,15 @@ import type { SubmitResponse } from '../../lib/types'
 interface Props {
   endpoint: string
   initialSolved: boolean
+  initialPoints?: number
 }
 
 type Status = 'idle' | 'loading' | 'correct' | 'incorrect'
 
-export default function FlagInput({ endpoint, initialSolved }: Props) {
+export default function FlagInput({ endpoint, initialSolved, initialPoints = 0 }: Props) {
   const [flag, setFlag] = useState('')
   const [status, setStatus] = useState<Status>(initialSolved ? 'correct' : 'idle')
+  const [points, setPoints] = useState(initialSolved ? initialPoints : 0)
   const [shake, setShake] = useState(false)
 
   const solved = status === 'correct'
@@ -22,6 +24,7 @@ export default function FlagInput({ endpoint, initialSolved }: Props) {
     try {
       const res = await api.post<SubmitResponse>(endpoint, { flag: flag.trim() })
       if (res.correct) {
+        setPoints(res.pointsEarned)
         setStatus('correct')
       } else {
         setStatus('incorrect')
@@ -34,13 +37,14 @@ export default function FlagInput({ endpoint, initialSolved }: Props) {
   }
 
   const borderColor = solved
-    ? '#3d6b3a'
+    ? '#2a7a2a'
     : status === 'incorrect'
     ? '#8a2a1f'
     : '#a3823d'
   const inputColor = solved
-    ? '#2e5a2c'
+    ? '#1a4d1a'
     : '#8a2a1f'
+  const inputBg = solved ? 'rgba(80, 200, 80, 0.18)' : undefined
 
   return (
     <div className={`flex flex-col gap-2 ${shake ? 'animate-shake' : ''}`}>
@@ -61,7 +65,6 @@ export default function FlagInput({ endpoint, initialSolved }: Props) {
           color: 'var(--ink-soft, #4a3318)',
         }}
       >
-        <span style={{ color: 'var(--cyber-cursor, #2e6b3a)', fontWeight: 700 }}>$</span>
         submit&nbsp;flag
       </div>
       <div className="flex gap-2">
@@ -73,7 +76,7 @@ export default function FlagInput({ endpoint, initialSolved }: Props) {
           onKeyDown={e => e.key === 'Enter' && handleSubmit()}
           placeholder="progctf{...}"
           className="field-paper flex-1"
-          style={{ borderColor, color: inputColor }}
+          style={{ borderColor, color: inputColor, background: inputBg, boxShadow: solved ? 'inset 0 1px 3px rgba(42, 122, 42, 0.2), 0 3px 0 -1px #2a7a2a' : undefined }}
         />
         {!solved && (
           <button
@@ -86,12 +89,12 @@ export default function FlagInput({ endpoint, initialSolved }: Props) {
         )}
       </div>
       {status === 'correct' && (
-        <p className="text-xs font-poster font-semibold" style={{ color: '#3d6b3a', letterSpacing: '0.1em' }}>
-          🏴‍☠️ Flag captured!
+        <p className="text-base font-poster font-semibold" style={{ color: '#3d6b3a', letterSpacing: '0.1em' }}>
+          🏴‍☠️ Flag captured — {points} pts
         </p>
       )}
       {status === 'incorrect' && (
-        <p className="text-xs font-poster" style={{ color: '#8a2a1f', letterSpacing: '0.08em' }}>
+        <p className="text-base font-poster font-semibold" style={{ color: '#8a2a1f', letterSpacing: '0.08em' }}>
           ✗ Incorrect flag, keep digging.
         </p>
       )}

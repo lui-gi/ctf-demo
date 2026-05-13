@@ -13,8 +13,10 @@ export default function ChallengeCard({ challenge, categorySlug }: Props) {
       to={`/challenges/${categorySlug}/${challenge.slug}`}
       className="relative block parchment-card p-4 transition-all"
       style={{
-        opacity: challenge.solved ? 0.78 : 1,
-        borderColor: challenge.solved ? '#3d6b3a' : '#c9a96a',
+        opacity: challenge.solved ? 0.92 : 1,
+        borderColor: challenge.solved ? '#2a7a2a' : '#c9a96a',
+        background: challenge.solved ? 'rgba(80, 200, 80, 0.13)' : undefined,
+        boxShadow: challenge.solved ? '0 0 0 2px rgba(42, 122, 42, 0.25), 0 4px 0 -1px #2a7a2a' : undefined,
       }}
     >
       <span className="stamp-corner stamp-corner--tl" />
@@ -25,7 +27,7 @@ export default function ChallengeCard({ challenge, categorySlug }: Props) {
       <div className="flex items-start justify-between gap-2 mb-2">
         <h3
           className="font-poster font-bold text-sm"
-          style={{ color: challenge.solved ? '#2e5a2c' : '#2a1a08', letterSpacing: '0.03em' }}
+          style={{ color: challenge.solved ? '#1a5c1a' : '#2a1a08', letterSpacing: '0.03em' }}
         >
           {challenge.solved && <span className="mr-1">✓</span>}
           {challenge.title}
