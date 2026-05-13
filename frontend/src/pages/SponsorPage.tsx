@@ -53,20 +53,20 @@ function SponsorCard() {
         <div>
           <h2
             className="h-poster"
-            style={{ fontSize: '1.2rem', fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase' }}
+            style={{ fontSize: '1.5rem', fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase' }}
           >
             Sponsor
           </h2>
           <p
             className="font-poster mt-1"
-            style={{ fontSize: '0.65rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: '#8a2a1f' }}
+            style={{ fontSize: '0.8rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#8a2a1f' }}
           >
             Why Sponsor?
           </p>
         </div>
       </div>
 
-      <p className="text-sm italic leading-relaxed font-poster ink-soft" style={{ borderLeft: '3px solid #c9a96a', paddingLeft: '0.75rem' }}>
+      <p className="italic leading-relaxed font-poster ink-soft" style={{ fontSize: '1.05rem', borderLeft: '3px solid #c9a96a', paddingLeft: '0.75rem' }}>
         "Back the crew — and plant your flag where the best talent sails."
       </p>
 
@@ -77,8 +77,8 @@ function SponsorCard() {
           'Support open, community-run security education',
         ].map(item => (
           <li key={item} className="flex gap-2.5 items-start">
-            <span className="text-xs mt-0.5 shrink-0" style={{ color: '#c9962a', fontWeight: 700 }}>▸</span>
-            <span className="text-sm leading-snug font-poster" style={{ color: '#2a1a08' }}>{item}</span>
+            <span className="mt-0.5 shrink-0" style={{ fontSize: '0.85rem', color: '#c9962a', fontWeight: 700 }}>▸</span>
+            <span className="leading-snug font-poster" style={{ fontSize: '1.05rem', color: '#2a1a08' }}>{item}</span>
           </li>
         ))}
       </ul>
@@ -106,20 +106,20 @@ function GetInvolvedCard() {
         <div>
           <h2
             className="h-poster"
-            style={{ fontSize: '1.2rem', fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase' }}
+            style={{ fontSize: '1.5rem', fontWeight: 800, letterSpacing: '0.14em', textTransform: 'uppercase' }}
           >
             Get Involved
           </h2>
           <p
             className="font-poster mt-1"
-            style={{ fontSize: '0.65rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: '#8a2a1f' }}
+            style={{ fontSize: '0.8rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#8a2a1f' }}
           >
             Why Get Involved?
           </p>
         </div>
       </div>
 
-      <p className="text-sm italic leading-relaxed font-poster ink-soft" style={{ borderLeft: '3px solid #c9a96a', paddingLeft: '0.75rem' }}>
+      <p className="italic leading-relaxed font-poster ink-soft" style={{ fontSize: '1.05rem', borderLeft: '3px solid #c9a96a', paddingLeft: '0.75rem' }}>
         "Help our crew manage the voyage!"
       </p>
 
@@ -130,8 +130,8 @@ function GetInvolvedCard() {
           'Oversee and guide competitors',
         ].map(item => (
           <li key={item} className="flex gap-2.5 items-start">
-            <span className="text-xs mt-0.5 shrink-0" style={{ color: '#c9962a', fontWeight: 700 }}>▸</span>
-            <span className="text-sm leading-snug font-poster" style={{ color: '#2a1a08' }}>{item}</span>
+            <span className="mt-0.5 shrink-0" style={{ fontSize: '0.85rem', color: '#c9962a', fontWeight: 700 }}>▸</span>
+            <span className="leading-snug font-poster" style={{ fontSize: '1.05rem', color: '#2a1a08' }}>{item}</span>
           </li>
         ))}
       </ul>
