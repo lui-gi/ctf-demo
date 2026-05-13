@@ -38,6 +38,7 @@ export interface ChallengeDetail {
   title: string
   difficulty: 'easy' | 'medium' | 'hard'
   points: number
+  description: string | null
   embedUrl: string | null
   downloadUrls: string[]
   questions: Question[]

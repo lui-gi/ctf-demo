@@ -49,10 +49,10 @@ export default function ChallengePage() {
         className="flex-1 flex flex-col overflow-y-auto px-8 py-8 gap-4"
         style={{ borderRight: '2px solid #5a3a1a' }}
       >
-        <p className="text-xs ink-soft font-poster" style={{ letterSpacing: '0.06em' }}>
-          <Link to="/challenges" className="hover:underline" style={{ color: '#4a3318' }}>Challenges</Link>
+        <p className="text-sm font-poster font-semibold" style={{ letterSpacing: '0.04em', color: '#5a3a1a' }}>
+          <Link to="/challenges" className="hover:underline" style={{ color: '#5a3a1a' }}>Challenges</Link>
           {' › '}
-          <Link to={`/challenges/${category}`} className="hover:underline" style={{ color: '#4a3318' }}>
+          <Link to={`/challenges/${category}`} className="hover:underline" style={{ color: '#5a3a1a' }}>
             {categoryName}
           </Link>
           {' › '}
@@ -74,6 +74,30 @@ export default function ChallengePage() {
             )}
           </div>
         </div>
+
+        {challenge.description && (() => {
+          const breakIdx = challenge.description.indexOf('\n\n')
+          const intro = breakIdx !== -1 ? challenge.description.slice(0, breakIdx) : challenge.description
+          const data  = breakIdx !== -1 ? challenge.description.slice(breakIdx + 2) : null
+          return (
+            <div className="flex flex-col gap-3">
+              <p className="text-base font-poster font-semibold leading-relaxed" style={{ color: '#2a1a08' }}>{intro}</p>
+              {data && (
+                <pre
+                  className="text-sm leading-relaxed rounded p-4 overflow-x-auto"
+                  style={{
+                    background: '#1e120a',
+                    color: '#d4b483',
+                    border: '2px solid #5a3a1a',
+                    fontFamily: '"Courier New", Courier, monospace',
+                    whiteSpace: 'pre-wrap',
+                    wordBreak: 'break-all',
+                  }}
+                >{data}</pre>
+              )}
+            </div>
+          )
+        })()}
 
         {challenge.downloadUrls.length > 0 && (
           <div>
@@ -108,8 +132,8 @@ export default function ChallengePage() {
       {/* Right column — questions */}
       <div className="w-96 shrink-0 flex flex-col overflow-y-auto px-6 py-8 gap-6">
         <h2
-          className="text-xs uppercase tracking-widest pb-3 font-poster ink-soft"
-          style={{ borderBottom: '1.5px solid #c9a96a' }}
+          className="text-sm uppercase tracking-widest pb-3 font-poster font-bold"
+          style={{ borderBottom: '1.5px solid #c9a96a', color: '#3a2410' }}
         >
           Questions
         </h2>
@@ -126,7 +150,7 @@ export default function ChallengePage() {
         ))}
 
         <div className="pt-6" style={{ borderTop: '1.5px solid #c9a96a' }}>
-          <p className="text-xs uppercase tracking-widest mb-3 font-poster ink-soft">🏴‍☠️ Flag</p>
+          <p className="text-sm uppercase tracking-widest mb-3 font-poster font-bold" style={{ color: '#3a2410' }}>🏴‍☠️ Flag</p>
           <FlagInput
             endpoint={`/api/categories/${category}/challenges/${slug}/flag`}
             initialSolved={challenge.flagSolved}

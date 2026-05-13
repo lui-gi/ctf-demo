@@ -47,7 +47,7 @@ export default function QuestionBlock({ id, text, endpoint, initialSolved, initi
 
   return (
     <div className={`flex flex-col gap-2 ${shake ? 'animate-shake' : ''}`}>
-      <label htmlFor={id} className="text-sm font-poster ink-soft" style={{ letterSpacing: '0.04em' }}>
+      <label htmlFor={id} className="text-base font-poster font-semibold" style={{ letterSpacing: '0.02em', color: '#2a1a08' }}>
         {text}
       </label>
       <div className="flex gap-2">

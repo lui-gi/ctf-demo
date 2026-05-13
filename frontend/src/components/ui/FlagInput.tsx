@@ -54,15 +54,15 @@ export default function FlagInput({ endpoint, initialSolved }: Props) {
           alignItems: 'center',
           gap: 6,
           fontFamily: 'var(--font-mono, "Special Elite", monospace)',
-          fontSize: 11,
-          letterSpacing: '0.12em',
+          fontSize: 13,
+          fontWeight: 700,
+          letterSpacing: '0.10em',
           textTransform: 'uppercase',
           color: 'var(--ink-soft, #4a3318)',
         }}
       >
         <span style={{ color: 'var(--cyber-cursor, #2e6b3a)', fontWeight: 700 }}>$</span>
         submit&nbsp;flag
-        <span className="cyber-caret" />
       </div>
       <div className="flex gap-2">
         <input

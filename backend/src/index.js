@@ -247,6 +247,7 @@ app.get('/api/categories/:category/challenges/:slug', requireAuth, (req, res) =>
     title: ch.title,
     difficulty: ch.difficulty,
     points: ch.points,
+    description: ch.description ?? null,
     embedUrl: ch.embed_url,
     downloadUrls: JSON.parse(ch.download_urls || '[]'),
     flagSolved,
