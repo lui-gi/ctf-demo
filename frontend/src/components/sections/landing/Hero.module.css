@@ -112,12 +112,28 @@
   margin-bottom: -72px;
 }
 .shipRide {
-  animation: shipRideWave 6s ease-in-out infinite;
+  animation: shipRideWave 4s linear infinite;
   transform-origin: 50% 82%;
   filter:
     sepia(1) saturate(1.5) brightness(0.78) contrast(1.1)
     drop-shadow(0 30px 26px rgba(60, 30, 5, 0.55));
   will-change: transform;
+}
+
+@keyframes shipRideWave {
+  0%     { transform: translateY( 0.0px) rotate( 0.00deg); }
+  8.33%  { transform: translateY(-3.5px) rotate( 0.50deg); }
+  16.67% { transform: translateY(-6.1px) rotate( 0.87deg); }
+  25%    { transform: translateY(-7.0px) rotate( 1.00deg); }
+  33.33% { transform: translateY(-6.1px) rotate( 0.87deg); }
+  41.67% { transform: translateY(-3.5px) rotate( 0.50deg); }
+  50%    { transform: translateY( 0.0px) rotate( 0.00deg); }
+  58.33% { transform: translateY( 3.5px) rotate(-0.50deg); }
+  66.67% { transform: translateY( 6.1px) rotate(-0.87deg); }
+  75%    { transform: translateY( 7.0px) rotate(-1.00deg); }
+  83.33% { transform: translateY( 6.1px) rotate(-0.87deg); }
+  91.67% { transform: translateY( 3.5px) rotate(-0.50deg); }
+  100%   { transform: translateY( 0.0px) rotate( 0.00deg); }
 }
 
 .wakePrimary {

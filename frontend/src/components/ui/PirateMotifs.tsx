@@ -365,7 +365,6 @@ export function CartoonSun({ size = 220 }: { size?: number }) {
             '0 0 40px 8px rgba(255,213,90,0.55),' +
             '0 0 80px 24px rgba(255,210,100,0.30),' +
             'inset 0 -8px 16px rgba(180,100,10,0.30)',
-          border: '3px solid #1d1408',
         }}
       />
     </div>

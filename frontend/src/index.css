@@ -348,13 +348,6 @@
   100% { transform: translate3d( 85px, 0, 0); }
 }
 
-@keyframes shipRideWave {
-  0%   { transform: translateY( 10px) rotate(11deg); }
-  25%  { transform: translateY( -4px) rotate(18deg); }
-  50%  { transform: translateY(-14px) rotate(14deg); }
-  75%  { transform: translateY( -2px) rotate(10deg); }
-  100% { transform: translateY( 10px) rotate(11deg); }
-}
 
 @keyframes wakePulse {
   0%, 100% { opacity: 0;    transform: translateX(-50%) scaleX(0.85); }
