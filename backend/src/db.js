@@ -117,7 +117,9 @@ function seed() {
     const catId = crypto.randomUUID()
     catIds[c.slug] = catId
     insertCat.run(catId, c.slug, c.name, c.icon, c.typeName, c.order)
-    insertCh.run(crypto.randomUUID(), catId, 'coming-soon', 'Coming Soon', 'easy', 0, null, '[]', 'CTF{placeholder}')
+    if (c.slug !== 'cipher-cove') {
+      insertCh.run(crypto.randomUUID(), catId, 'coming-soon', 'Coming Soon', 'easy', 0, null, '[]', 'CTF{placeholder}')
+    }
   }
 
   seedChallenges(catIds)

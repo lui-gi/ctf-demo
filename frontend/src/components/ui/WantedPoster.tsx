@@ -17,27 +17,27 @@ function getInitials(name: string): string {
 
 const sizeConfig = {
   lg: {
-    poster: 'w-[300px]',
-    wanted: 'text-[2.8125rem]',
-    initials: { width: '8.75rem', height: '8.75rem' },
-    initialsText: 'text-[2.8125rem]',
-    crewName: '1.375rem',
+    poster: 'w-[420px]',
+    wanted: 'text-[4rem]',
+    initials: { width: '11rem', height: '11rem' },
+    initialsText: 'text-[4rem]',
+    crewName: '1.75rem',
     rankLabel: '1ST',
   },
   md: {
-    poster: 'w-52',
-    wanted: 'text-3xl',
-    initials: { width: '6rem', height: '6rem' },
-    initialsText: 'text-3xl',
-    crewName: '1rem',
+    poster: 'w-[330px]',
+    wanted: 'text-[3rem]',
+    initials: { width: '8rem', height: '8rem' },
+    initialsText: 'text-[3rem]',
+    crewName: '1.35rem',
     rankLabel: '2ND',
   },
   sm: {
-    poster: 'w-52',
-    wanted: 'text-3xl',
-    initials: { width: '6rem', height: '6rem' },
-    initialsText: 'text-3xl',
-    crewName: '1rem',
+    poster: 'w-[330px]',
+    wanted: 'text-[3rem]',
+    initials: { width: '8rem', height: '8rem' },
+    initialsText: 'text-[3rem]',
+    crewName: '1.35rem',
     rankLabel: '3RD',
   },
 }
@@ -82,7 +82,7 @@ export default function WantedPoster({ entry, size }: WantedPosterProps) {
       {/* Rank badge */}
       <div className="mb-[-10px] z-10 relative">
         <span
-          className="font-mono text-[10px] font-black px-3 py-1 tracking-widest uppercase"
+          className="font-mono text-sm font-black px-3 py-1 tracking-widest uppercase"
           style={{ background: '#7a4f1a', color: '#f5e6b8' }}
         >
           {cfg.rankLabel}
@@ -173,7 +173,7 @@ export default function WantedPoster({ entry, size }: WantedPosterProps) {
         </div>
 
         {/* DEAD OR ALIVE */}
-        <p className="text-[#7a1a00] font-bold text-[10px] tracking-[0.3em] uppercase mb-1.5">
+        <p className="text-[#7a1a00] font-bold text-sm tracking-[0.3em] uppercase mb-1.5">
           Dead or Alive
         </p>
 
@@ -190,22 +190,22 @@ export default function WantedPoster({ entry, size }: WantedPosterProps) {
         {/* Member list */}
         <div className="w-full mb-3">
           {displayedMembers.map(m => (
-            <p key={m} className="text-[#5a3500] text-[11px] text-center leading-relaxed">{m}</p>
+            <p key={m} className="text-[#5a3500] text-base font-bold text-center leading-relaxed">{m}</p>
           ))}
           {extraMembers > 0 && (
-            <p className="text-[#7a4f1a] text-[10px] text-center italic">+ {extraMembers} more</p>
+            <p className="text-[#7a4f1a] text-sm text-center italic">+ {extraMembers} more</p>
           )}
         </div>
 
         {/* Stats row */}
         <div className="flex justify-between w-full border-t-2 border-[#7a4f1a]/50 pt-2">
           <div className="text-center">
-            <p className="text-[#7a4f1a] text-[9px] uppercase tracking-widest font-bold">Solves</p>
-            <p className="text-[#3d1f00] font-mono font-black text-sm">{entry.solveCount}</p>
+            <p className="text-[#7a4f1a] text-xs uppercase tracking-widest font-bold">Solves</p>
+            <p className="text-[#3d1f00] font-mono font-black text-lg">{entry.solveCount}</p>
           </div>
           <div className="text-center">
-            <p className="text-[#7a4f1a] text-[9px] uppercase tracking-widest font-bold">Bounty</p>
-            <p className="text-[#3d1f00] font-mono font-black text-sm">{entry.totalPoints.toLocaleString()}</p>
+            <p className="text-[#7a4f1a] text-xs uppercase tracking-widest font-bold">Bounty</p>
+            <p className="text-[#3d1f00] font-mono font-black text-lg">{entry.totalPoints.toLocaleString()}</p>
           </div>
         </div>
       </div>

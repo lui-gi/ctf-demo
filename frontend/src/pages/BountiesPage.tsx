@@ -2,8 +2,6 @@ import { useState, useEffect, useCallback } from 'react'
 import { api } from '../lib/api'
 import type { BountyEntry } from '../lib/types'
 import WantedPoster from '../components/ui/WantedPoster'
-import { SectionEyebrow } from '../components/ui/SectionRole'
-import { RoleArchaeologist } from '../components/ui/PirateMotifs'
 
 export default function BountiesPage() {
   const [entries, setEntries] = useState<BountyEntry[]>([])
@@ -25,17 +23,12 @@ export default function BountiesPage() {
   const rest = entries.slice(3)
 
   return (
-    <div className="max-w-5xl mx-auto w-full px-6 py-10">
+    <div className="max-w-7xl mx-auto w-full px-6 py-10">
       <div className="mb-10">
-        <SectionEyebrow
-          role="archaeologist"
-          label="Records of the deep"
-          icon={<RoleArchaeologist size={16} strokeWidth={1.8} />}
-        />
         <h1 className="h-poster mb-1" style={{ fontSize: '2.2rem', fontWeight: 800 }}>
           Bounties
         </h1>
-        <p className="ink-soft text-sm font-poster" style={{ letterSpacing: '0.06em' }}>
+        <p className="ink-soft text-xl font-poster" style={{ letterSpacing: '0.06em' }}>
           Crew rankings · refreshes every 30 seconds
         </p>
       </div>
@@ -53,12 +46,12 @@ export default function BountiesPage() {
           {top3.length > 0 && (
             <div className="mb-14">
               <p
-                className="text-center text-xs uppercase mb-8 font-poster"
-                style={{ letterSpacing: '0.4em', color: '#6b3a18' }}
+                className="text-center text-3xl font-black uppercase mb-8 font-poster"
+                style={{ letterSpacing: '0.3em', color: '#6b3a18' }}
               >
                 Most Wanted
               </p>
-              <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-6 md:gap-10 w-full">
+              <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-4 w-full">
                 <div className="flex justify-center order-2 md:order-1">
                   {top3[1]
                     ? <WantedPoster entry={top3[1]} size="md" />

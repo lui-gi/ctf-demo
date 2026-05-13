@@ -42,8 +42,7 @@ export default function TopNav() {
         >
           <CompassRose size={22} strokeWidth={1.3} />
         </span>
-        <span>prog</span>
-        <span style={{ color: '#8a2a1f' }}>ctf</span>
+        <span>prog<span style={{ color: '#8a2a1f' }}>ctf</span></span>
       </Link>
 
       <div className="flex items-center gap-6">
@@ -53,8 +52,8 @@ export default function TopNav() {
             to={to}
             className={({ isActive }) =>
               isActive
-                ? 'text-sm font-bold pb-0.5 border-b-2'
-                : 'text-sm font-bold transition-colors'
+                ? 'text-base font-bold pb-0.5 border-b-2'
+                : 'text-base font-bold transition-colors'
             }
             style={({ isActive }) =>
               isActive
@@ -68,7 +67,7 @@ export default function TopNav() {
         <CrewBadge crewRank={crewRank} />
 <button
           onClick={logout}
-          className="text-sm font-bold transition-colors"
+          className="text-base font-bold transition-colors"
           style={{ color: '#4a3318', fontFamily: '"IM Fell English SC", Georgia, serif', letterSpacing: '0.08em' }}
           onMouseEnter={e => (e.currentTarget.style.color = '#8a2a1f')}
           onMouseLeave={e => (e.currentTarget.style.color = '#4a3318')}

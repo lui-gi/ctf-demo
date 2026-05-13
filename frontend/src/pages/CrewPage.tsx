@@ -3,7 +3,6 @@ import { api } from '../lib/api'
 import type { Crew, CrewPreview } from '../lib/types'
 import { SectionEyebrow } from '../components/ui/SectionRole'
 import { RoleMusician } from '../components/ui/PirateMotifs'
-import { Waveform } from '../components/ui/AbilityPrims'
 import { LogPose } from '../components/ui/LogPose'
 
 type View = 'loading' | 'no-crew' | 'crew' | 'error'
@@ -183,7 +182,7 @@ export default function CrewPage() {
               <h1 className="h-poster mb-1" style={{ fontSize: '2rem', fontWeight: 800 }}>
                 {crew!.name}
               </h1>
-              <p className="text-xs mt-1 ink-soft font-poster">
+              <p className="text-base mt-1 ink-soft font-poster">
                 Invite code:{' '}
                 <span
                   className="font-mono"
@@ -195,7 +194,7 @@ export default function CrewPage() {
             </div>
             <button
               onClick={handleLeave}
-              className="text-xs font-poster transition-colors hover:underline"
+              className="text-base font-poster transition-colors hover:underline"
               style={{ color: '#4a3318', letterSpacing: '0.08em' }}
             >
               Leave crew
@@ -205,10 +204,10 @@ export default function CrewPage() {
           <div className="parchment-card overflow-hidden relative">
             <span className="stamp-corner stamp-corner--tl" /><span className="stamp-corner stamp-corner--tr" />
             <span className="stamp-corner stamp-corner--bl" /><span className="stamp-corner stamp-corner--br" />
-            <table className="w-full text-sm">
+            <table className="w-full text-base">
               <thead>
                 <tr
-                  className="text-xs uppercase tracking-widest font-poster ink-soft"
+                  className="text-sm uppercase tracking-widest font-poster ink-soft"
                   style={{ borderBottom: '1.5px solid #c9a96a' }}
                 >
                   <th className="text-left px-5 py-4">Member</th>
@@ -218,9 +217,9 @@ export default function CrewPage() {
               <tbody>
                 {crew!.members.map(m => (
                   <tr key={m.id} style={{ borderBottom: '1px solid rgba(90,58,26,0.15)' }}>
-                    <td className="px-5 py-3 font-poster" style={{ color: '#2a1a08' }}>{m.username}</td>
+                    <td className="px-5 py-3 font-poster text-lg" style={{ color: '#2a1a08' }}>{m.username}</td>
                     <td
-                      className="px-5 py-3 text-right font-mono font-bold"
+                      className="px-5 py-3 text-right font-mono font-bold text-lg"
                       style={{ color: '#8a2a1f', fontFamily: '"Special Elite", monospace' }}
                     >
                       {m.points.toLocaleString()}
@@ -236,8 +235,6 @@ export default function CrewPage() {
       {tab === 'all-crews' && (
         <>
           <h1 className="h-poster" style={{ fontSize: '2rem', fontWeight: 800 }}>All Crews</h1>
-          {/* Echotone — heading underline animates left-to-right on mount. */}
-          <span className="fx-music-underline" aria-hidden style={{ marginBottom: 24 }} />
           {crewsLoading ? (
             <div className="text-center py-16"><LogPose label="Charting course" /></div>
           ) : allCrews.length === 0 ? (
@@ -257,25 +254,13 @@ export default function CrewPage() {
 
                     {/* Echotone — waveform along the bottom edge,
                         pulses on hover. */}
-                    <span
-                      aria-hidden
-                      style={{
-                        position: 'absolute',
-                        left: 14, right: 14, bottom: 8,
-                        opacity: 0.55,
-                        pointerEvents: 'none',
-                      }}
-                    >
-                      <Waveform bars={isMine ? 16 : 12} height={14} />
-                    </span>
-
                     <div className="flex items-center gap-2 mb-3">
-                      <span className="font-poster font-bold text-sm truncate" style={{ color: '#2a1a08' }}>
+                      <span className="font-poster font-bold text-base truncate" style={{ color: '#2a1a08' }}>
                         {c.name}
                       </span>
                       {isMine && (
                         <span
-                          className="shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded-sm"
+                          className="shrink-0 text-xs font-bold px-1.5 py-0.5 rounded-sm"
                           style={{ background: '#8a2a1f', color: '#f5e8c8', letterSpacing: '0.12em' }}
                         >
                           YOU
@@ -284,7 +269,7 @@ export default function CrewPage() {
                     </div>
                     <div className="flex flex-col gap-1">
                       {c.members.map(username => (
-                        <span key={username} className="text-xs ink-soft font-poster">{username}</span>
+                        <span key={username} className="text-sm ink-soft font-poster">{username}</span>
                       ))}
                     </div>
                   </div>
