@@ -171,7 +171,7 @@ function seedParrotChallenge(catId) {
 
   const parrotId = crypto.randomUUID()
   db.prepare('INSERT INTO challenges (id, category_id, slug, title, difficulty, points, embed_url, download_urls, flag, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
-    .run(parrotId, catId, 'parrot-knows-too-much', 'The Parrot Knows Too Much', 'medium', 50, null, '[]', 'progctf{GE0R91A_AQU4R1UM}', PARROT_DESCRIPTION)
+    .run(parrotId, catId, 'parrot-knows-too-much', 'The Parrot Knows Too Much', 'medium', 150, null, '[]', 'progctf{GE0R91A_AQU4R1UM}', PARROT_DESCRIPTION)
 
   const q1Id = crypto.randomUUID()
   const q2Id = crypto.randomUUID()
@@ -179,11 +179,11 @@ function seedParrotChallenge(catId) {
   const q4Id = crypto.randomUUID()
   const q5Id = crypto.randomUUID()
 
-  insertQ.run(q1Id, parrotId, 'What cryptographic algorithm is being used?', 'rsa', 10, 1)
-  insertQ.run(q2Id, parrotId, 'What are the two prime factors of n? (comma-separated, lowest first, no spaces)', '53,61', 20, 2)
-  insertQ.run(q3Id, parrotId, 'What is φ(n)?', '3120', 15, 3)
-  insertQ.run(q4Id, parrotId, 'What is the private key d?', '2753', 25, 4)
-  insertQ.run(q5Id, parrotId, 'Decrypt the ciphertext. What is the raw integer list? (comma-separated, no spaces)', '112,114,111,103,99,116,102,123,103,101,111,114,103,105,97,95,97,113,117,97,114,105,117,109,125', 30, 5)
+  insertQ.run(q1Id, parrotId, 'What cryptographic algorithm is being used?', 'rsa', 15, 1)
+  insertQ.run(q2Id, parrotId, 'What are the two prime factors of n? (comma-separated, lowest first, no spaces)', '53,61', 30, 2)
+  insertQ.run(q3Id, parrotId, 'What is φ(n)?', '3120', 22, 3)
+  insertQ.run(q4Id, parrotId, 'What is the private key d?', '2753', 38, 4)
+  insertQ.run(q5Id, parrotId, 'Decrypt the ciphertext. What is the raw integer list? (comma-separated, no spaces)', '112,114,111,103,99,116,102,123,103,101,111,114,103,105,97,95,97,113,117,97,114,105,117,109,125', 45, 5)
 
   insertH.run(crypto.randomUUID(), q1Id, 'Pouncy only speaks in numbers. What encryption scheme uses a public key pair (n, e)?', 1)
   insertH.run(crypto.randomUUID(), q2Id, 'Try dividing n by every integer starting from 2. It won\'t take long.', 1)
@@ -211,6 +211,17 @@ if (_cc && !db.prepare("SELECT 1 FROM challenges WHERE slug='message-in-a-bottle
 }
 if (_cc && !db.prepare("SELECT 1 FROM challenges WHERE slug='parrot-knows-too-much'").get()) {
   seedParrotChallenge(_cc.id)
+}
+
+// Migration: update parrot challenge to medium point totals (flag=150, questions sum to 150)
+const _parrot = db.prepare("SELECT id FROM challenges WHERE slug='parrot-knows-too-much'").get()
+if (_parrot && db.prepare("SELECT points FROM challenges WHERE id=?").get(_parrot.id).points !== 150) {
+  db.prepare("UPDATE challenges SET points=150 WHERE id=?").run(_parrot.id)
+  db.prepare("UPDATE questions SET points=15 WHERE challenge_id=? AND sort_order=1").run(_parrot.id)
+  db.prepare("UPDATE questions SET points=30 WHERE challenge_id=? AND sort_order=2").run(_parrot.id)
+  db.prepare("UPDATE questions SET points=22 WHERE challenge_id=? AND sort_order=3").run(_parrot.id)
+  db.prepare("UPDATE questions SET points=38 WHERE challenge_id=? AND sort_order=4").run(_parrot.id)
+  db.prepare("UPDATE questions SET points=45 WHERE challenge_id=? AND sort_order=5").run(_parrot.id)
 }
 
 module.exports = db
