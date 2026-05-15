@@ -253,7 +253,17 @@ app.get('/api/categories/:category/challenges/:slug', requireAuth, (req, res) =>
     flagSolved,
     questions: questions.map(q => {
       const solve = db.prepare("SELECT points_earned FROM solves WHERE user_id=? AND question_id=? AND type='question'").get(uid, q.id)
-      return { id: q.id, text: q.text, solved: !!solve, pointsEarned: solve?.points_earned ?? 0 }
+      const hints = db.prepare('SELECT * FROM hints WHERE question_id=? ORDER BY sort_order').all(q.id)
+      return {
+        id: q.id,
+        text: q.text,
+        solved: !!solve,
+        pointsEarned: solve?.points_earned ?? 0,
+        hints: hints.map(h => {
+          const revealed = !!db.prepare('SELECT 1 FROM hint_uses WHERE user_id=? AND hint_id=?').get(uid, h.id)
+          return { id: h.id, sortOrder: h.sort_order, text: revealed ? h.text : null }
+        }),
+      }
     }),
   })
 })
@@ -274,9 +284,15 @@ app.post('/api/categories/:category/challenges/:slug/questions/:questionId', req
   if ((answer ?? '').trim().toLowerCase() !== q.answer.toLowerCase())
     return res.json({ correct: false, pointsEarned: 0 })
 
+  const hintsUsed = db.prepare(`
+    SELECT COUNT(*) as v FROM hint_uses
+    WHERE user_id=? AND hint_id IN (SELECT id FROM hints WHERE question_id=?)
+  `).get(uid, q.id).v
+  const pointsEarned = Math.max(0, Math.floor(q.points * (1 - 0.25 * hintsUsed)))
+
   db.prepare("INSERT INTO solves (id,user_id,challenge_id,question_id,type,points_earned) VALUES (?,?,?,?,'question',?)")
-    .run(crypto.randomUUID(), uid, ch.id, q.id, q.points)
-  res.json({ correct: true, pointsEarned: q.points })
+    .run(crypto.randomUUID(), uid, ch.id, q.id, pointsEarned)
+  res.json({ correct: true, pointsEarned })
 })
 
 app.post('/api/categories/:category/challenges/:slug/flag', requireAuth, (req, res) => {
@@ -296,6 +312,21 @@ app.post('/api/categories/:category/challenges/:slug/flag', requireAuth, (req, r
   db.prepare("INSERT INTO solves (id,user_id,challenge_id,question_id,type,points_earned) VALUES (?,?,?,NULL,'flag',?)")
     .run(crypto.randomUUID(), uid, ch.id, ch.points)
   res.json({ correct: true, pointsEarned: ch.points })
+})
+
+// ---------------------------------------------------------------------------
+// Hints
+// ---------------------------------------------------------------------------
+app.post('/api/hints/:hintId/reveal', requireAuth, (req, res) => {
+  const uid = req.userId
+  const hint = db.prepare('SELECT * FROM hints WHERE id=?').get(req.params.hintId)
+  if (!hint) return res.status(404).json({ error: 'Not found' })
+
+  try {
+    db.prepare('INSERT OR IGNORE INTO hint_uses (id, user_id, hint_id) VALUES (?, ?, ?)').run(crypto.randomUUID(), uid, hint.id)
+  } catch { /* ignore */ }
+
+  res.json({ text: hint.text })
 })
 
 // ---------------------------------------------------------------------------

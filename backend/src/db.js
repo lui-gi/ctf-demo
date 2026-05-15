@@ -60,6 +60,21 @@ db.exec(`
     sort_order INTEGER DEFAULT 0
   );
 
+  CREATE TABLE IF NOT EXISTS hints (
+    id TEXT PRIMARY KEY,
+    question_id TEXT NOT NULL REFERENCES questions(id),
+    text TEXT NOT NULL,
+    sort_order INTEGER DEFAULT 0
+  );
+
+  CREATE TABLE IF NOT EXISTS hint_uses (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL REFERENCES users(id),
+    hint_id TEXT NOT NULL REFERENCES hints(id),
+    used_at TEXT DEFAULT (datetime('now')),
+    UNIQUE(user_id, hint_id)
+  );
+
   CREATE TABLE IF NOT EXISTS solves (
     id TEXT PRIMARY KEY,
     user_id TEXT NOT NULL REFERENCES users(id),
@@ -141,6 +156,42 @@ const MOB_DESCRIPTION = `A weathered bottle washes ashore. Inside, a rolled piec
 ── 2 February, 1843 ──────────────────────────────────────────────────────────────────────────
 593256696448426e633374485254464457544e6657554a5157444e5266513d3d`
 
+const PARROT_DESCRIPTION = `The Pounce Pirates have ransacked Broad Street and vanished without a trace, but in their haste, they left behind their beloved parrot, Pouncy. Pouncy won't stop squawking numbers. Nonsense, most would say. But you recognize something familiar in the pattern. The pirates were sloppy. They trusted a weak key, and Pouncy has said too much. Can you figure out where they're headed next?
+
+n = 3233
+e = 17
+
+c = [612, 2412, 2185, 2923, 281, 884, 1369, 855, 2923, 1313,
+     2185, 2412, 2923, 3179, 1632, 119, 1632, 1627, 2160, 1632,
+     2412, 3179, 2160, 2271, 1516]`
+
+function seedParrotChallenge(catId) {
+  const insertQ = db.prepare('INSERT INTO questions (id, challenge_id, text, answer, points, sort_order) VALUES (?, ?, ?, ?, ?, ?)')
+  const insertH = db.prepare('INSERT INTO hints (id, question_id, text, sort_order) VALUES (?, ?, ?, ?)')
+
+  const parrotId = crypto.randomUUID()
+  db.prepare('INSERT INTO challenges (id, category_id, slug, title, difficulty, points, embed_url, download_urls, flag, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
+    .run(parrotId, catId, 'parrot-knows-too-much', 'The Parrot Knows Too Much', 'medium', 50, null, '[]', 'progctf{GE0R91A_AQU4R1UM}', PARROT_DESCRIPTION)
+
+  const q1Id = crypto.randomUUID()
+  const q2Id = crypto.randomUUID()
+  const q3Id = crypto.randomUUID()
+  const q4Id = crypto.randomUUID()
+  const q5Id = crypto.randomUUID()
+
+  insertQ.run(q1Id, parrotId, 'What cryptographic algorithm is being used?', 'rsa', 10, 1)
+  insertQ.run(q2Id, parrotId, 'What are the two prime factors of n? (comma-separated, lowest first, no spaces)', '53,61', 20, 2)
+  insertQ.run(q3Id, parrotId, 'What is φ(n)?', '3120', 15, 3)
+  insertQ.run(q4Id, parrotId, 'What is the private key d?', '2753', 25, 4)
+  insertQ.run(q5Id, parrotId, 'Decrypt the ciphertext. What is the raw integer list? (comma-separated, no spaces)', '112,114,111,103,99,116,102,123,103,101,111,114,103,105,97,95,97,113,117,97,114,105,117,109,125', 30, 5)
+
+  insertH.run(crypto.randomUUID(), q1Id, 'Pouncy only speaks in numbers. What encryption scheme uses a public key pair (n, e)?', 1)
+  insertH.run(crypto.randomUUID(), q2Id, 'Try dividing n by every integer starting from 2. It won\'t take long.', 1)
+  insertH.run(crypto.randomUUID(), q3Id, '(p-1) × (q-1)', 1)
+  insertH.run(crypto.randomUUID(), q4Id, 'Find the modular inverse of e with respect to φ(n).', 1)
+  insertH.run(crypto.randomUUID(), q5Id, 'm = c^d mod n — apply it to each number in the list. Convert each integer to its ASCII character. The pirates never left Atlanta.', 1)
+}
+
 function seedChallenges(catIds) {
   const insertQ = db.prepare('INSERT INTO questions (id, challenge_id, text, answer, points, sort_order) VALUES (?, ?, ?, ?, ?, ?)')
 
@@ -149,12 +200,17 @@ function seedChallenges(catIds) {
     .run(mobId, catIds['cipher-cove'], 'message-in-a-bottle', 'Message in a Bottle', 'easy', 50, null, '[]', 'progctf{TR1PL3_LOCK3D}', MOB_DESCRIPTION)
   insertQ.run(crypto.randomUUID(), mobId, 'Decode the binary inscription. What flag is hidden in the message?', 'progctf{ZER0S_4ND_ON3S}', 25, 1)
   insertQ.run(crypto.randomUUID(), mobId, 'Use the key you found to decrypt the second message. What flag is inside the journal entry?', 'progctf{P4SS_THE_KEY}', 25, 2)
+
+  seedParrotChallenge(catIds['cipher-cove'])
 }
 
 // Migration: insert the challenge into an existing database
 const _cc = db.prepare("SELECT id FROM categories WHERE slug='cipher-cove'").get()
 if (_cc && !db.prepare("SELECT 1 FROM challenges WHERE slug='message-in-a-bottle'").get()) {
   seedChallenges({ 'cipher-cove': _cc.id })
+}
+if (_cc && !db.prepare("SELECT 1 FROM challenges WHERE slug='parrot-knows-too-much'").get()) {
+  seedParrotChallenge(_cc.id)
 }
 
 module.exports = db

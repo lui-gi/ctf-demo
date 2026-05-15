@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { api } from '../../lib/api'
-import type { SubmitResponse } from '../../lib/types'
+import type { Hint, SubmitResponse } from '../../lib/types'
 
 interface Props {
   id: string
@@ -8,15 +8,18 @@ interface Props {
   endpoint: string
   initialSolved: boolean
   initialPoints: number
+  hints: Hint[]
 }
 
 type Status = 'idle' | 'loading' | 'correct' | 'incorrect'
 
-export default function QuestionBlock({ id, text, endpoint, initialSolved, initialPoints }: Props) {
+export default function QuestionBlock({ id, text, endpoint, initialSolved, initialPoints, hints: initialHints }: Props) {
   const [answer, setAnswer] = useState('')
   const [status, setStatus] = useState<Status>(initialSolved ? 'correct' : 'idle')
   const [points, setPoints] = useState(initialPoints)
   const [shake, setShake] = useState(false)
+  const [hints, setHints] = useState<Hint[]>(initialHints)
+  const [revealingHint, setRevealingHint] = useState<string | null>(null)
 
   const solved = status === 'correct'
 
@@ -38,6 +41,16 @@ export default function QuestionBlock({ id, text, endpoint, initialSolved, initi
     }
   }
 
+  async function handleRevealHint(hintId: string) {
+    setRevealingHint(hintId)
+    try {
+      const res = await api.post<{ text: string }>(`/api/hints/${hintId}/reveal`, {})
+      setHints(prev => prev.map(h => h.id === hintId ? { ...h, text: res.text } : h))
+    } catch { /* ignore */ } finally {
+      setRevealingHint(null)
+    }
+  }
+
   const borderColor = solved
     ? '#2a7a2a'
     : status === 'incorrect'
@@ -51,6 +64,39 @@ export default function QuestionBlock({ id, text, endpoint, initialSolved, initi
       <label htmlFor={id} className="text-lg font-poster font-semibold" style={{ letterSpacing: '0.02em', color: '#2a1a08' }}>
         {text}
       </label>
+
+      {hints.length > 0 && (
+        <div className="flex flex-col gap-1.5">
+          {hints.map((hint, i) => (
+            hint.text !== null ? (
+              <div
+                key={hint.id}
+                className="text-sm font-poster px-3 py-2 rounded"
+                style={{ background: 'rgba(163, 130, 61, 0.12)', border: '1px solid #c9a96a', color: '#5a3a1a' }}
+              >
+                <span className="font-bold">💡 Hint {i + 1}:</span> {hint.text}
+              </div>
+            ) : (
+              <button
+                key={hint.id}
+                onClick={() => handleRevealHint(hint.id)}
+                disabled={!!revealingHint}
+                className="text-sm font-poster text-left px-3 py-1.5 rounded transition-opacity"
+                style={{
+                  background: 'rgba(163, 130, 61, 0.08)',
+                  border: '1px dashed #a3823d',
+                  color: '#8a5a1a',
+                  opacity: revealingHint ? 0.6 : 1,
+                  cursor: revealingHint ? 'default' : 'pointer',
+                }}
+              >
+                {revealingHint === hint.id ? '…' : `💡 Hint ${i + 1} (−25% pts)`}
+              </button>
+            )
+          ))}
+        </div>
+      )}
+
       <div className="flex gap-2">
         <input
           id={id}

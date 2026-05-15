@@ -144,6 +144,7 @@ export default function ChallengePage() {
             endpoint={`/api/categories/${category}/challenges/${slug}/questions/${q.id}`}
             initialSolved={q.solved}
             initialPoints={q.pointsEarned}
+            hints={q.hints ?? []}
           />
         ))}
 

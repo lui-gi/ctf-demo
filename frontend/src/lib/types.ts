@@ -26,11 +26,18 @@ export interface Challenge {
   solved: boolean
 }
 
+export interface Hint {
+  id: string
+  sortOrder: number
+  text: string | null
+}
+
 export interface Question {
   id: string
   text: string
   solved: boolean
   pointsEarned: number
+  hints: Hint[]
 }
 
 export interface ChallengeDetail {
