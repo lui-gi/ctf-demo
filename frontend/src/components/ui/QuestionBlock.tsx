@@ -106,10 +106,12 @@ export default function QuestionBlock({ id, text, endpoint, initialSolved, initi
             hint.text !== null ? (
               <div
                 key={hint.id}
-                className="text-sm font-poster px-3 py-2 rounded"
-                style={{ background: 'rgba(163, 130, 61, 0.12)', border: '1px solid #c9a96a', color: '#5a3a1a' }}
+                className="flex flex-col gap-3 p-4 rounded"
+                style={{ background: '#fdf6e3', border: '2px solid #8a2a1f' }}
               >
-                <span className="font-bold">💡 Hint {hints.length > 1 ? i + 1 : ''}:</span> {hint.text}
+                <p className="text-lg font-poster font-semibold" style={{ letterSpacing: '0.02em', color: '#3a2410', lineHeight: '1.5' }}>
+                  <span className="font-bold">💡 Hint {hints.length > 1 ? i + 1 : ''}:</span> {hint.text}
+                </p>
               </div>
             ) : confirmingHint === hint.id ? (
               <div
@@ -147,8 +149,8 @@ export default function QuestionBlock({ id, text, endpoint, initialSolved, initi
               <button
                 key={hint.id}
                 onClick={() => setConfirmingHint(hint.id)}
-                className="text-xs font-poster font-semibold self-start px-3 py-1.5 rounded"
-                style={{ background: 'rgba(163, 130, 61, 0.13)', border: '1px solid #a3823d', color: '#5a3a1a', cursor: 'pointer' }}
+                className="btn-ink self-start"
+                style={{ background: '#8a2a1f', color: '#f3e2b6' }}
               >
                 💡 Get Hint{hints.length > 1 ? ` ${i + 1}` : ''}
               </button>
