@@ -20,6 +20,7 @@ export default function QuestionBlock({ id, text, endpoint, initialSolved, initi
   const [shake, setShake] = useState(false)
   const [hints, setHints] = useState<Hint[]>(initialHints)
   const [revealingHint, setRevealingHint] = useState<string | null>(null)
+  const [confirmingHint, setConfirmingHint] = useState<string | null>(null)
 
   const solved = status === 'correct'
 
@@ -65,38 +66,6 @@ export default function QuestionBlock({ id, text, endpoint, initialSolved, initi
         {text}
       </label>
 
-      {hints.length > 0 && (
-        <div className="flex flex-col gap-1.5">
-          {hints.map((hint, i) => (
-            hint.text !== null ? (
-              <div
-                key={hint.id}
-                className="text-sm font-poster px-3 py-2 rounded"
-                style={{ background: 'rgba(163, 130, 61, 0.12)', border: '1px solid #c9a96a', color: '#5a3a1a' }}
-              >
-                <span className="font-bold">💡 Hint {i + 1}:</span> {hint.text}
-              </div>
-            ) : (
-              <button
-                key={hint.id}
-                onClick={() => handleRevealHint(hint.id)}
-                disabled={!!revealingHint}
-                className="text-sm font-poster text-left px-3 py-1.5 rounded transition-opacity"
-                style={{
-                  background: 'rgba(163, 130, 61, 0.08)',
-                  border: '1px dashed #a3823d',
-                  color: '#8a5a1a',
-                  opacity: revealingHint ? 0.6 : 1,
-                  cursor: revealingHint ? 'default' : 'pointer',
-                }}
-              >
-                {revealingHint === hint.id ? '…' : `💡 Hint ${i + 1} (−25% pts)`}
-              </button>
-            )
-          ))}
-        </div>
-      )}
-
       <div className="flex gap-2">
         <input
           id={id}
@@ -119,6 +88,7 @@ export default function QuestionBlock({ id, text, endpoint, initialSolved, initi
           </button>
         )}
       </div>
+
       {status === 'correct' && (
         <p className="text-base font-poster font-semibold" style={{ color: '#3d6b3a' }}>
           ✓ Correct — {points} pts
@@ -128,6 +98,63 @@ export default function QuestionBlock({ id, text, endpoint, initialSolved, initi
         <p className="text-base font-poster font-semibold" style={{ color: '#8a2a1f' }}>
           ✗ Incorrect, try again.
         </p>
+      )}
+
+      {!solved && hints.length > 0 && (
+        <div className="flex flex-col gap-2">
+          {hints.map((hint, i) => (
+            hint.text !== null ? (
+              <div
+                key={hint.id}
+                className="text-sm font-poster px-3 py-2 rounded"
+                style={{ background: 'rgba(163, 130, 61, 0.12)', border: '1px solid #c9a96a', color: '#5a3a1a' }}
+              >
+                <span className="font-bold">💡 Hint {hints.length > 1 ? i + 1 : ''}:</span> {hint.text}
+              </div>
+            ) : confirmingHint === hint.id ? (
+              <div
+                key={hint.id}
+                className="flex flex-col gap-3 p-4 rounded"
+                style={{ background: '#fdf6e3', border: '2px solid #8a2a1f' }}
+              >
+                <div className="flex flex-col gap-1">
+                  <p className="text-lg font-poster font-semibold" style={{ letterSpacing: '0.02em', color: '#5a1a10' }}>
+                    ⚠ Use a hint?
+                  </p>
+                  <p className="text-lg font-poster font-semibold" style={{ letterSpacing: '0.02em', color: '#3a2410', lineHeight: '1.5' }}>
+                    Revealing this hint will permanently deduct <strong>25%</strong> from the maximum points you can earn for this question.
+                  </p>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => { setConfirmingHint(null); handleRevealHint(hint.id) }}
+                    disabled={!!revealingHint}
+                    className="text-sm font-poster font-bold px-4 py-1.5 rounded"
+                    style={{ background: '#8a2a1f', color: '#f3e2b6', cursor: revealingHint ? 'default' : 'pointer' }}
+                  >
+                    {revealingHint === hint.id ? '…' : 'Yes, reveal hint'}
+                  </button>
+                  <button
+                    onClick={() => setConfirmingHint(null)}
+                    className="text-sm font-poster px-4 py-1.5 rounded"
+                    style={{ background: 'transparent', border: '1.5px solid #a3823d', color: '#5a3a1a', cursor: 'pointer' }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                key={hint.id}
+                onClick={() => setConfirmingHint(hint.id)}
+                className="text-xs font-poster font-semibold self-start px-3 py-1.5 rounded"
+                style={{ background: 'rgba(163, 130, 61, 0.13)', border: '1px solid #a3823d', color: '#5a3a1a', cursor: 'pointer' }}
+              >
+                💡 Get Hint{hints.length > 1 ? ` ${i + 1}` : ''}
+              </button>
+            )
+          ))}
+        </div>
       )}
     </div>
   )
