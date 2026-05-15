@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom'
 import type { Challenge } from '../../lib/types'
 import DifficultyBadge from './DifficultyBadge'
 
+const TOTAL_POINTS = { easy: 100, medium: 300, hard: 500 }
+
 interface Props {
   challenge: Challenge
   categorySlug: string
@@ -36,7 +38,7 @@ export default function ChallengeCard({ challenge, categorySlug }: Props) {
           className="text-xs shrink-0 font-mono"
           style={{ color: '#8a2a1f', fontFamily: '"Special Elite", monospace', fontWeight: 700 }}
         >
-          {challenge.points} pts
+          {challenge.earnedPoints}/{TOTAL_POINTS[challenge.difficulty]} pts
         </span>
       </div>
       <DifficultyBadge difficulty={challenge.difficulty} />

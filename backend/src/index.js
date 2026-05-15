@@ -69,12 +69,15 @@ app.get('/api/me/stats', requireAuth, (req, res) => {
   const totalChallenges = db.prepare('SELECT COUNT(*) as v FROM challenges').get().v
   const recentSolves = db.prepare(`
     SELECT ch.title AS challengeTitle, cat.name AS category,
-           s.points_earned AS pointsEarned, s.solved_at AS solvedAt
+           SUM(s.points_earned) AS pointsEarned,
+           MAX(CASE WHEN s.type='flag' THEN s.solved_at END) AS solvedAt
     FROM solves s
     JOIN challenges ch ON ch.id = s.challenge_id
     JOIN categories cat ON cat.id = ch.category_id
-    WHERE s.user_id=? AND s.type='flag'
-    ORDER BY s.solved_at DESC LIMIT 5
+    WHERE s.user_id=?
+    GROUP BY ch.id
+    HAVING MAX(CASE WHEN s.type='flag' THEN 1 ELSE 0 END) = 1
+    ORDER BY solvedAt DESC LIMIT 5
   `).all(uid)
   const solvedQuestions = db.prepare(
     "SELECT COUNT(DISTINCT question_id) as v FROM solves WHERE user_id=? AND type='question'"
@@ -130,12 +133,15 @@ app.get('/api/me/profile', requireAuth, (req, res) => {
   const totalChallenges = db.prepare('SELECT COUNT(*) as v FROM challenges').get().v
   const recentSolves = db.prepare(`
     SELECT ch.title AS challengeTitle, cat.name AS category,
-           s.points_earned AS pointsEarned, s.solved_at AS solvedAt
+           SUM(s.points_earned) AS pointsEarned,
+           MAX(CASE WHEN s.type='flag' THEN s.solved_at END) AS solvedAt
     FROM solves s
     JOIN challenges ch ON ch.id = s.challenge_id
     JOIN categories cat ON cat.id = ch.category_id
-    WHERE s.user_id=? AND s.type='flag'
-    ORDER BY s.solved_at DESC LIMIT 20
+    WHERE s.user_id=?
+    GROUP BY ch.id
+    HAVING MAX(CASE WHEN s.type='flag' THEN 1 ELSE 0 END) = 1
+    ORDER BY solvedAt DESC LIMIT 20
   `).all(uid)
   const solvedQuestions = db.prepare(
     "SELECT COUNT(DISTINCT question_id) as v FROM solves WHERE user_id=? AND type='question'"
@@ -220,6 +226,8 @@ app.get('/api/categories/:category', requireAuth, (req, res) => {
   if (!cat) return res.status(404).json({ error: 'Not found' })
 
   const challenges = db.prepare('SELECT * FROM challenges WHERE category_id=? ORDER BY points').all(cat.id)
+  const questionPtsStmt = db.prepare("SELECT COALESCE(SUM(points_earned),0) as v FROM solves WHERE user_id=? AND challenge_id=? AND type='question'")
+  const flagSolvedStmt = db.prepare("SELECT 1 FROM solves WHERE user_id=? AND challenge_id=? AND type='flag'")
   res.json({
     name: cat.name,
     challenges: challenges.map(ch => ({
@@ -227,7 +235,8 @@ app.get('/api/categories/:category', requireAuth, (req, res) => {
       title: ch.title,
       difficulty: ch.difficulty,
       points: ch.points,
-      solved: !!db.prepare("SELECT 1 FROM solves WHERE user_id=? AND challenge_id=? AND type='flag'").get(uid, ch.id),
+      earnedPoints: questionPtsStmt.get(uid, ch.id).v + (flagSolvedStmt.get(uid, ch.id) ? ch.points : 0),
+      solved: !!flagSolvedStmt.get(uid, ch.id),
     })),
   })
 })
@@ -241,12 +250,15 @@ app.get('/api/categories/:category/challenges/:slug', requireAuth, (req, res) =>
 
   const questions = db.prepare('SELECT * FROM questions WHERE challenge_id=? ORDER BY sort_order').all(ch.id)
   const flagSolved = !!db.prepare("SELECT 1 FROM solves WHERE user_id=? AND challenge_id=? AND type='flag'").get(uid, ch.id)
+  const questionPts = db.prepare("SELECT COALESCE(SUM(points_earned),0) as v FROM solves WHERE user_id=? AND challenge_id=? AND type='question'").get(uid, ch.id).v
+  const earnedPoints = questionPts + (flagSolved ? ch.points : 0)
 
   res.json({
     slug: ch.slug,
     title: ch.title,
     difficulty: ch.difficulty,
     points: ch.points,
+    earnedPoints,
     description: ch.description ?? null,
     embedUrl: ch.embed_url,
     downloadUrls: JSON.parse(ch.download_urls || '[]'),

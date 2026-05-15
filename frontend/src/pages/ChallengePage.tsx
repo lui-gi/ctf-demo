@@ -8,6 +8,8 @@ import FlagInput from '../components/ui/FlagInput'
 import { LogPose } from '../components/ui/LogPose'
 import PouncyParrot from '../components/ui/PouncyParrot'
 
+const TOTAL_POINTS = { easy: 100, medium: 300, hard: 500 }
+
 export default function ChallengePage() {
   const { category, slug } = useParams<{ category: string; slug: string }>()
   const [challenge, setChallenge] = useState<ChallengeDetail | null>(null)
@@ -66,7 +68,7 @@ export default function ChallengePage() {
               className="text-sm font-mono font-bold"
               style={{ color: '#8a2a1f', fontFamily: '"Special Elite", monospace' }}
             >
-              {challenge.points} pts
+              {challenge.earnedPoints}/{TOTAL_POINTS[challenge.difficulty]} pts
             </span>
             {challenge.flagSolved && (
               <span className="text-xs font-poster" style={{ color: '#3d6b3a' }}>🏴‍☠️ Completed</span>
