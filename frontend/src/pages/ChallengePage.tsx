@@ -6,6 +6,7 @@ import DifficultyBadge from '../components/ui/DifficultyBadge'
 import QuestionBlock from '../components/ui/QuestionBlock'
 import FlagInput from '../components/ui/FlagInput'
 import { LogPose } from '../components/ui/LogPose'
+import PouncyParrot from '../components/ui/PouncyParrot'
 
 export default function ChallengePage() {
   const { category, slug } = useParams<{ category: string; slug: string }>()
@@ -81,17 +82,21 @@ export default function ChallengePage() {
             <div className="flex flex-col gap-3">
               <p className="text-xl font-poster font-semibold leading-relaxed" style={{ color: '#2a1a08' }}>{intro}</p>
               {data && (
-                <pre
-                  className="text-sm leading-relaxed rounded p-4 overflow-x-auto"
-                  style={{
-                    background: '#1e120a',
-                    color: '#d4b483',
-                    border: '2px solid #5a3a1a',
-                    fontFamily: '"Courier New", Courier, monospace',
-                    whiteSpace: 'pre-wrap',
-                    wordBreak: 'break-all',
-                  }}
-                >{data}</pre>
+                slug === 'parrot-knows-too-much'
+                  ? <PouncyParrot dataText={data} />
+                  : (
+                    <pre
+                      className="text-sm leading-relaxed rounded p-4 overflow-x-auto"
+                      style={{
+                        background: '#1e120a',
+                        color: '#d4b483',
+                        border: '2px solid #5a3a1a',
+                        fontFamily: '"Courier New", Courier, monospace',
+                        whiteSpace: 'pre-wrap',
+                        wordBreak: 'break-all',
+                      }}
+                    >{data}</pre>
+                  )
               )}
             </div>
           )
