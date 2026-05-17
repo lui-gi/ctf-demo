@@ -11,15 +11,20 @@
   font-size: var(--type-h2, clamp(1.9rem, 4.2vw, 3rem));
   font-weight: 900;
   margin-bottom: 16px;
+  color: #fbf6dc;
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.55),
+    0 0 18px rgba(140, 220, 240, 0.18);
 }
 
 .intro {
-  font-size: 20px;
+  font-size: 20.5px;
   font-weight: 500;
-  line-height: 1.7;
-  color: var(--ink-soft, #4a3318);
+  line-height: 1.75;
+  color: #d9eaef;
   max-width: 680px;
   margin-bottom: 48px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
 }
 
 .grid {
@@ -47,10 +52,34 @@
 }
 :global(.challenge-card:hover) {
   transform: translateY(-3px);
-  border-color: var(--role-captain-ink, #8a2a1f);
+  border-color: #4ad07a;
   box-shadow:
-    inset 0 0 22px rgba(120, 80, 30, 0.15),
-    0 18px 28px -16px rgba(138, 42, 31, 0.45);
+    inset 0 0 24px rgba(74, 208, 122, 0.12),
+    0 0 0 1px rgba(74, 208, 122, 0.35),
+    0 18px 36px -14px rgba(46, 200, 110, 0.45),
+    0 0 44px rgba(74, 208, 122, 0.25);
+}
+/* Faint terminal-scan wash that fades in on hover. Pure CSS, GPU
+   friendly — uses transform + opacity only. */
+:global(.challenge-card)::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(74, 208, 122, 0.18), transparent 60%),
+    repeating-linear-gradient(0deg,
+      transparent 0px,
+      transparent 3px,
+      rgba(74, 208, 122, 0.08) 3px,
+      rgba(74, 208, 122, 0.08) 4px);
+  opacity: 0;
+  transition: opacity 0.28s ease;
+  mix-blend-mode: screen;
+  border-radius: inherit;
+}
+:global(.challenge-card:hover)::after {
+  opacity: 1;
 }
 
 :global(.challenge-card__icon) {
@@ -94,17 +123,83 @@
   font-family: var(--font-poster, 'IM Fell English SC', serif);
 }
 
+/* Default state = encrypted intel. Card text glows terminal-green
+   so the ciphered glyphs read as live, locked-down readouts. On
+   hover, ScrambleText decrypts the chars AND we transition the
+   color back to dark parchment ink for clean reading. */
 .cardName {
   font-size: 20px;
   font-weight: 800;
-  color: var(--ink, #2a1a08);
+  color: #2e6b3a;
+  text-shadow: 0 0 8px rgba(74, 208, 122, 0.45);
   margin-top: 18px;
   letter-spacing: 0.04em;
+  text-align: left;
+  transition: color 0.32s ease, text-shadow 0.32s ease;
 }
 .cardFlavor {
   font-size: 17px;
   font-weight: 500;
-  color: var(--ink-soft, #4a3318);
+  color: #3d8a4d;
+  text-shadow: 0 0 6px rgba(74, 208, 122, 0.30);
   line-height: 1.6;
   margin-top: 8px;
+  text-align: left;
+  transition: color 0.32s ease, text-shadow 0.32s ease;
+}
+/* Once decrypted (either currently hovered OR ever-hovered), the text
+   stays in dark-ink, glow-removed state — permanent reveal. */
+.cardButton:hover .cardName,
+.cardButton[data-revealed] .cardName {
+  color: var(--ink, #2a1a08);
+  text-shadow: none;
+}
+.cardButton:hover .cardFlavor,
+.cardButton[data-revealed] .cardFlavor {
+  color: var(--ink-soft, #4a3318);
+  text-shadow: none;
+}
+
+/* Cards are <button>s now — reset native button look and treat
+   them like the original card div, plus a "click to open" hint
+   pinned to the bottom-right that shows on hover. */
+.cardButton {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: left;
+  width: 100%;
+  font: inherit;
+  cursor: pointer;
+  color: inherit;
+  /* :global(.challenge-card) above already sets background, border,
+     padding, etc. — we only override what `button` adds. */
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+}
+.cardButton:focus-visible {
+  border-color: var(--role-captain-ink, #8a2a1f) !important;
+  box-shadow:
+    inset 0 0 22px rgba(120, 80, 30, 0.15),
+    0 0 0 3px rgba(168, 48, 42, 0.45) !important;
+}
+
+.cardOpenHint {
+  margin-top: 12px;
+  align-self: flex-end;
+  font-family: var(--font-poster, 'IM Fell English SC', serif);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--role-captain-ink, #8a2a1f);
+  opacity: 0;
+  transform: translateY(2px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.cardButton:hover .cardOpenHint,
+.cardButton:focus-visible .cardOpenHint {
+  opacity: 0.9;
+  transform: translateY(0);
 }

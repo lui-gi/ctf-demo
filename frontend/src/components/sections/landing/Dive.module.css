@@ -1,0 +1,117 @@
+/* ─── Dive stack ───────────────────────────────────────────────
+   The continuous depth gradient that backs every scroll section
+   below the hero. Starts at a mid-water teal that picks up where
+   the hero's deepest wave tone leaves off and descends to a
+   near-black abyss at the FinalCTA. */
+
+.stack {
+  position: relative;
+  background:
+    /* faint vignette toward the very bottom for extra abyss */
+    radial-gradient(120% 60% at 50% 100%,
+      rgba(0, 0, 0, 0.55) 0%,
+      transparent 55%),
+    linear-gradient(180deg,
+      #4aabac 0%,
+      #2a8090 14%,
+      #1c5e7e 32%,
+      #133e5c 52%,
+      #0a223a 72%,
+      #050f22 88%,
+      #02060f 100%);
+  color: #f1f8fb;
+  isolation: isolate; /* contain the bubbles + section z-indexes */
+}
+
+/* Page sections stack above the bubble layer. */
+.stack > section {
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Section-level helpers ─────────────────────────────────────
+   Frosted/dark panels behind text blocks that overlap busy water
+   animations. Sections that need readability bumps add this class. */
+.darkPanel {
+  background: rgba(10, 22, 38, 0.45);
+  backdrop-filter: blur(6px) saturate(1.1);
+  -webkit-backdrop-filter: blur(6px) saturate(1.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 28px 32px;
+}
+
+/* ── Body-copy readability tier ────────────────────────────────
+   Sections inside .stack default to high-contrast cream-white with
+   a hard dark shadow underneath so every line peels off the murky
+   water cleanly. Body sizing is also bumped one step. */
+.stack :is(p, li) {
+  color: #fbf9ed;
+  line-height: 1.75;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* ── Section headings — unambiguously bright on dark water ────
+   Every <h2> sitting directly in a dive section (i.e. not inside
+   a parchment bounty/card) gets the same bold-white treatment so
+   no title can render dark-on-dark anywhere. The parchment-card
+   rule below uses the same selector chain depth so the !important
+   color cascade still hits dark ink for cards. */
+.stack section h2 {
+  /* !important — beats per-section inline styles so no title can
+     accidentally render dark-on-dark anywhere in the dive. */
+  color: #ffffff !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.015em;
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.85),
+    1px 1px 0 rgba(0, 0, 0, 0.45),
+    0 0 24px rgba(140, 220, 240, 0.28) !important;
+}
+/* But: heading scramble or any h2 INSIDE a parchment bounty/card
+   should stay dark on the paper. The parchment override rule above
+   uses the same property + !important, but is more specific via
+   the data attribute, so it wins for those subtrees. */
+.stack .ink-soft,
+.stack [style*="--ink-soft"] {
+  color: #f4ead0 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Override the section copy that was explicitly styled brown-ink. */
+.stack .ctf-copy {
+  color: #fbf9ed !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Inside the parchment captain's log we WANT dark ink — exempt the
+   log subtree from the dark-water rules above. */
+.stack [data-light-on-dark="false"],
+.stack [data-light-on-dark="false"] :is(p, li, h1, h2, h3, h4, h5, h6, span, strong) {
+  color: var(--ink, #1d1408) !important;
+  text-shadow: none !important;
+}
+
+/* Reveal-on-scroll helper. Sections opt-in via the data-reveal
+   attribute. IntersectionObserver toggles data-revealed to fire
+   the fade-up. Falls back to visible if JS / IO unavailable. */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.85s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.85s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.reveal[data-revealed="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal[data-revealed="true"] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

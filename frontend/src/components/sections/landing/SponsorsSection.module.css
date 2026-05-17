@@ -6,15 +6,20 @@
   font-size: var(--type-h2, clamp(1.9rem, 4.2vw, 3rem));
   font-weight: 900;
   margin-bottom: 16px;
+  color: #fbf6dc;
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.55),
+    0 0 18px rgba(140, 220, 240, 0.18);
 }
 
 .intro {
-  font-size: 20px;
+  font-size: 20.5px;
   font-weight: 500;
   line-height: 1.75;
-  color: var(--ink-soft, #4a3318);
+  color: #d9eaef;
   max-width: 720px;
   margin-bottom: 56px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
 }
 
 .grid {

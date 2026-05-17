@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { Anchor, Coins, PirateShip } from '../../ui/PirateMotifs'
+import { Anchor, Coins } from '../../ui/PirateMotifs'
 import { ClickSpark } from '../../ui/AbilityPrims'
+import { ScrambleText } from '../../ui/ScrambleText'
 import { useAbilityGate } from '../../../lib/useAbilityGate'
 
 interface Spark {
@@ -52,14 +53,16 @@ export function FinalCTA() {
       ref={gateRef as React.RefObject<HTMLElement>}
       onClick={handleSectionClick}
       style={{
-        padding: '110px 24px 130px',
+        /* Bottom padding extended so the full Davy Jones ship is visible
+           below the CTA buttons with breathing room. */
+        padding: '110px 24px 420px',
         background: 'radial-gradient(60% 80% at 50% 30%, rgba(201, 150, 42, 0.20) 0%, transparent 70%)',
         textAlign: 'center',
         position: 'relative',
         overflow: 'hidden',
       }}
     >
-      <div style={{ maxWidth: 'var(--container-narrow, 720px)', margin: '0 auto', position: 'relative' }}>
+      <div style={{ maxWidth: 'var(--container-narrow, 720px)', margin: '0 auto', position: 'relative', zIndex: 3 }}>
         {/* Ironbuild — wax-seal "Cleared to Sail" stamp drops in
             beside the heading on first scroll into view. */}
         {assembled && !prefersReduced && (
@@ -92,10 +95,10 @@ export function FinalCTA() {
           </span>
         ))}
 
-        <h2 className="gsap-reveal h-poster" style={{ fontSize: 'clamp(2.1rem, 5vw, 3.6rem)', fontWeight: 900, marginBottom: 14 }}>
-          Ready to Sail?
+        <h2 className="gsap-reveal h-poster" style={{ fontSize: 'clamp(2.1rem, 5vw, 3.6rem)', fontWeight: 900, marginBottom: 14, color: '#fbf6dc', textShadow: '0 2px 4px rgba(0,0,0,0.65), 0 0 22px rgba(140,220,240,0.18)' }}>
+          <ScrambleText text="Ready to Sail?" duration={580} />
         </h2>
-        <p className="gsap-reveal font-poster" style={{ fontSize: 21, fontWeight: 500, color: 'var(--ink, #2a1a08)', maxWidth: 540, margin: '0 auto 38px', lineHeight: 1.7 }}>
+        <p className="gsap-reveal font-poster" style={{ fontSize: 21.5, fontWeight: 500, color: '#e0eef2', maxWidth: 540, margin: '0 auto 38px', lineHeight: 1.75, textShadow: '0 1px 2px rgba(0,0,0,0.6)' }}>
           Registration is free and the manifest is open. Bring a crew, pick a category, and find
           out what you can crack open in eight hours.
         </p>
@@ -117,19 +120,18 @@ export function FinalCTA() {
           </Link>
         </div>
 
-        <div
-          style={{
-            marginTop: 60,
-            display: 'flex',
-            justifyContent: 'center',
-            color: 'var(--ink, #1d1408)',
-            opacity: 0.45,
-          }}
-          aria-hidden
-        >
-          <PirateShip size={140} strokeWidth={1.4} />
-        </div>
       </div>
+
+      {/* Davy Jones — cursed deep-sea menace. Sits flush with the bottom
+          of the section with a dark green glow radiating outward and
+          concentrating into the bottom edge. */}
+      <div className="davy-glow-bed" aria-hidden />
+      <img
+        src="/assets/davyjonesship.png"
+        alt=""
+        aria-hidden
+        className="davy-ship"
+      />
     </section>
   )
 }

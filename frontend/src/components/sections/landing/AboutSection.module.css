@@ -1,0 +1,368 @@
+/* ─── AboutSection — bounty / parley agreement ─────────────────
+   The section sits inside the dive gradient. The "What is a CTF?"
+   panel is rendered as a weathered bounty/agreement notice with
+   torn paper edges (no clean rectangle), heavy serif type, and a
+   red wax seal sitting half-off the bottom edge. */
+
+.section {
+  position: relative;
+  padding: 56px 24px 110px;
+  overflow: hidden;
+  color: #f3f8fb;
+}
+
+/* Cone of submarine "light" landing on the bounty notice. */
+.section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 70% at 50% 42%,
+      rgba(255, 240, 200, 0.22) 0%,
+      rgba(255, 240, 200, 0.08) 32%,
+      transparent 72%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1320px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.heading {
+  font-size: var(--type-h2, clamp(1.9rem, 4.2vw, 3rem));
+  font-weight: 900;
+  color: #fbf6dc;
+  margin: 0 0 36px;
+  letter-spacing: 0.02em;
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.7),
+    0 0 18px rgba(140, 220, 240, 0.18);
+}
+
+/* ── Bounty / Parley agreement notice ─────────────────────────
+   Torn-paper edges via clip-path polygon (no straight borders).
+   Two stacked elements share the same clip path: a darker outer
+   "burn ring" silhouette behind the main parchment, so the torn
+   edge reads as singed/aged rather than just cut-out. */
+/* Wrapper holds the parchment + wax seal as siblings; the seal's
+   absolute positioning is relative to this wrapper, so it can hang
+   below the parchment's torn bottom edge without being clipped. */
+.bountyWrap {
+  position: relative;
+  max-width: 1220px;
+  margin: 0 auto 48px;
+}
+
+.bounty {
+  position: relative;
+  padding: 48px 64px 64px;
+  text-align: center;
+  background:
+    /* Coffee-stain / age splotches — barely visible, scattered. */
+    radial-gradient(ellipse 90px 60px at 18% 22%, rgba(120, 80, 30, 0.10), transparent 70%),
+    radial-gradient(ellipse 120px 80px at 82% 70%, rgba(120, 80, 30, 0.08), transparent 70%),
+    radial-gradient(ellipse 60px 40px at 60% 30%, rgba(60, 30, 5, 0.06), transparent 70%),
+    /* horizontal "rule lines" of old paper */
+    repeating-linear-gradient(0deg,
+      transparent 0px,
+      rgba(120, 80, 30, 0.028) 1px,
+      transparent 2px,
+      transparent 9px),
+    /* paper gradient — aged cream → tan */
+    linear-gradient(180deg,
+      #fdedb8 0%,
+      #f6dc94 45%,
+      #ecc56e 100%);
+  color: var(--ink, #1d1408);
+  /* Torn-paper silhouette: irregular polygon along all four edges
+     so no straight border is visible. Random-feeling jaggies. */
+  clip-path: polygon(
+    /* top edge */
+    0% 1.5%, 4% 0.6%, 9% 2%, 14% 0.8%, 19% 1.6%, 24% 0%, 30% 1.8%,
+    36% 0.6%, 42% 1.4%, 48% 0%, 55% 1.8%, 62% 0.4%, 68% 1.6%,
+    74% 0%, 80% 1.8%, 86% 0.4%, 92% 1.6%, 96% 0.6%, 100% 2%,
+    /* right edge */
+    99% 8%, 100% 14%, 98.5% 22%, 100% 32%, 99% 42%, 100% 52%,
+    98.5% 64%, 100% 74%, 99% 84%, 100% 92%,
+    /* bottom edge */
+    98% 100%, 92% 98.5%, 86% 100%, 80% 98.4%, 74% 100%, 68% 98.6%,
+    62% 100%, 55% 98.4%, 48% 100%, 42% 98.6%, 36% 100%, 30% 98.6%,
+    24% 100%, 19% 98.6%, 14% 100%, 9% 98.4%, 4% 100%, 0% 98%,
+    /* left edge */
+    1% 92%, 0% 82%, 1.5% 72%, 0% 62%, 1% 52%, 0% 42%,
+    1.5% 32%, 0% 22%, 1% 14%
+  );
+  /* clip-path eats box-shadow — use filtered drop-shadows so the lift
+     follows the torn silhouette. The thin singed-edge effect comes
+     from a near-zero-blur dark shadow ringing the paper. */
+  filter:
+    drop-shadow(0 0 1px #6b3a18)
+    drop-shadow(0 6px 0 rgba(29, 20, 8, 0.85))
+    drop-shadow(0 22px 26px rgba(0, 0, 0, 0.55));
+  transform: rotate(-0.7deg);
+}
+
+/* ── Crumple: wrinkle field ───────────────────────────────────
+   The sheet reads as if it were balled up in a fist and smoothed
+   back out. A scatter of soft elliptical highlights (raised paper
+   catching the submarine light) and shadows (the valleys between
+   creases). Blended with soft-light so the wrinkles ride OVER the
+   ink too — exactly how a crease crosses handwriting on real
+   crumpled paper. The parent clip-path keeps it inside the torn
+   silhouette automatically. */
+.bounty::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  mix-blend-mode: soft-light;
+  opacity: 0.85;
+  background:
+    radial-gradient(ellipse 42% 30% at 10% 14%, rgba(255, 255, 255, 0.62), transparent 60%),
+    radial-gradient(ellipse 30% 26% at 34% 8%,  rgba(0, 0, 0, 0.30),       transparent 64%),
+    radial-gradient(ellipse 46% 34% at 68% 16%, rgba(255, 255, 255, 0.50), transparent 60%),
+    radial-gradient(ellipse 28% 24% at 90% 10%, rgba(0, 0, 0, 0.26),       transparent 64%),
+    radial-gradient(ellipse 38% 40% at 16% 48%, rgba(0, 0, 0, 0.22),       transparent 64%),
+    radial-gradient(ellipse 50% 42% at 46% 40%, rgba(255, 255, 255, 0.46), transparent 62%),
+    radial-gradient(ellipse 34% 30% at 80% 46%, rgba(0, 0, 0, 0.24),       transparent 64%),
+    radial-gradient(ellipse 44% 36% at 26% 80%, rgba(255, 255, 255, 0.44), transparent 60%),
+    radial-gradient(ellipse 30% 26% at 58% 72%, rgba(0, 0, 0, 0.22),       transparent 64%),
+    radial-gradient(ellipse 46% 34% at 88% 82%, rgba(255, 255, 255, 0.40), transparent 60%),
+    radial-gradient(ellipse 32% 24% at 44% 94%, rgba(0, 0, 0, 0.20),       transparent 64%);
+}
+
+/* ── Crumple: crease ridges + letter folds ────────────────────
+   Sharp hard-stop lines = the cracks where the paper folded hard
+   when crushed. The stronger orthogonal pair (vertical thirds +
+   horizontal half) is the original letter fold, from before it was
+   ever crumpled. Overlay keeps the highlight/shadow edge of each
+   ridge legible without washing the parchment out. */
+.bounty::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  mix-blend-mode: overlay;
+  opacity: 0.6;
+  background:
+    /* random crumple cracks at varied angles */
+    linear-gradient(58deg,  transparent 0 23%, rgba(0,0,0,.55) 23.25%, rgba(255,255,255,.7) 23.6%, transparent 23.9% 100%),
+    linear-gradient(-37deg, transparent 0 41%, rgba(0,0,0,.5) 41.2%,   rgba(255,255,255,.62) 41.55%, transparent 41.9% 100%),
+    linear-gradient(72deg,  transparent 0 64%, rgba(0,0,0,.5) 64.2%,   rgba(255,255,255,.6) 64.5%, transparent 64.8% 100%),
+    linear-gradient(-15deg, transparent 0 78%, rgba(0,0,0,.45) 78.2%,  rgba(255,255,255,.55) 78.5%, transparent 78.8% 100%),
+    linear-gradient(28deg,  transparent 0 52%, rgba(0,0,0,.42) 52.2%,  rgba(255,255,255,.5) 52.5%, transparent 52.8% 100%),
+    /* original letter fold — thirds vertically, half horizontally */
+    linear-gradient(90deg,
+      transparent calc(33.33% - 2px), rgba(0,0,0,.5) calc(33.33% - 1px),
+      rgba(255,255,255,.7) 33.33%, transparent calc(33.33% + 2px)),
+    linear-gradient(90deg,
+      transparent calc(66.66% - 2px), rgba(0,0,0,.5) calc(66.66% - 1px),
+      rgba(255,255,255,.7) 66.66%, transparent calc(66.66% + 2px)),
+    linear-gradient(0deg,
+      transparent calc(50% - 2px), rgba(0,0,0,.42) calc(50% - 1px),
+      rgba(255,255,255,.6) 50%, transparent calc(50% + 2px));
+}
+
+/* ── Bounty header ─────────────────────────────────────────── */
+.bountyHeader {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 4px;
+}
+.bountyMark {
+  font-size: 1.6rem;
+  color: var(--role-captain-ink, #8a2a1f);
+  line-height: 1;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.4));
+}
+.bountyTitle {
+  font-family: var(--font-poster, 'IM Fell English SC', serif);
+  font-size: clamp(2.4rem, 5vw, 3.4rem);
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #2a1408;
+  text-shadow:
+    1px 1px 0 rgba(255, 245, 200, 0.55),
+    0 2px 0 rgba(0, 0, 0, 0.15);
+}
+.bountyKicker {
+  font-family: var(--font-poster, 'IM Fell English SC', serif);
+  font-size: 0.78rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--role-captain-ink, #8a2a1f);
+  margin-bottom: 14px;
+}
+
+/* Hand-quilled tagline — sets the framing for the four beats below. */
+.bountyEpigraph {
+  font-family: var(--font-serif, 'IM Fell English', serif);
+  font-style: italic;
+  font-size: 1.08rem;
+  line-height: 1.5;
+  color: #3a2410;
+  max-width: 520px;
+  margin: 0 auto 32px;
+  padding: 0 8px;
+  text-align: center;
+}
+
+/* ── Beats list ─────────────────────────────────────────────── */
+/* Four beats laid out as a wide row of columns rather than a tall
+   stack — fills the page's horizontal space and keeps the notice
+   short. Thin "rope" dividers separate the columns. */
+.beats {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0 36px;
+  text-align: center;
+}
+.beats > * + * {
+  position: relative;
+}
+.beats > * + *::before {
+  content: '';
+  position: absolute;
+  left: -18px;
+  top: 6px;
+  bottom: 6px;
+  border-left: 2px dashed rgba(29, 20, 8, 0.28);
+}
+@media (max-width: 900px) {
+  .beats { grid-template-columns: 1fr 1fr; gap: 30px 36px; }
+  /* Dividers only make sense in a single uninterrupted row. */
+  .beats > * + *::before { display: none; }
+}
+@media (max-width: 560px) {
+  .bounty { padding: 36px 28px 56px; }
+  .beats  { grid-template-columns: 1fr; gap: 22px; }
+  .bountyTitle { font-size: 2.1rem; letter-spacing: 0.12em; }
+  .bountyKicker { font-size: 0.66rem; letter-spacing: 0.32em; }
+}
+
+.beat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.beatIcon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border: 2.5px solid #1d1408;
+  border-radius: 50%;
+  background: #fff8e0;
+  color: #1d1408;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 2px 0 -1px #1d1408;
+  transform: rotate(-2deg);
+}
+.beatBody { min-width: 0; }
+.beatTitle {
+  font-family: var(--font-poster, 'IM Fell English SC', serif);
+  font-size: 1.12rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #1d1408;
+  margin: 0 0 8px;
+}
+.beatCopy {
+  font-family: var(--font-serif, 'IM Fell English', serif);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #2a1a08;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.bountyFooter {
+  margin: 36px 0 0;
+  padding-top: 16px;
+  border-top: 2px dashed rgba(29, 20, 8, 0.35);
+  font-family: var(--font-serif, 'IM Fell English', serif);
+  font-size: 1.05rem;
+  font-style: italic;
+  color: #3a2410;
+  text-align: center;
+}
+.bountyFooter strong {
+  font-style: normal;
+  color: var(--role-captain-ink, #8a2a1f);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+/* ── Red wax seal — sits centered, half hanging off the bottom. */
+.bountySeal {
+  position: absolute;
+  left: 50%;
+  bottom: -28px;
+  transform: translateX(-50%) rotate(-6deg);
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, #d94e3a 0%, #a8302a 50%, #6b1410 100%);
+  border: 2px dashed rgba(255, 230, 220, 0.4);
+  box-shadow:
+    inset 0 -4px 8px rgba(0, 0, 0, 0.45),
+    inset 0 4px 4px rgba(255, 220, 200, 0.25),
+    0 6px 14px rgba(0, 0, 0, 0.45);
+  display: grid;
+  place-items: center;
+}
+.bountySealInner {
+  font-family: var(--font-poster, 'IM Fell English SC', serif);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: #fbe5d8;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
+}
+
+/* ── Stats row (deep-water readability) ─────────────────────── */
+.stat {
+  position: relative;
+  flex: 0 0 auto;
+}
+.statValue {
+  font-size: 2.7rem;
+  font-weight: 900;
+  color: #fffbe0;
+  line-height: 1;
+  font-family: var(--font-mono, 'Special Elite', monospace);
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+}
+.statLabel {
+  font-family: var(--font-poster, 'IM Fell English SC', serif);
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: #e8f3f6;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-top: 6px;
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75);
+}

@@ -22,6 +22,98 @@
 }
 
 .sun     { position: absolute; top: 6%; right: 7%; z-index: 1; pointer-events: none; }
+
+/* Event timer — a parchment poster nailed up with a thick dark frame
+   (reads as a hand-hung dock sign). Cream parchment under dark ink so
+   the date and digits stay highly legible at a glance. */
+.eventChip {
+  position: absolute;
+  top: clamp(34%, 38vh, 42%);
+  left: 12%;
+  z-index: 10;
+  padding: 14px 26px 16px;
+  text-align: center;
+  background: var(--parchment-50, #fff8e0);
+  border: 3px solid var(--ink, #1d1408);
+  border-radius: 8px;
+  box-shadow:
+    /* subtle paper sheen on top */
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    /* thick "stamped ink" drop */
+    0 4px 0 -1px var(--ink, #1d1408),
+    /* atmospheric lift */
+    0 12px 22px rgba(60, 30, 5, 0.28);
+  transform: rotate(-1.6deg);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+/* Four dark iron tacks in the corners — completes the "nailed up" feel. */
+.eventChip::before,
+.eventChip::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #4a2e10 0%, #1d1207 70%);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+.eventChip::before { top: 6px; left: 7px;  }
+.eventChip::after  { top: 6px; right: 7px; }
+
+.eventChipLabel {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--role-captain-ink, #8a2a1f);
+  margin-bottom: 6px;
+}
+.eventChipDigits {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 14px;
+  /* Typewriter-feel font (Special Elite) for the digits — has the
+     stamped/inky character of an old log timer rather than the airy
+     serif of the rest of the page. */
+  font-family: var(--font-mono, 'Special Elite', ui-monospace, monospace);
+  font-size: 1.65rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--ink, #1d1408);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.eventChipDigits span small {
+  font-family: var(--font-poster, Georgia, serif);
+  font-size: 0.62rem;
+  font-weight: 700;
+  margin-left: 3px;
+  opacity: 0.65;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.eventChipLive {
+  font-size: 1.15rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--status-ok, #3d6b3a);
+}
+
+@media (max-width: 640px) {
+  .eventChip {
+    top: clamp(34%, 38vh, 44%);
+    left: 6%;
+    padding: 12px 18px 14px;
+    transform: rotate(-1deg);
+  }
+  .eventChipLabel { font-size: 0.66rem; letter-spacing: 0.2em; margin-bottom: 5px; }
+  .eventChipDigits { font-size: 1.25rem; gap: 10px; }
+  .eventChipDigits span small { font-size: 0.52rem; }
+}
 .clouds  {
   position: absolute; top: 0; left: 0;
   z-index: 2; opacity: 0.45;
@@ -32,11 +124,119 @@
   pointer-events: none;
   user-select: none;
 }
+/* Island sits at z-index 3, ships at z-index 2, so the island reads
+   as being in front of the ships in the distance. */
 .island {
-  position: absolute; bottom: 22%; left: 8%;
-  z-index: 3; opacity: 0.85;
-  transform: scale(0.85);
+  position: absolute;
+  bottom: 15%;
+  right: 8%;
+  z-index: 3;
+  width: clamp(180px, 22vw, 320px);
+  height: auto;
+  opacity: 0.92;
   pointer-events: none;
+  user-select: none;
+  animation: horizonFloat 7s ease-in-out infinite alternate;
+  animation-delay: -1.2s;
+}
+
+/* Chase wrappers — anchored to the RIGHT edge at the position where each
+   ship will sit when fully visible, then the chase animation pushes the
+   wrapper an extra 50vw to the right at the start of each cycle so the
+   ship literally enters from off-screen right and sails into view. The
+   inner img runs its own bob (transform on a different element, so the
+   two animations don't fight on the same property). */
+.horizonChaseLeft,
+.horizonChaseRight {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  /* Hidden by default — animation toggles visibility once each cycle.
+     Without this, MR would flash at its anchor during its
+     animation-delay window before the chase begins. */
+  visibility: hidden;
+  /* 18s = 15s of right→left travel + 3s held off-screen before the next
+     entry from the right. Linear so the chase reads as constant. */
+  animation: horizonChase 18s linear infinite;
+}
+/* Both ships now sail LEFT → RIGHT (chase direction reversed). Anchors
+   are swapped: the pirate ship sits at the RIGHT side of the viewport
+   (leading the rightward chase, further along the direction of travel)
+   while the marine ship sits deeper INSIDE the viewport (trailing,
+   behind in the chase). z-index 4 matches the wave layer but waves are
+   LATER in DOM order, so foam paints over the hulls and the ships read
+   as sitting IN the water. */
+.horizonChaseLeft  { bottom: 9%; right: 3vw;  z-index: 4; animation-delay: 0s; }
+/* Marine ship — chases. Positive animation-delay keeps the wrapper in
+   its hidden static state for the first 2.2s so the pirate appears
+   first and the marine slides in behind. */
+.horizonChaseRight { bottom: 9%; right: 36vw; z-index: 4; animation-delay: 2.2s; }
+
+.horizonShipLeft,
+.horizonShipRight {
+  display: block;
+  width: auto;
+  opacity: 0.95;
+  filter: saturate(0.95) brightness(1.02);
+  animation: horizonBob 7s ease-in-out infinite;
+}
+/* Both ships share aspect 1.83 (677×369), so width = height × 1.83. The
+   main middle ship maxes at width 460px, so chase ships are sized to
+   stay under that. Pirate ship is larger to remain the leading silhouette. */
+.horizonShipLeft  { height: clamp(170px, 24vh, 250px); } /* max width ~458px */
+.horizonShipRight { height: clamp(140px, 20vh, 210px); animation: horizonBob 7.4s ease-in-out infinite -2.6s; } /* max width ~385px */
+
+/* Chase keyframes (reversed — ships now sail LEFT → RIGHT):
+     0%      → wrapper translated -110vw to the left of its anchor →
+                ship is fully off-screen on the LEFT, ready to sail in.
+     0–83%   → wrapper slides from translateX(-110vw) to translateX(+75vw)
+                at constant speed. The ship enters from the left edge,
+                sails across, and exits past the right edge.
+     83.01%  → ship is fully off-screen right; visibility snaps to hidden.
+     83.01–100% → wrapper invisibly returns to its starting left offset
+                during the ~3s off-screen pause.
+     wrap (100→0) → next cycle starts with the ship off-screen left,
+                ready to sail in again. */
+@keyframes horizonChase {
+  0%      { transform: translateX(-110vw); visibility: visible; }
+  83%     { transform: translateX(75vw);   visibility: visible; }
+  83.01%  { transform: translateX(75vw);   visibility: hidden;  }
+  100%    { transform: translateX(-110vw); visibility: hidden;  }
+}
+
+/* Gentle on-water motion: small vertical bob + slight roll. Kept subtle so
+   it reads as "floating on swells," not a tugboat in a storm. */
+@keyframes horizonBob {
+  0%, 100% { transform: translate3d(0, 0,    0) rotate(-0.6deg); }
+  25%      { transform: translate3d(1px, -3px, 0) rotate( 0.2deg); }
+  50%      { transform: translate3d(0, -5px,  0) rotate( 0.6deg); }
+  75%      { transform: translate3d(-1px, -2px, 0) rotate( 0.1deg); }
+}
+
+@media (max-width: 768px) {
+  /* Mobile anchors — ships pull closer to fit narrow viewports without
+     overlapping. Keep the same vertical offset relationship so the
+     hulls still line up. */
+  .horizonChaseLeft  { bottom: 8%;  right: 45vw; }
+  .horizonChaseRight { bottom: 13%; right: 2vw; }
+  .horizonShipLeft,
+  .horizonShipRight { width: auto; }
+  .horizonShipLeft  { height: clamp(170px, 26vh, 260px); }
+  .horizonShipRight { height: clamp(150px, 22vh, 220px); }
+  .island { width: clamp(140px, 32vw, 220px); bottom: 30%; right: 6%; left: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .island,
+  .horizonShipLeft,
+  .horizonShipRight,
+  .horizonChaseLeft,
+  .horizonChaseRight { animation: none; }
+  /* When motion is reduced, park ships at their anchor positions, fully
+     visible (animation normally drives visibility, so we have to undo
+     the hidden static state here). */
+  .horizonChaseLeft,
+  .horizonChaseRight { transform: none; visibility: visible; }
 }
 
 .seaDepth {
@@ -107,7 +307,7 @@
 
 .shipRig {
   position: relative;
-  width: clamp(280px, 30vw, 460px);
+  width: clamp(360px, 40vw, 620px);
   /* Hull sits IN the waves, not above them. */
   margin-bottom: -72px;
 }
@@ -218,4 +418,54 @@
 @media (prefers-reduced-motion: reduce) {
   .ctaChevron { animation: none; }
   .shipRide   { animation: none; }
+}
+
+/* ── Decorative chest peek (bottom of hero) ───────────────────
+   Purely visual teaser: top of a closed chest poking up at the
+   very bottom edge with a line above it. The hero's overflow:hidden
+   clips the lower part of the image (the negative margin pushes it
+   below the fold). No interactivity, no scroll behaviour — GSAP
+   only does a gentle bob/wiggle on .chestPeekImg. */
+.chestPeek {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  z-index: 11;
+  pointer-events: none;
+}
+.chestPeekText {
+  margin: 0;
+  /* Pushed down so it sits low, right above the peeking lid. */
+  transform: translateY(56px);
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-poster, 'IM Fell English SC', serif);
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #fff3cf;
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.55),
+    0 0 16px rgba(255, 210, 120, 0.4);
+}
+.chestPeekImg {
+  display: block;
+  width: 460px;
+  height: auto;
+  /* Push the lower part below the hero's bottom edge → clipped by
+     .root overflow:hidden, leaving only the top peeking. Margin
+     (not transform) so GSAP owns y/rotation cleanly. */
+  margin-bottom: -55px;
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.45));
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+@media (max-width: 560px) {
+  .chestPeekImg { width: 320px; margin-bottom: -120px; }
 }

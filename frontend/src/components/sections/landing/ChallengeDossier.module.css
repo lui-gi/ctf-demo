@@ -1,0 +1,221 @@
+/* ─── ChallengeDossier — modal "open the dossier" panel ────────
+   Pirate parchment overlay. Backdrop is a deep-sea wash; the panel
+   is heavy aged parchment with dark ink type. Animated entry: the
+   panel rises from y:24 and fades while the backdrop fades in. */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background:
+    radial-gradient(80% 60% at 50% 50%, rgba(0, 0, 0, 0.55), rgba(2, 8, 16, 0.85));
+  backdrop-filter: blur(4px) saturate(1.05);
+  -webkit-backdrop-filter: blur(4px) saturate(1.05);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  animation: dossierBackdropIn 0.28s ease-out both;
+}
+
+@keyframes dossierBackdropIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.panel {
+  position: relative;
+  width: min(640px, 100%);
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  padding: 36px 44px 56px;
+  background:
+    /* aged splotches */
+    radial-gradient(ellipse 90px 60px at 18% 22%, rgba(120, 80, 30, 0.10), transparent 70%),
+    radial-gradient(ellipse 120px 80px at 82% 70%, rgba(120, 80, 30, 0.08), transparent 70%),
+    /* paper ruling */
+    repeating-linear-gradient(0deg,
+      transparent 0px,
+      rgba(120, 80, 30, 0.03) 1px,
+      transparent 2px,
+      transparent 9px),
+    /* paper gradient */
+    linear-gradient(180deg, #fdedb8 0%, #f4d784 100%);
+  color: var(--ink, #1d1408);
+  border: 3px solid #1d1408;
+  border-radius: 4px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 12px 0 -4px #1d1408,
+    0 28px 60px rgba(0, 0, 0, 0.55);
+  transform: rotate(-0.4deg);
+  animation: dossierPanelIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes dossierPanelIn {
+  from { opacity: 0; transform: translateY(28px) rotate(-1.6deg); }
+  to   { opacity: 1; transform: translateY(0) rotate(-0.4deg); }
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  background: var(--parchment-50, #fff8e0);
+  border: 2px solid #1d1408;
+  border-radius: 50%;
+  font-family: var(--font-poster, 'IM Fell English SC', serif);
+  font-size: 24px;
+  line-height: 1;
+  color: #1d1408;
+  cursor: pointer;
+  box-shadow: 0 2px 0 -1px #1d1408;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.close:hover {
+  background: #fbe6cf;
+  transform: translateY(-1px);
+}
+.close:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 -1px #1d1408;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  margin: 6px 0 22px;
+}
+.icon {
+  flex: 0 0 auto;
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  background: var(--parchment-50, #fff8e0);
+  border: 2.5px solid #1d1408;
+  border-radius: 50%;
+  color: #1d1408;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 3px 0 -1px #1d1408;
+  transform: rotate(-3deg);
+}
+.headerText { min-width: 0; }
+.kicker {
+  font-family: var(--font-poster, 'IM Fell English SC', serif);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--role-captain-ink, #8a2a1f);
+  margin-bottom: 4px;
+}
+.title {
+  font-family: var(--font-poster, 'IM Fell English SC', serif);
+  font-size: clamp(1.7rem, 3.6vw, 2.4rem);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0;
+  color: #1d1408;
+  line-height: 1.05;
+}
+
+.flavor {
+  font-family: var(--font-serif, 'IM Fell English', serif);
+  font-style: italic;
+  font-size: 1.08rem;
+  line-height: 1.55;
+  color: #3a2410;
+  margin: 0 0 24px;
+}
+
+.section { margin-top: 20px; }
+.sectionTitle {
+  font-family: var(--font-poster, 'IM Fell English SC', serif);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--role-captain-ink, #8a2a1f);
+  margin: 0 0 8px;
+  padding-bottom: 6px;
+  border-bottom: 1.5px dashed rgba(29, 20, 8, 0.32);
+}
+.body {
+  font-family: var(--font-serif, 'IM Fell English', serif);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #2a1a08;
+  margin: 0;
+}
+
+.examples {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+.examples li {
+  position: relative;
+  padding-left: 22px;
+  font-family: var(--font-serif, 'IM Fell English', serif);
+  font-size: 1rem;
+  line-height: 1.55;
+  color: #2a1a08;
+}
+.examples li::before {
+  content: '☠';
+  position: absolute;
+  left: 0;
+  top: 1px;
+  color: var(--role-captain-ink, #8a2a1f);
+  font-size: 0.95rem;
+}
+
+/* Red wax seal — sits half off the bottom edge of the dossier. */
+.seal {
+  position: absolute;
+  left: 50%;
+  bottom: -34px;
+  transform: translateX(-50%) rotate(-8deg);
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, #d94e3a 0%, #a8302a 50%, #6b1410 100%);
+  border: 2px dashed rgba(255, 230, 220, 0.45);
+  box-shadow:
+    inset 0 -4px 8px rgba(0, 0, 0, 0.45),
+    inset 0 4px 4px rgba(255, 220, 200, 0.25),
+    0 6px 14px rgba(0, 0, 0, 0.55);
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.sealInner {
+  font-family: var(--font-poster, 'IM Fell English SC', serif);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: #fbe5d8;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 640px) {
+  .panel { padding: 28px 22px 50px; }
+  .header { gap: 12px; }
+  .icon { width: 52px; height: 52px; }
+  .title { font-size: 1.55rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop,
+  .panel { animation: none; }
+}

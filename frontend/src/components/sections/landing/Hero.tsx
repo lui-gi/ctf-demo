@@ -1,24 +1,36 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
-  CompassRose, Seagull, DistantIsland, CartoonSun, Waves,
+  CompassRose, Seagull, CartoonSun, Waves,
 } from '../../ui/PirateMotifs'
 import { CaptainPull } from '../../ui/CaptainPull'
+import { diffParts, pad, type Parts } from './data'
 import s from './Hero.module.css'
-
-interface HeroProps {
-  onScrollToAbout: () => void
-}
 
 /* ─── Hero ────────────────────────────────────────────────────
    Captain's deck: bright tropical sky → sea, sun, seagulls,
    distant island, animated waves, the ship riding the swell with
-   wake + spray dots, login/register nav, the prog/ctf wordmark
-   with its first-load pop animation, and the "Set Sail" CTA.
+   wake + spray dots, login/register nav, and the prog/ctf wordmark
+   with its first-load pop animation.
+
+   At the very bottom edge: a PURELY DECORATIVE chest peek (just the
+   top of a closed chest poking up, gently bobbing) with a teaser
+   line above it. It is NOT interactive and has NO scroll behaviour
+   — the real, clickable chest is its own section right below the
+   hero (see TreasureChest). The peek just scrolls away with the
+   hero like any other hero content.
 
    All layout is owned by Hero.module.css. Animations come from
    index.css (waves, gulls, ship rock, spray dots) and abilities.css
    (fx-cap-title-pop, fx-cap-pull). */
-export function Hero({ onScrollToAbout }: HeroProps) {
+export function Hero() {
+  /* Compact countdown chip under the sun — ticks every second. */
+  const [t, setT] = useState<Parts>(() => diffParts(Date.now()))
+  useEffect(() => {
+    const id = window.setInterval(() => setT(diffParts(Date.now())), 1000)
+    return () => window.clearInterval(id)
+  }, [])
+
   /* Foam-spray dots peeling off the bow. */
   const sprayDots = [
     { left: '20%', bottom: '8%',  sx: '-18px', delay:  '0s'   },
@@ -37,6 +49,24 @@ export function Hero({ onScrollToAbout }: HeroProps) {
         <CartoonSun size={240} />
       </div>
 
+      {/* Event timer chip — sits under the sun in the upper-right. Compact
+          parchment badge with the date and a ticking d/h/m/s readout. */}
+      <div className={s.eventChip} role="timer" aria-label="Time until event">
+        <div className={`font-poster ${s.eventChipLabel}`}>
+          Setting Sail · Nov 7
+        </div>
+        {t.done ? (
+          <div className={`font-poster ${s.eventChipLive}`}>Live now</div>
+        ) : (
+          <div className={s.eventChipDigits}>
+            <span>{pad(t.days)}<small>d</small></span>
+            <span>{pad(t.hours)}<small>h</small></span>
+            <span>{pad(t.minutes)}<small>m</small></span>
+            <span>{pad(t.seconds)}<small>s</small></span>
+          </div>
+        )}
+      </div>
+
       {/* Clouds asset, hue-shifted to bright cream. */}
       <img src="/assets/clouds.png" alt="" className={s.clouds} />
 
@@ -51,10 +81,29 @@ export function Hero({ onScrollToAbout }: HeroProps) {
         <Seagull size={30} strokeWidth={2.4} />
       </div>
 
-      {/* Distant island silhouette on the horizon. */}
-      <div className={s.island} aria-hidden>
-        <DistantIsland width={230} />
+      {/* Horizon chase — One Piece (leading) being pursued by Marine
+          (trailing, behind in the drift cycle). The wrapper div handles
+          the slow horizontal loop; the img inside keeps its bob/roll. */}
+      <div className={s.horizonChaseLeft} aria-hidden>
+        <img
+          src="/assets/pirateship.png"
+          alt=""
+          className={s.horizonShipLeft}
+        />
       </div>
+      <div className={s.horizonChaseRight} aria-hidden>
+        <img
+          src="/assets/marineship.png"
+          alt=""
+          className={s.horizonShipRight}
+        />
+      </div>
+      <img
+        src="/assets/island.png"
+        alt=""
+        aria-hidden
+        className={s.island}
+      />
 
       {/* Sea depth gradient + animated wave layers. */}
       <div className={s.seaDepth} />
@@ -63,7 +112,7 @@ export function Hero({ onScrollToAbout }: HeroProps) {
           <Waves variant="hero" tone="#0f4862" />
         </div>
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}>
-          <Waves variant="hero" tone="#fff8e0" />
+          <Waves variant="hero" tone="#70D0C9" />
         </div>
       </div>
 
@@ -120,27 +169,6 @@ export function Hero({ onScrollToAbout }: HeroProps) {
             />
           ))}
         </div>
-
-        {/* CTA. */}
-        <CaptainPull as="div">
-          <button
-            onClick={onScrollToAbout}
-            aria-label="Scroll to about section"
-            className={s.cta}
-          >
-            <span className={`font-poster ${s.ctaLabel}`}>Set Sail</span>
-            <svg
-              aria-hidden="true"
-              className={s.ctaChevron}
-              width="10" height="16" viewBox="0 0 14 22" fill="none"
-            >
-              <line x1="7" y1="1" x2="7" y2="18"
-                    stroke="#2a1a08" strokeWidth="2" strokeLinecap="round" />
-              <polyline points="2,13 7,20 12,13"
-                        stroke="#2a1a08" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-        </CaptainPull>
       </div>
     </div>
   )

@@ -1,0 +1,353 @@
+/* ─── TreasureChest — its OWN full-viewport section ───────────
+   A standalone 100vh section directly below the hero. NO pin, NO
+   ScrollTrigger, NO scroll-driven transform. The background bridges
+   the hero's bottom colour (#1d6c8a) into the dive stack's top
+   colour (#4aabac) so there is no seam on either side.
+
+   z-order: glow 1 · chest/stage 2 · coins 3 · prize/reset 4. */
+
+.revealSection {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  /* Centred: the slack is split evenly so the chest sits a balanced
+     distance from the ship above and "What is a CTF?" below. */
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  /* Top matches the hero's bottom wave-foam tone (#70d0c9) so the
+     sea flows in with no dark band; bottom matches the dive stack
+     top (#4aabac) so that seam is invisible too. */
+  background: linear-gradient(
+    180deg,
+    #70d0c9 0%,
+    #62c4c0 16%,
+    #55b8b6 44%,
+    #4aabac 100%
+  );
+}
+
+.center {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Cinematic gold glow — behind the chest, centred on it.
+   Hidden until the open beat. */
+.glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(54vw, 680px);
+  height: min(54vw, 680px);
+  transform: translate(-50%, -50%) scale(0.5);
+  border-radius: 50%;
+  /* Faded to nothing well before the edge so even at the pulse's
+     peak scale it stays contained around the chest. */
+  background: radial-gradient(circle at 50% 50%,
+    rgba(255, 200, 80, 0.6) 0%,
+    rgba(255, 150, 50, 0.28) 34%,
+    rgba(255, 100, 30, 0) 62%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+  will-change: transform, opacity;
+}
+
+/* Mysterious aura — always present, even on the closed chest. A
+   faint warm core wrapped in a dark teal halo that slowly breathes,
+   giving the chest an uneasy, enchanted presence before it opens. */
+.aura {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: min(56vw, 660px);
+  height: min(56vw, 660px);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  /* Self-contained halo: fully faded to nothing by 70% radius so it
+     hugs the chest and never bleeds to the page edges. */
+  background: radial-gradient(circle at 50% 50%,
+    rgba(255, 224, 150, 0.16) 0%,
+    rgba(255, 196, 110, 0.08) 20%,
+    rgba(10, 46, 52, 0) 36%,
+    rgba(6, 28, 34, 0.32) 54%,
+    rgba(6, 28, 34, 0) 70%);
+  opacity: 0.85;
+  pointer-events: none;
+  z-index: 1;
+  filter: blur(2px);
+  animation: auraBreathe 6.5s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+@keyframes auraBreathe {
+  0%, 100% { transform: translate(-50%, -50%) scale(0.94); opacity: 0.72; }
+  50%      { transform: translate(-50%, -50%) scale(1.05); opacity: 0.95; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aura { animation: none; }
+}
+
+.stage {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.chestBtn {
+  appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+  cursor: pointer;
+  color: inherit;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
+}
+.chestBtn:focus-visible .chest {
+  filter:
+    drop-shadow(0 0 0 3px rgba(255, 200, 80, 0.8))
+    drop-shadow(0 16px 22px rgba(0, 0, 0, 0.55));
+}
+
+.chest {
+  display: block;
+  /* Cinematic — the chest IS the screen. */
+  width: min(88vw, 980px);
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.5));
+}
+
+/* Animated god-rays — a slowly spinning fan of light wedges centred
+   on the chest's opening. mix-blend screen so it reads as emitted
+   light, radial mask so it fades softly instead of a hard disc. */
+.rays {
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  width: min(72vw, 720px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  background: repeating-conic-gradient(
+    from 0deg at 50% 50%,
+    rgba(255, 240, 170, 0) 0deg 6deg,
+    rgba(255, 232, 150, 0.65) 6deg 9deg,
+    rgba(255, 240, 170, 0) 9deg 16deg
+  );
+  -webkit-mask: radial-gradient(
+    circle at 50% 50%,
+    rgba(0, 0, 0, 0) 6%,
+    #000 22%,
+    rgba(0, 0, 0, 0.3) 46%,
+    rgba(0, 0, 0, 0) 60%
+  );
+  mask: radial-gradient(
+    circle at 50% 50%,
+    rgba(0, 0, 0, 0) 6%,
+    #000 22%,
+    rgba(0, 0, 0, 0.3) 46%,
+    rgba(0, 0, 0, 0) 60%
+  );
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+  will-change: transform, opacity;
+}
+
+/* Coin burst origin = chest centre. */
+.coinLayer {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 3;
+}
+.coin {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 30%, #fff1bd 0%, #ffd24a 42%, #f0a51e 72%, #9a5f10 100%);
+  box-shadow:
+    0 0 10px rgba(255, 210, 110, 0.9),
+    inset 0 -2px 3px rgba(120, 70, 10, 0.55);
+}
+
+/* Gold shimmer fountain — origin at the chest's opening (upper body),
+   not its dead centre, so the spray reads as bursting from the lid. */
+.goldLayer {
+  position: absolute;
+  left: 50%;
+  top: 38%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 3;
+}
+.gold {
+  position: absolute;
+  left: 0;
+  top: 0;
+  will-change: transform, opacity;
+}
+.goldCircle  { border-radius: 50%; }
+.goldDiamond { border-radius: 1px; }
+.goldStar {
+  clip-path: polygon(
+    50% 0%, 60% 40%, 100% 50%, 60% 60%,
+    50% 100%, 40% 60%, 0% 50%, 40% 40%
+  );
+}
+
+/* Prize text — launches from the chest, settles above the lid. */
+.prize {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% - 132px);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 4;
+  opacity: 0;
+}
+
+.amount {
+  font-family: 'Pirata One', 'Cinzel', var(--font-poster), serif;
+  font-weight: 400;
+  font-size: clamp(80px, 10vw, 160px);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  /* Multi-stop molten gold, widened so the shimmer keyframe can sweep
+     a highlight across the letterforms. */
+  background: linear-gradient(
+    100deg,
+    #b8860b 0%,
+    #ffa500 22%,
+    #ffd700 38%,
+    #fff4b8 50%,
+    #ffd700 62%,
+    #ffa500 78%,
+    #b8860b 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  /* Thin dark stroke keeps it legible against the bright teal. */
+  -webkit-text-stroke: 2px rgba(60, 30, 0, 0.4);
+  filter:
+    drop-shadow(0 2px 1px rgba(60, 30, 0, 0.45))
+    drop-shadow(0 0 20px rgba(255, 215, 0, 0.8))
+    drop-shadow(0 0 40px rgba(255, 165, 0, 0.5));
+  animation: goldShimmer 3s linear infinite;
+}
+@keyframes goldShimmer {
+  from { background-position:   0% 50%; }
+  to   { background-position: 250% 50%; }
+}
+
+.label {
+  font-family: 'Cinzel', var(--font-poster), serif;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3.4vw, 2.4rem);
+  letter-spacing: 0.3em;
+  text-indent: 0.3em; /* balance the trailing letter-spacing */
+  text-transform: uppercase;
+  background: linear-gradient(180deg, #ffe9a8 0%, #f0b94e 60%, #c98a1e 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(40, 20, 0, 0.55));
+  opacity: 0;
+}
+
+/* Replay control — just below the chest. */
+.resetBtn {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 4px);
+  transform: translateX(-50%);
+  appearance: none;
+  background: rgba(10, 22, 38, 0.45);
+  border: 1px solid rgba(255, 200, 90, 0.5);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-family: var(--font-poster, 'IM Fell English SC', serif);
+  font-size: 0.76rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #f0d79a;
+  opacity: 0.7;
+  cursor: pointer;
+  pointer-events: auto;
+  z-index: 4;
+  white-space: nowrap;
+  transition: opacity 0.2s ease, background 0.2s ease,
+    border-color 0.2s ease, transform 0.2s ease;
+}
+.resetBtn:hover,
+.resetBtn:focus-visible {
+  opacity: 1;
+  background: rgba(255, 200, 90, 0.2);
+  border-color: #ffce5e;
+  transform: translateX(-50%) translateY(-1px);
+  outline: none;
+}
+
+/* Teaser line — sits low, just below the closed chest. Fades away
+   the moment the chest opens (unmounted on reveal). */
+.teaser {
+  position: absolute;
+  left: 50%;
+  top: calc(100% - 24px);
+  transform: translateX(-50%);
+  margin: 0;
+  white-space: nowrap;
+  font-family: 'Pirata One', var(--font-poster), serif;
+  font-size: clamp(1.2rem, 2.6vw, 2rem);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  color: #fff3cf;
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.55),
+    0 0 16px rgba(255, 210, 120, 0.4);
+  pointer-events: none;
+  z-index: 4;
+}
+
+@media (max-width: 560px) {
+  .revealSection { min-height: max(100vh, 660px); }
+  /* min(80vw, 800px) already scales the chest down on phones. */
+  .prize { bottom: calc(100% - 44px); }
+  .amount { -webkit-text-stroke-width: 1.4px; }
+  .teaser {
+    font-size: 1.3rem;
+    white-space: normal;
+    text-align: center;
+    max-width: 84vw;
+  }
+}
